@@ -671,7 +671,7 @@ html{ margin-top:0 !important; }
   </div>
 
 <!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
 
 <script>
 "use strict";
@@ -950,90 +950,28 @@ function weeksBackList(count){
 }
 
 /* ===== buscar última semana con carga ===== */
-async function findLatestLoadedWeek(maxLookbackWeeks = 52){
-  let d = new Date();
-  d.setHours(12,0,0,0);
-
-  for(let i=0; i<maxLookbackWeeks; i++){
-    const w = semanaISO(d);
-    try{
-      const { res, json } = await fetchJson(`https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=compras&semana=${encodeURIComponent(w)}`);
-      if(res.ok && json && json.ok && json.data){
-        return w;
-      }
-    }catch(_){ /* sigue */ }
-
-    d = new Date(d.getTime() - 7*24*60*60*1000);
-    d.setHours(12,0,0,0);
-  }
-  return null;
-}
-
-/* ===== HISTÓRICO usando SOLO obtener_compras.php ===== */
-async function loadHistory(weeksCount, baseWeek){
-  const weeks = baseWeek ? weeksBackFromWeek(baseWeek, weeksCount) : weeksBackList(weeksCount);
-  const rows = [];
-
-  for(const w of weeks){
-    try{
-      const { res, json } = await fetchJson(`https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=compras&semana=${encodeURIComponent(w)}`);
-      if(res.ok && json && json.ok && json.data){
-        rows.push(Object.assign({ semana: w }, json.data));
-      }else{
-        rows.push({
-          semana: w,
-          cobertura_total: null,
-          aging90: null,
-          cmpA1: null, cmpA2: null, cmpA3: null, cmpA4: null,
-          cmpB1: null, cmpB2: null, cmpB3: null, cmpB4: null
-        });
-      }
-    }catch(_){
-      rows.push({
-        semana: w,
-        cobertura_total: null,
-        aging90: null,
-        cmpA1: null, cmpA2: null, cmpA3: null, cmpA4: null,
-        cmpB1: null, cmpB2: null, cmpB3: null, cmpB4: null
-      });
-    }
-  }
-
-  renderCharts(rows);
-  renderHistTable(rows);
-}
-
-/* ===== load ===== */
 async function loadAll(){
-  setStatus("Buscando última semana cargada...", null);
-
-  const lastWeek = await findLatestLoadedWeek(52); // ajusta si quieres
-  const sem = lastWeek || semanaISO(new Date());
-
-  document.getElementById("weekLabel").textContent = sem;
-
-  // 1) dato semana (KPIs + estado MdP) usando última semana cargada
+  setStatus("Cargando...", null);
   try{
-    setStatus("Cargando...", null);
-    const { res, json } = await fetchJson(`https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=compras&semana=${encodeURIComponent(sem)}`);
-
-    if(!res.ok || !json || !json.ok){
-      setStatus(lastWeek ? "Semana sin datos" : "Sin datos", "bad");
-      applyKpis({cobertura_total:null, aging60:null, aging90:null, aging180:null, sufijos:null});
-      applyMdP({cmpA1:null,cmpA2:null,cmpA3:null,cmpA4:null, cmpB1:null,cmpB2:null,cmpB3:null,cmpB4:null});
-    }else{
-      setStatus(lastWeek ? "OK (última carga)" : "OK", "good");
-      applyKpis(json.data || {});
-      applyMdP(json.data || {});
+    const {res,json}=await fetchJson("https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=compras&limit=10");
+    if(!res.ok || !json || !json.ok) throw new Error("API");
+    const recent=Array.isArray(json.data)?json.data:[];
+    if(!recent.length){
+      document.getElementById("weekLabel").textContent="--";
+      setStatus("Sin datos","bad");
+      applyKpis({}); applyMdP({});
+      renderCharts([]); renderHistTable([]);
+      return;
     }
+    const latest=recent[0];
+    document.getElementById("weekLabel").textContent=latest.semana || "--";
+    setStatus("OK (última carga)","good");
+    applyKpis(latest); applyMdP(latest);
+    const rows=recent.slice().reverse();
+    renderCharts(rows); renderHistTable(rows);
   }catch(_){
-    setStatus("Error de conexión", "bad");
-    applyKpis({cobertura_total:null, aging60:null, aging90:null, aging180:null, sufijos:null});
-    applyMdP({cmpA1:null,cmpA2:null,cmpA3:null,cmpA4:null, cmpB1:null,cmpB2:null,cmpB3:null,cmpB4:null});
+    setStatus("Error de conexión","bad"); applyKpis({}); applyMdP({});
   }
-
-  // 2) histórico (✅ 10 semanas terminando en la última cargada)
-  await loadHistory(10, sem);
 }
 
 loadAll();
