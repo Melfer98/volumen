@@ -957,7 +957,7 @@ async function findLatestLoadedWeek(maxLookbackWeeks = 52){
   for(let i=0; i<maxLookbackWeeks; i++){
     const w = semanaISO(d);
     try{
-      const { res, json } = await fetchJson(`obtener_compras.php?semana=${encodeURIComponent(w)}`);
+      const { res, json } = await fetchJson(`https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=compras&semana=${encodeURIComponent(w)}`);
       if(res.ok && json && json.ok && json.data){
         return w;
       }
@@ -976,7 +976,7 @@ async function loadHistory(weeksCount, baseWeek){
 
   for(const w of weeks){
     try{
-      const { res, json } = await fetchJson(`obtener_compras.php?semana=${encodeURIComponent(w)}`);
+      const { res, json } = await fetchJson(`https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=compras&semana=${encodeURIComponent(w)}`);
       if(res.ok && json && json.ok && json.data){
         rows.push(Object.assign({ semana: w }, json.data));
       }else{
@@ -1015,7 +1015,7 @@ async function loadAll(){
   // 1) dato semana (KPIs + estado MdP) usando última semana cargada
   try{
     setStatus("Cargando...", null);
-    const { res, json } = await fetchJson(`obtener_compras.php?semana=${encodeURIComponent(sem)}`);
+    const { res, json } = await fetchJson(`https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=compras&semana=${encodeURIComponent(sem)}`);
 
     if(!res.ok || !json || !json.ok){
       setStatus(lastWeek ? "Semana sin datos" : "Sin datos", "bad");
