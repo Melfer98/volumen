@@ -412,7 +412,8 @@ body{
 .kpi.kpi-bad{border-color:rgba(255,83,100,.68);box-shadow:0 0 0 1px rgba(255,83,100,.12) inset;}
 .kpi.kpi-bad .label{color:#ffb3bc}.kpi.kpi-bad .value{color:#fff0f2}.kpi.kpi-bad .bar span{background:#ff5364!important}
 
-.player-placeholder{width:100%;height:100%;min-height:0;display:block;background:linear-gradient(145deg,#153b2c,#0b241a)}
+.player-placeholder{width:100%;height:100%;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:linear-gradient(145deg,#153b2c,#0b241a)}
+.avatar-default{font-size:clamp(36px,4vw,64px);line-height:1;filter:grayscale(1);opacity:.9}.player-default-name{font-size:clamp(11px,1vw,15px);font-weight:800;letter-spacing:.12em;color:#d9fff0;text-transform:uppercase}
 </style>
 </head>
 
@@ -603,12 +604,12 @@ body{
           </div></div>
 
           <div class="player-card new-player" data-player="andrea">
-            <div class="player-placeholder" aria-label="Andrea"></div>
+            <div class="player-placeholder" aria-label="Andrea"><div class="avatar-default">👤</div><div class="player-default-name">ANDREA</div></div>
             <div class="semaforo"><span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span><span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span></div>
           </div>
 
           <div class="player-card new-player" data-player="karen">
-            <div class="player-placeholder" aria-label="Karen"></div>
+            <div class="player-placeholder" aria-label="Karen"><div class="avatar-default">👤</div><div class="player-default-name">KAREN</div></div>
             <div class="semaforo"><span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span><span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span></div>
           </div>
 
