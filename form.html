@@ -837,15 +837,10 @@ const openComprasBtn = document.getElementById("openCompras");
 const formsAvailability = document.getElementById("formsAvailability");
 const formButtons = [openGeneralBtn, openVolumeBtn, openComprasBtn];
 
-if(esLunes()){
-  formsAvailability.textContent = `Disponibles hoy para reportar la semana ${semanaISOAnterior()}.`;
-}else{
-  formButtons.forEach(button => { button.disabled = true; });
-  formsAvailability.textContent = "Los formularios están disponibles únicamente los lunes.";
-}
+formsAvailability.textContent = `Disponibles para reportar la semana ${semanaISOAnterior()}.`;
+formButtons.forEach(button => { button.disabled = false; });
 
 openGeneralBtn.addEventListener("click", () => {
-  if(!esLunes()) return;
   const s = semanaISOAnterior();
   document.getElementById("weekTitleGeneral").textContent = `Resultados Semana ${s}`;
   document.getElementById("semanaGeneral").value = s;
@@ -855,13 +850,11 @@ openGeneralBtn.addEventListener("click", () => {
 
 /* Abrir Volumen -> selector */
 openVolumeBtn.addEventListener("click", () => {
-  if(!esLunes()) return;
   openModal(modalPick);
 });
 
 /* Abrir Compras */
 openComprasBtn.addEventListener("click", () => {
-  if(!esLunes()) return;
   const s = semanaISOAnterior();
   document.getElementById("weekTitleCompras").textContent = `Resultados Semana ${s}`;
   document.getElementById("semanaCompras").value = s;
