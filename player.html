@@ -816,7 +816,7 @@ function renderCharts(history){
 
 /* ===== API ===== */
 async function loadPlayer(player){
-  const res = await fetch("api_player.php?player=" + encodeURIComponent(player), { cache:"no-store" });
+  const res = await fetch("https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=player&player=" + encodeURIComponent(player), { cache:"no-store" });
   const text = await res.text();
   let json;
   try { json = JSON.parse(text); }
