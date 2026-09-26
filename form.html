@@ -399,17 +399,17 @@ legend{font-weight:900;color:#000;padding:0 8px;}
 
     <div class="modal-content">
       <div class="player-grid" id="playerGrid">
-        <div class="player-tile" data-player="NESTOR"><img src="images/nestor.png" alt="NESTOR"></div>
-        <div class="player-tile" data-player="ALE"><img src="images/ale.png" alt="ALE"></div>
-        <div class="player-tile" data-player="HECTOR"><img src="images/hector.png" alt="HECTOR"></div>
-        <div class="player-tile" data-player="BEA"><img src="images/bea.png" alt="BEA"></div>
-        <div class="player-tile" data-player="LUIS"><img src="images/luis.png" alt="LUIS"></div>
-        <div class="player-tile" data-player="REYNI"><img src="images/reyni.png" alt="REYNI"></div>
-        <div class="player-tile" data-player="MARLON"><img src="images/marlon.png" alt="MARLON"></div>
-        <div class="player-tile" data-player="TANIA"><img src="images/tania.png" alt="TANIA"></div>
-        <div class="player-tile" data-player="MOISES"><img src="images/moises.png" alt="MOISES"></div>
-        <div class="player-tile" data-player="VANE"><img src="images/vane.png" alt="VANE"></div>
-        <div class="player-tile" data-player="FER"><img src="images/fer.png" alt="FER"></div>
+        <div class="player-tile" data-player="NESTOR"><img src="images/nestor.png" alt="NESTOR" loading="lazy" decoding="async"></div>
+        <div class="player-tile" data-player="ALE"><img src="images/ale.png" alt="ALE" loading="lazy" decoding="async"></div>
+        <div class="player-tile" data-player="HECTOR"><img src="images/hector.png" alt="HECTOR" loading="lazy" decoding="async"></div>
+        <div class="player-tile" data-player="BEA"><img src="images/bea.png" alt="BEA" loading="lazy" decoding="async"></div>
+        <div class="player-tile" data-player="LUIS"><img src="images/luis.png" alt="LUIS" loading="lazy" decoding="async"></div>
+        <div class="player-tile" data-player="REYNI"><img src="images/reyni.png" alt="REYNI" loading="lazy" decoding="async"></div>
+        <div class="player-tile" data-player="MARLON"><img src="images/marlon.png" alt="MARLON" loading="lazy" decoding="async"></div>
+        <div class="player-tile" data-player="TANIA"><img src="images/tania.png" alt="TANIA" loading="lazy" decoding="async"></div>
+        <div class="player-tile" data-player="MOISES"><img src="images/moises.png" alt="MOISES" loading="lazy" decoding="async"></div>
+        <div class="player-tile" data-player="VANE"><img src="images/vane.png" alt="VANE" loading="lazy" decoding="async"></div>
+        <div class="player-tile" data-player="FER"><img src="images/fer.png" alt="FER" loading="lazy" decoding="async"></div>
       </div>
     </div>
   </div>
@@ -807,9 +807,6 @@ function semanaISOAnterior(){
   const iso = getISOWeek(d);
   return `${iso.year}-${String(iso.week).padStart(2,"0")}`;
 }
-function esLunes(){
-  return new Date().getDay() === 1;
-}
 function openModal(m){ m.classList.add("show"); }
 function closeModal(m){ m.classList.remove("show"); }
 
@@ -946,13 +943,7 @@ async function submitForm(formEl, statusEl){
       statusEl.textContent = "Ya existe un resultado guardado para esta semana ❌";
       return;
     }
-
-    if(res.status === 403 && json && json.error === "NOT_MONDAY"){
-      statusEl.textContent = "Los formularios solo se pueden guardar los lunes ❌";
-      return;
-    }
-
-    if(!res.ok || !json || !json.ok){
+if(!res.ok || !json || !json.ok){
       statusEl.textContent = "Error al guardar ❌";
       return;
     }
