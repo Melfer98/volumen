@@ -689,7 +689,7 @@ function renderDashboard(payload){
    Cobertura Total (obtener_compras.php)
 ========================= */
 async function fetchCompras(semana){
-  const res = await fetch("obtener_compras.php?semana=" + encodeURIComponent(semana), { cache: "no-store" });
+  const res = await fetch("https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=compras&semana=" + encodeURIComponent(semana), { cache: "no-store" });
   const text = await res.text();
   let json;
   try { json = JSON.parse(text); }
@@ -728,7 +728,7 @@ function renderCoberturaTotal(comprasJson){
    APIs existentes
 ========================= */
 async function loadLatestFromDB(){
-  const res = await fetch("api_latest.php", { cache: "no-store" });
+  const res = await fetch("https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=latest", { cache: "no-store" });
   const text = await res.text();
   let json;
   try { json = JSON.parse(text); }
@@ -739,7 +739,7 @@ async function loadLatestFromDB(){
 }
 
 async function fetchPlayers(semana){
-  const res = await fetch("resultados_volumen.php?semana=" + encodeURIComponent(semana), { cache: "no-store" });
+  const res = await fetch("https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=players&semana=" + encodeURIComponent(semana), { cache: "no-store" });
   const text = await res.text();
   let json;
   try { json = JSON.parse(text); }
