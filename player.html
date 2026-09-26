@@ -517,7 +517,7 @@ body{
         </div>
 
         <div class="playerPhoto">
-          <img id="playerImg" src="images/fer.png" alt="player">
+          <img id="playerImg" src="images/fer.png" alt="player" decoding="async" fetchpriority="high">
         </div>
 
         <div class="playerName" id="playerName">--</div>
@@ -609,7 +609,7 @@ body{
     <div class="t2" id="tipText">---</div>
   </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
 
 <script>
 "use strict";
@@ -820,9 +820,9 @@ async function loadPlayer(player){
   const text = await res.text();
   let json;
   try { json = JSON.parse(text); }
-  catch(e){ throw new Error("api_player.php NO JSON: " + text.slice(0,200)); }
-  if(!res.ok) throw new Error("api_player.php HTTP " + res.status);
-  if(!json.ok) throw new Error(json.detail || json.error || "api_player.php inválida");
+  catch(e){ throw new Error("Supabase API NO JSON: " + text.slice(0,200)); }
+  if(!res.ok) throw new Error("Supabase API HTTP " + res.status);
+  if(!json.ok) throw new Error(json.detail || json.error || "Supabase API inválida");
   return json;
 }
 
@@ -884,7 +884,7 @@ function renderAll(player, payload){
   }catch(e){
     console.error(e);
     setText("hdrTitle", "ERROR • NO SE PUDO CARGAR");
-    setText("statusTop", "Revisa api_player.php");
+    setText("statusTop", "Revisa Supabase API");
     document.getElementById("errBox").style.display = "block";
   }
 })();
