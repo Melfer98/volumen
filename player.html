@@ -533,8 +533,8 @@ body{font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 12%
         </div>
 
         <div class="playerPhoto" id="playerPhoto">
-          <img id="playerImg" src="images/fer.png" alt="player" decoding="async" fetchpriority="high">
-          <div id="playerDefault" class="playerDefault" hidden><div class="defaultAvatar">👤</div><div class="defaultName"></div></div>
+          <img id="playerImg" src="" alt="player" decoding="async" fetchpriority="high" style="display:none">
+          <div id="playerDefault" class="playerDefault"><div class="defaultAvatar">👤</div><div class="defaultName">PLAYER</div></div>
         </div>
 
         <div class="playerName" id="playerName">--</div>
@@ -870,13 +870,18 @@ function renderAll(player, payload){
   const def = document.getElementById("playerDefault");
   const isDefaultPlayer = player === "ANDREA" || player === "KAREN";
   if(img) {
-    img.hidden = isDefaultPlayer;
-    if(!isDefaultPlayer) img.src = PLAYER_IMG[player] || "images/fer.png";
+    if(isDefaultPlayer) {
+      img.removeAttribute("src");
+      img.style.display = "none";
+    } else {
+      img.src = PLAYER_IMG[player] || "";
+      img.style.display = PLAYER_IMG[player] ? "block" : "none";
+    }
   }
   if(def) {
-    def.hidden = !isDefaultPlayer;
+    def.hidden = !isDefaultPlayer && !!PLAYER_IMG[player];
     const dn = def.querySelector(".defaultName");
-    if(dn) dn.textContent = player;
+    if(dn) dn.textContent = player || "PLAYER";
   }
 
   const latestData = payload.latest?.data || payload.data || payload.latest || {};
