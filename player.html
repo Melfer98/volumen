@@ -514,6 +514,7 @@ body{font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 12%
 .textBox,.kpi{background:rgba(255,255,255,.05);border:1px solid rgba(139,226,183,.14)}
 .kpi .label{color:#a9c5b7}.kpi .value{color:#f4fff9;font-weight:800}
 
+.playerPhoto{position:relative}.playerDefault{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(145deg,#153b2c,#0b241a)}.playerDefault[hidden]{display:none}.defaultAvatar{font-size:clamp(64px,8vw,110px);line-height:1;filter:grayscale(1);opacity:.9}.defaultName{font-size:clamp(14px,1.5vw,20px);font-weight:800;letter-spacing:.14em;color:#d9fff0}
 </style>
 </head>
 
@@ -531,8 +532,9 @@ body{font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 12%
           <a class="btn" href="index.html">INICIO</a>
         </div>
 
-        <div class="playerPhoto">
+        <div class="playerPhoto" id="playerPhoto">
           <img id="playerImg" src="images/fer.png" alt="player" decoding="async" fetchpriority="high">
+          <div id="playerDefault" class="playerDefault" hidden><div class="defaultAvatar">👤</div><div class="defaultName"></div></div>
         </div>
 
         <div class="playerName" id="playerName">--</div>
@@ -865,7 +867,17 @@ function renderAll(player, payload){
   setText("playerName", player);
 
   const img = document.getElementById("playerImg");
-  if(img) img.src = PLAYER_IMG[player] || "images/fer.png";
+  const def = document.getElementById("playerDefault");
+  const isDefaultPlayer = player === "ANDREA" || player === "KAREN";
+  if(img) {
+    img.hidden = isDefaultPlayer;
+    if(!isDefaultPlayer) img.src = PLAYER_IMG[player] || "images/fer.png";
+  }
+  if(def) {
+    def.hidden = !isDefaultPlayer;
+    const dn = def.querySelector(".defaultName");
+    if(dn) dn.textContent = player;
+  }
 
   const latestData = payload.latest?.data || payload.data || payload.latest || {};
   setText("aging60",  fmtPct(getField(latestData, "aging60")));
