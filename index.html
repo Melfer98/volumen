@@ -1,0 +1,847 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard • Resultados General</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  /* Paleta sólida: celeste + coral + azul */
+  --yellow:#ffd6a5;
+  --panel:#264653;
+  --panel2:rgba(255,255,255,.10);
+  --line:rgba(255,214,165,.34);
+  --bg:#5fa8d3;
+  --blue:#2f5f7f;
+  --coral:#ff8e72;
+  --soft:#f8fbff;
+
+  /* Escala responsive para que todo se mantenga en una sola pantalla */
+  --pad:clamp(8px,1.05vh,14px);
+  --gap:clamp(6px,.95vh,12px);
+  --kpiPad:clamp(8px,.95vh,12px);
+  --goalPadY:clamp(7px,.95vh,11px);
+  --goalPadX:clamp(10px,1vw,14px);
+  --goalFont:clamp(12px,1.15vh,15px);
+  --labelFont:clamp(11px,1.1vh,14px);
+  --valueFont:clamp(18px,2.25vh,24px);
+  --barH:clamp(8px,.9vh,10px);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+
+body{
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  overflow:hidden;
+}
+
+.wrap{
+  width:min(98vw,1600px);
+  height:min(96vh,920px);
+  background:var(--panel);
+  border:2px solid rgba(255,214,165,.65);
+  border-radius:20px;
+  padding:var(--pad);
+  box-shadow:0 16px 42px rgba(22,45,60,.28);
+  position:relative;
+  overflow:hidden;
+}
+
+/* Icono formulario */
+.form-icon{
+  position:absolute;
+  top:14px;
+  left:14px;
+  width:44px;
+  height:44px;
+  cursor:pointer;
+  transition:transform .2s ease;
+  text-decoration:none;
+  z-index:20;
+}
+.form-icon svg{
+  width:100%;
+  height:100%;
+  fill:var(--yellow);
+  filter:none;
+  display:block;
+}
+.form-icon:hover{transform:scale(1.18);}
+
+.top-title{
+  font-family:'Press Start 2P',cursive;
+  text-align:center;
+  color:#fff;
+  text-shadow:none;
+  letter-spacing:2px;
+  font-size:clamp(14px,1.15vw,20px);
+  margin-bottom:var(--gap);
+  padding-top:4px;
+  white-space:nowrap;
+}
+
+/* Layout principal */
+.grid{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:var(--gap);
+  height:calc(100% - 48px);
+  min-height:0;
+}
+
+.panel{
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:16px;
+  padding:var(--pad);
+  height:100%;
+  overflow:hidden;
+  min-height:0;
+}
+.panel h3{
+  font-family:'Press Start 2P',cursive;
+  font-size:clamp(11px,1.05vh,13px);
+  margin-bottom:clamp(6px,.9vh,9px);
+  color:#fff;
+}
+
+/* ===== LEFT: Dashboard + media column ===== */
+.panel.left{
+  display:grid;
+  grid-template-columns:1fr clamp(170px,18vw,240px);
+  gap:var(--gap);
+  min-height:0;
+}
+
+.left-stack{
+  min-height:0;
+  display:grid;
+  grid-template-rows:auto auto auto;
+  gap:var(--gap);
+  overflow:hidden;
+}
+
+.mci-block{
+  min-height:0;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  gap:clamp(6px,.9vh,9px);
+}
+
+/* Objetivo */
+.goal{
+  font-size:var(--goalFont);
+  line-height:1.33;
+  margin:0;
+  padding:var(--goalPadY) var(--goalPadX);
+  background:rgba(255,255,255,.08);
+  border-left:5px solid var(--coral);
+  border-radius:10px;
+  color:#fff;
+}
+.goal b{color:var(--yellow);font-weight:900;}
+
+/* KPIs */
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--gap);
+}
+
+.kpi{
+  background:var(--panel2);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:var(--kpiPad);
+  min-height:0;
+  overflow:hidden;
+}
+.kpi .label{
+  font-weight:900;
+  font-size:var(--labelFont);
+  margin-bottom:clamp(5px,.75vh,7px);
+  color:#fff;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.kpi .value{
+  font-weight:1000;
+  font-size:var(--valueFont);
+  line-height:1.05;
+  color:#fff;
+}
+
+/* Barra */
+.bar{
+  margin-top:clamp(6px,.8vh,8px);
+  height:var(--barH);
+  border-radius:999px;
+  background:rgba(255,255,255,.22);
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.18);
+}
+.bar span{
+  display:block;
+  height:100%;
+  width:0%;
+  background:var(--coral);
+  transition:width .3s ease;
+}
+
+/* ✅ Estado KPI (verde/rojo) se mantiene */
+.kpi.kpi-ok{
+  border-color:rgba(30,234,0,.95);
+  box-shadow:0 0 0 1px rgba(30,234,0,.35) inset;
+}
+.kpi.kpi-ok .label{color:rgba(213,255,213,.98);}
+.kpi.kpi-ok .value{color:#eaffea;}
+.kpi.kpi-ok .bar span{background:#1eea00 !important;}
+
+.kpi.kpi-bad{
+  border-color:rgba(255,23,68,.95);
+  box-shadow:0 0 0 1px rgba(255,23,68,.35) inset;
+}
+.kpi.kpi-bad .label{color:rgba(255,225,231,.98);}
+.kpi.kpi-bad .value{color:#ffe9ee;}
+.kpi.kpi-bad .bar span{background:#ff1744 !important;}
+
+/* Media column (lau, logo, gif) */
+.left-media{
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  gap:var(--gap);
+  align-items:stretch;
+  justify-content:space-between;
+}
+.media-box{
+  flex:1 1 0;
+  min-height:0;
+  border-radius:14px;
+  overflow:hidden;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+}
+.media-box img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.media-box.lau img{object-position:top center;}
+.media-box.link{display:block;text-decoration:none;}
+
+/* ===== RIGHT: players ===== */
+.panel.players{overflow:hidden;min-height:0;}
+.players-grid{
+  height:100%;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(4,minmax(0,1fr));
+  gap:var(--gap);
+  min-height:0;
+}
+.player-card{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:14px;
+  overflow:hidden;
+  position:relative;
+  min-height:0;
+}
+.player-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:top center;
+  display:block;
+  transition:transform .2s ease;
+  transform-origin:top center;
+}
+.player-card:hover img{transform:scale(1.05);}
+
+/* Semáforos */
+.semaforo{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:6px;
+  display:flex;
+  gap:clamp(4px,.5vw,6px);
+  flex-wrap:nowrap;
+  justify-content:center;
+  align-items:center;
+  width:92%;
+  z-index:5;
+  pointer-events:none;
+}
+.luz{
+  flex:1 1 0;
+  max-width:clamp(12px,1.2vw,18px);
+  min-width:clamp(10px,1vw,14px);
+  aspect-ratio:1/1;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.60);
+  background:rgba(160,160,160,.55);
+  box-shadow:0 0 6px rgba(0,0,0,.35);
+}
+.luz.green{background:#1eea00;border-color:rgba(255,255,255,.80);}
+.luz.red{background:#ff1744;border-color:rgba(255,255,255,.80);}
+.luz.gray{background:rgba(160,160,160,.55);border-color:rgba(255,255,255,.60);}
+
+/* Ajustes finos para pantallas bajas */
+@media (max-height:780px){
+  :root{
+    --pad:clamp(8px,.9vh,11px);
+    --gap:clamp(6px,.8vh,9px);
+    --goalFont:clamp(11px,1.05vh,13px);
+    --valueFont:clamp(16px,1.9vh,20px);
+    --labelFont:clamp(10px,1vh,12px);
+    --barH:clamp(7px,.8vh,9px);
+  }
+  .goal{line-height:1.26;}
+  .panel h3{font-size:10px;}
+}
+@media (max-height:720px){
+  .kpis{gap:clamp(5px,.7vh,8px);}
+  .kpi .label{margin-bottom:4px;}
+  .top-title{font-size:clamp(12px,1vw,16px);}
+}
+
+/* Adaptación horizontal sin scroll */
+@media (max-width:1050px){
+  :root{
+    --valueFont:clamp(15px,2vw,20px);
+    --goalFont:clamp(10px,1.2vw,13px);
+    --labelFont:clamp(10px,1.2vw,12px);
+  }
+  .panel.left{grid-template-columns:1fr clamp(120px,16vw,180px);}
+}
+
+@media (max-width:760px){
+  .wrap{width:100vw;height:100vh;border-radius:0;}
+  .top-title{font-size:clamp(9px,2.2vw,13px);letter-spacing:1px;}
+  .grid{grid-template-columns:1.15fr .85fr;height:calc(100% - 38px);}
+  .panel.left{grid-template-columns:1fr;}
+  .left-media{display:none;}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .players-grid{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(6,minmax(0,1fr));}
+}
+</style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <a href="https://volumen.fercifuentes.com/form.html" class="form-icon" title="Abrir formulario">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm8 1.5V8h4.5L14 3.5zM8 11h8v2H8v-2zm0 4h8v2H8v-2zm0-8h4v2H8V7z"/>
+      </svg>
+    </a>
+
+    <div class="top-title" id="titleTop">SCOREBOARD VOLUME SEMANA --</div>
+
+    <div class="grid">
+      <!-- IZQUIERDA -->
+      <div class="panel left">
+
+        <!-- Dashboard -->
+        <div class="left-stack">
+          <br>
+
+          <!-- MCI 1 -->
+          <div class="mci-block">
+            <h3>MCI 1 • INVENTARIO</h3>
+            <div class="goal">
+              Reducir la proporción de inventarios con antigüedad mayor a 90 días respecto al inventario en plaza,
+              del <b>9%</b> al <b>6%</b> en la organización de producto volumen para el <b>31 de diciembre de 2026</b>.
+            </div>
+
+            <div class="kpis">
+              <div class="kpi">
+                <div class="label">Aging &gt; 60 días</div>
+                <div class="value" id="aging60">--</div>
+                <div class="bar"><span id="bar60"></span></div>
+              </div>
+
+              <!-- ✅ <= 6 => verde, si no rojo -->
+              <div class="kpi" id="kpiA90">
+                <div class="label">Aging &gt; 90 días</div>
+                <div class="value" id="aging90">--</div>
+                <div class="bar"><span id="bar90"></span></div>
+              </div>
+
+              <!-- ✅ == 0 => verde, > 0 => rojo -->
+              <div class="kpi" id="kpiA180">
+                <div class="label">Aging &gt; 180 días</div>
+                <div class="value" id="aging180">--</div>
+                <div class="bar"><span id="bar180"></span></div>
+              </div>
+
+              <div class="kpi">
+                <div class="label">Reservas Inventario</div>
+                <div class="value" id="reservas">--</div>
+                <div class="bar"><span id="barRes"></span></div>
+              </div>
+
+              <div class="kpi">
+                <div class="label">Sufijos / Inv OH</div>
+                <div class="value" id="sufijos">--</div>
+                <div class="bar"><span id="barSuf"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MCI 2 -->
+          <div class="mci-block">
+            <h3>MCI 2 • MÁRGEN</h3>
+            <div class="goal">
+              Incrementar el margen de ventas un <b>0.16%</b> en la organización de producto
+              para el <b>31 de diciembre de 2026</b>.
+            </div>
+
+            <div class="kpis">
+              <!-- ✅ > 0.16 => verde, si no rojo -->
+              <div class="kpi" id="kpiMYtd">
+                <div class="label">Incremento % Margen YTD</div>
+                <div class="value" id="margenYtd">--</div>
+                <div class="bar"><span id="barMYtd"></span></div>
+              </div>
+
+              <div class="kpi">
+                <div class="label">Margen % Semanal</div>
+                <div class="value" id="margenSem">--</div>
+                <div class="bar"><span id="barMSem"></span></div>
+              </div>
+
+              <div class="kpi">
+                <div class="label">Pérdidas acumuladas</div>
+                <div class="value" id="perdidas">--</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MCI 3 -->
+          <div class="mci-block">
+            <h3>MCI 3 • COBERTURA</h3>
+            <div class="goal">
+              Incrementar Cobertura de organización de producto de <b>76%</b> a <b>84%</b> durante el 2026.
+            </div>
+
+            <div class="kpis">
+              <!-- ✅ >= 84 => verde, si no rojo -->
+              <div class="kpi" id="kpiCobTotal">
+                <div class="label">Cobertura Total</div>
+                <div class="value" id="cobTotal">--</div>
+                <div class="bar"><span id="barCobTotal"></span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Columna vertical derecha: lau, logo, gif -->
+        <div class="left-media">
+          <div class="media-box lau">
+            <img src="images/lau.png" alt="lau">
+          </div>
+
+          <div class="media-box">
+            <img src="images/logo.png" alt="logo">
+          </div>
+
+          <a href="https://tu-enlace-aqui.com" target="_blank" class="media-box link">
+            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjY3ZXE4azdkc292Y3lwYjRnYzRzbHJrYXBxeG5vNHRkcGtjdWRtdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xTcnSQFm3Cmpr1tLOw/giphy.gif" alt="gif">
+          </a>
+        </div>
+
+      </div>
+
+      <!-- DERECHA -->
+      <div class="panel players">
+        <div class="players-grid">
+
+          <div class="player-card" data-player="nestor"><img src="images/nestor.png" alt=""><div class="semaforo">
+            <span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span>
+            <span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span>
+          </div></div>
+
+          <div class="player-card" data-player="ale"><img src="images/ale.png" alt=""><div class="semaforo">
+            <span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span>
+            <span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span>
+          </div></div>
+
+          <div class="player-card" data-player="hector"><img src="images/hector.png" alt=""><div class="semaforo">
+            <span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span>
+            <span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span>
+          </div></div>
+
+          <div class="player-card" data-player="bea"><img src="images/bea.png" alt=""><div class="semaforo">
+            <span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span>
+            <span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span>
+          </div></div>
+
+          <div class="player-card" data-player="luis"><img src="images/luis.png" alt=""><div class="semaforo">
+            <span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span>
+            <span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span>
+          </div></div>
+
+          <div class="player-card" data-player="reyni"><img src="images/reyni.png" alt=""><div class="semaforo">
+            <span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span>
+            <span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span>
+          </div></div>
+
+          <div class="player-card" data-player="marlon"><img src="images/marlon.png" alt=""><div class="semaforo">
+            <span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span>
+            <span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span>
+          </div></div>
+
+          <div class="player-card" data-player="tania"><img src="images/tania.png" alt=""><div class="semaforo">
+            <span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span>
+            <span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span>
+          </div></div>
+
+          <div class="player-card" data-player="moises"><img src="images/moises.png" alt=""><div class="semaforo">
+            <span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span>
+            <span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span>
+          </div></div>
+
+          <div class="player-card" data-player="vane"><img src="images/vane.png" alt=""><div class="semaforo">
+            <span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span>
+            <span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span>
+          </div></div>
+
+          <div class="player-card" data-player="fer"><img src="images/fer.png" alt=""><div class="semaforo">
+            <span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span>
+            <span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span>
+          </div></div>
+
+          <div class="player-card" data-player="rene"><img src="images/rene.png" alt="">
+            <div class="semaforo"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* =========================
+   Helpers UI
+========================= */
+function fmtPct(v){ return Number(v ?? 0).toFixed(2) + '%'; }
+function fmtMoney(v){ return '$' + Number(v ?? 0).toFixed(2); }
+
+function setBar(id,v){
+  const n = Number(v ?? 0);
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.style.width = Math.min(100, Math.max(0, n)) + '%';
+}
+
+/* Parse robusto: acepta "15.40", "15.40%", 15.40 */
+function toNum(v){
+  if(v === null || v === undefined) return NaN;
+  if(typeof v === "number") return v;
+  const s = String(v).replace("%","").replace(/,/g,"").trim();
+  const n = Number(s);
+  return Number.isFinite(n) ? n : NaN;
+}
+
+/* Set estado verde/rojo en KPI */
+function setKpiState(kpiId, ok){
+  const el = document.getElementById(kpiId);
+  if(!el) return;
+  el.classList.remove("kpi-ok","kpi-bad");
+  if(ok === true) el.classList.add("kpi-ok");
+  else if(ok === false) el.classList.add("kpi-bad");
+}
+
+/* =========================
+   Normalización
+========================= */
+function normName(x){
+  return String(x || "")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .trim().toLowerCase().replace(/\s+/g,'');
+}
+
+function pick(obj, ...keys){
+  if(!obj) return undefined;
+  for(const k of keys){
+    if(obj[k] !== undefined) return obj[k];
+  }
+  return undefined;
+}
+
+function setLightState(lightEl, state){
+  if(!lightEl) return;
+  lightEl.classList.remove("green","red","gray");
+  if(state === "green") lightEl.classList.add("green");
+  else if(state === "red") lightEl.classList.add("red");
+  else lightEl.classList.add("gray");
+}
+
+function toLightState(v){
+  const s = String(v ?? "").trim().toLowerCase();
+  const ok = v === 1 || v === true || s === "1" || s === "y" || s === "yes" || s === "true" || s === "si" || s === "sí";
+  const bad = v === 0 || v === false || s === "0" || s === "n" || s === "no" || s === "false";
+  if(ok) return "green";
+  if(bad) return "red";
+  return "gray";
+}
+
+/* =========================
+   Semana
+========================= */
+function week2DigitsFromKey(weekKey){
+  const s = String(weekKey || "");
+  let m = s.match(/^\d{4}-(\d{2})$/);
+  if(m) return m[1];
+  m = s.match(/^\d{4}-W(\d{2})$/i);
+  if(m) return m[1];
+  return "--";
+}
+
+function getISOWeekYear(date){
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return { year: d.getUTCFullYear(), week: weekNo };
+}
+
+function semanaKeyFromNow(){
+  const x = getISOWeekYear(new Date());
+  return `${x.year}-${String(x.week).padStart(2,"0")}`;
+}
+
+function isFriday(){
+  return new Date().getDay() === 5;
+}
+
+/* =========================
+   Render KPI (api_latest.php)
+========================= */
+function renderDashboard(payload){
+  const weekKey = payload?.week_key || payload?.semana || "";
+  const wk = week2DigitsFromKey(weekKey) || "--";
+
+  const titleEl = document.getElementById("titleTop");
+  if(titleEl){
+    titleEl.textContent = "SCOREBOARD VOLUME SEMANA " + String(wk).padStart(2,'0');
+  }
+
+  const d = payload?.data || {};
+  const s = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+
+  s("aging60",   fmtPct(d.aging60));
+  s("aging90",   fmtPct(d.aging90));
+  s("aging180",  fmtPct(d.aging180));
+  s("reservas",  fmtPct(d.reservas));
+  s("sufijos",   fmtPct(d.sufijos));
+
+  s("margenYtd", fmtPct(d.margen_ytd));
+  s("margenSem", fmtPct(d.margen_semanal));
+  s("perdidas",  fmtMoney(d.perdidas));
+
+  setBar("bar60",   d.aging60);
+  setBar("bar90",   d.aging90);
+  setBar("bar180",  d.aging180);
+  setBar("barRes",  d.reservas);
+  setBar("barSuf",  d.sufijos);
+  setBar("barMYtd", d.margen_ytd);
+  setBar("barMSem", d.margen_semanal);
+
+  /* ✅ Reglas:
+     - Aging > 90: <= 6 => verde, si no rojo
+     - Aging > 180: == 0 => verde, > 0 => rojo
+     - Incremento % Margen YTD: > 0.16 => verde, si no rojo
+  */
+  const a90 = toNum(d.aging90);
+  if(Number.isFinite(a90)) setKpiState("kpiA90", a90 <= 6);
+  else setKpiState("kpiA90", null);
+
+  const a180 = toNum(d.aging180);
+  if(Number.isFinite(a180)) setKpiState("kpiA180", a180 === 0);
+  else setKpiState("kpiA180", null);
+
+  const mytd = toNum(d.margen_ytd);
+  if(Number.isFinite(mytd)) setKpiState("kpiMYtd", mytd > 0.16);
+  else setKpiState("kpiMYtd", null);
+}
+
+/* =========================
+   Cobertura Total (obtener_compras.php)
+========================= */
+async function fetchCompras(semana){
+  const res = await fetch("obtener_compras.php?semana=" + encodeURIComponent(semana), { cache: "no-store" });
+  const text = await res.text();
+  let json;
+  try { json = JSON.parse(text); }
+  catch(e){ throw new Error("obtener_compras.php NO JSON: " + text.slice(0,200)); }
+  if(!res.ok) throw new Error("obtener_compras.php HTTP " + res.status);
+  if(!json.ok) throw new Error(json.detail || json.error || "obtener_compras.php inválida");
+  return json;
+}
+
+function safePctText(v){
+  if(v === null || v === undefined || v === "") return "--";
+  const n = Number(v);
+  if(!Number.isFinite(n)) return "--";
+  return n.toFixed(2) + "%";
+}
+
+function renderCoberturaTotal(comprasJson){
+  const d = comprasJson?.data || {};
+  const cov = pick(d, "cobertura_total", "coberturaTotal", "cob_total", "cov_total");
+
+  const el = document.getElementById("cobTotal");
+  if(el) el.textContent = safePctText(cov);
+
+  setBar("barCobTotal", cov);
+
+  /* ✅ Regla cobertura:
+     - < 84 => rojo
+     - >= 84 => verde
+  */
+  const covNum = toNum(cov);
+  if(Number.isFinite(covNum)) setKpiState("kpiCobTotal", covNum >= 84);
+  else setKpiState("kpiCobTotal", null);
+}
+
+/* =========================
+   APIs existentes
+========================= */
+async function loadLatestFromDB(){
+  const res = await fetch("api_latest.php", { cache: "no-store" });
+  const text = await res.text();
+  let json;
+  try { json = JSON.parse(text); }
+  catch(e){ throw new Error("api_latest.php NO JSON: " + text.slice(0,200)); }
+  if(!res.ok) throw new Error("api_latest.php HTTP " + res.status);
+  if(!json.ok) throw new Error(json.detail || json.error || "api_latest.php inválida");
+  return json;
+}
+
+async function fetchPlayers(semana){
+  const res = await fetch("resultados_volumen.php?semana=" + encodeURIComponent(semana), { cache: "no-store" });
+  const text = await res.text();
+  let json;
+  try { json = JSON.parse(text); }
+  catch(e){ throw new Error("resultados_volumen.php NO JSON: " + text.slice(0,200)); }
+  if(!res.ok) throw new Error("resultados_volumen.php HTTP " + res.status);
+  if(!json.ok) throw new Error(json.detail || json.error || "resultados_volumen.php inválida");
+  if(!Array.isArray(json.rows)) json.rows = [];
+  return json;
+}
+
+/* =========================
+   Semáforos
+========================= */
+function applySemaforos(rows, makeGrayAll){
+  const byPlayer = {};
+  (rows || []).forEach(r => {
+    const raw = pick(r, "player","Player","nombre","Nombre","name","Name");
+    const k = normName(raw);
+    if(k) byPlayer[k] = r;
+  });
+
+  document.querySelectorAll(".player-card").forEach(card => {
+    const p = normName(card.getAttribute("data-player"));
+    const rec = byPlayer[p];
+    const dots = Array.from(card.querySelectorAll(".semaforo .luz"));
+    if(dots.length === 0) return;
+
+    if(makeGrayAll || !rec){
+      dots.forEach(d => setLightState(d, "gray"));
+      return;
+    }
+
+    const vals = [
+      pick(rec,"actA1","ActA1","acta1"),
+      pick(rec,"actA2","ActA2","acta2"),
+      pick(rec,"actA3","ActA3","acta3"),
+      pick(rec,"actB1","ActB1","actb1"),
+      pick(rec,"actB2","ActB2","actb2"),
+      pick(rec,"actB3","ActB3","actb3"),
+      pick(rec,"actB4","ActB4","actb4"),
+    ];
+
+    for(let i=0;i<dots.length && i<7;i++){
+      setLightState(dots[i], toLightState(vals[i]));
+    }
+  });
+}
+
+function wirePlayerClicks(){
+  document.querySelectorAll(".player-card").forEach(card => {
+    card.style.cursor = "pointer";
+    card.addEventListener("click", (e) => {
+      const p = (e.currentTarget.getAttribute("data-player") || "").trim().toLowerCase();
+      if(p === "rene"){
+        window.location.href = "compras.html";
+        return;
+      }
+      window.location.href = "player.html?player=" + encodeURIComponent(p.toUpperCase());
+    });
+  });
+}
+
+/* =========================
+   INIT
+========================= */
+(async function init(){
+  try{
+    const latest = await loadLatestFromDB();
+    renderDashboard(latest);
+
+    const currentKey = semanaKeyFromNow();
+    const latestWeekKey = String(latest.week_key || "").trim();
+    const targetWeekKey = isFriday() ? currentKey : (latestWeekKey || currentKey);
+
+    const players = await fetchPlayers(targetWeekKey);
+    const usedWeek = players.semana || targetWeekKey;
+
+    const t = document.getElementById("titleTop");
+    if(t) t.textContent = "SCOREBOARD VOLUME SEMANA " + week2DigitsFromKey(usedWeek);
+
+    applySemaforos(players.rows, false);
+
+    // Cobertura total desde compras
+    const compras = await fetchCompras(usedWeek);
+    renderCoberturaTotal(compras);
+
+  }catch(e){
+    console.error(e);
+    applySemaforos([], true);
+
+    setKpiState("kpiA90", null);
+    setKpiState("kpiA180", null);
+    setKpiState("kpiMYtd", null);
+    setKpiState("kpiCobTotal", null);
+
+    const el = document.getElementById("cobTotal"); if(el) el.textContent="--";
+    setBar("barCobTotal", 0);
+  }finally{
+    wirePlayerClicks();
+  }
+})();
+</script>
+
+</body>
+</html>
