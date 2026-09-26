@@ -354,7 +354,7 @@ legend{font-weight:900;color:#000;padding:0 8px;}
     <div class="divider"></div>
 
     <div class="modal-content">
-      <form id="generalForm" action="guardar_general.php" method="post">
+      <form id="generalForm" action="https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=save-general" method="post">
         <input type="hidden" id="semanaGeneral" name="semana">
 
         <fieldset>
@@ -427,7 +427,7 @@ legend{font-weight:900;color:#000;padding:0 8px;}
     <div class="divider"></div>
 
     <div class="modal-content">
-      <form id="volumeForm" action="guardar_volumen.php" method="post">
+      <form id="volumeForm" action="https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=save-volumen" method="post">
         <input type="hidden" name="semana" id="semanaVol">
         <input type="hidden" name="player" id="playerInput">
 
@@ -619,7 +619,7 @@ legend{font-weight:900;color:#000;padding:0 8px;}
     <div class="divider"></div>
 
     <div class="modal-content">
-      <form id="comprasForm" action="guardar_compras.php" method="post">
+      <form id="comprasForm" action="https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=save-compras" method="post">
         <input type="hidden" name="semana" id="semanaCompras">
 
         <fieldset>
@@ -898,7 +898,7 @@ async function loadPrevCommit(player, semana){
   document.getElementById("cumplio_prev").value = "0";
 
   try{
-    const res = await fetch(`obtener_compromiso_prev.php?player=${encodeURIComponent(player)}&semana=${encodeURIComponent(semana)}`, {cache:"no-store"});
+    const res = await fetch(`https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=prev&player=${encodeURIComponent(player)}&semana=${encodeURIComponent(semana)}`, {cache:"no-store"});
     const json = await res.json();
 
     if(!res.ok || !json || !json.ok){
@@ -969,7 +969,7 @@ async function submitForm(formEl, statusEl){
     closeModal(modalCompras);
 
     success.classList.add("show");
-    setTimeout(()=>{ window.location.href = "https://volumen.fercifuentes.com/index.html"; }, 1800);
+    setTimeout(()=>{ window.location.href = "index.html"; }, 1800);
 
   }catch(err){
     statusEl.textContent = "Error de conexión ❌";
