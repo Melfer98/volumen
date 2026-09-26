@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Compras • Dashboard</title>
+
+<style>
+:root{
+  --ink:#111;
+  --yellow:#ffcc00;
+  --yellow-soft:#ffe680;
+  --bg1:#5fffd5;
+  --bg2:#60efff;
+  --soft:#f3f5f7;
+  --inputBorder:#cfd6dd;
+  --card:#fff;
+
+  --red:#e53935;
+  --redSoft:#ffd0d0;
+  --green:#00c853;
+  --greenSoft:#c9ffd8;
+  --gray:#9e9e9e;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+html, body{
+  height:100%;
+  overflow:hidden; /* ✅ sin scroll de página */
+}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  color:#000;
+}
+
+/* ✅ ocultar barra/icono WP si existe */
+#wpadminbar{ display:none !important; }
+html{ margin-top:0 !important; }
+
+.wrap{
+  width:97vw;                 /* ✅ 95% de pantalla */
+  height:calc(100vh - 20px);
+  margin:12px auto;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.topbar{
+  display:flex;
+  gap:5px;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  background:var(--card);
+  border:3px solid var(--ink);
+  border-radius:22px;
+  padding:5px 5px;
+  flex:0 0 auto;
+}
+
+.title{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.title h1{
+  font-size:clamp(18px, 2.0vw, 26px);
+  font-weight:1000;
+  letter-spacing:.5px;
+}
+.title .sub{
+  font-weight:900;
+  opacity:.9;
+  font-size:clamp(12px, 1.2vw, 14px);
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.btn{
+  padding:10px 16px;
+  border-radius:14px;
+  border:3px solid var(--ink);
+  font-weight:1000;
+  background:var(--yellow);
+  cursor:pointer;
+  transition:.15s;
+}
+.btn:hover{background:var(--yellow-soft);transform:scale(1.02);}
+
+.status{
+  font-weight:1000;
+  padding:8px 12px;
+  border-radius:12px;
+  background:var(--soft);
+  border:2px solid var(--inputBorder);
+  font-size:12px;
+}
+.bad{ background:var(--redSoft); border-color:var(--red); }
+.good{ background:var(--greenSoft); border-color:#14a84a; }
+
+.card{
+  background:var(--card);
+  border:3px solid var(--ink);
+  border-radius:22px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+.card-hd{
+  padding:5px 6px;
+  border-bottom:3px solid var(--ink);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  background:#fff;
+  flex:0 0 auto;
+}
+.card-hd .h{ font-weight:1000; letter-spacing:.3px; }
+.card-bd{
+  padding:5px 6px;
+  background:var(--soft);
+  overflow:hidden;
+  flex:1 1 auto;
+  min-height:0;
+}
+
+/* ====== LAYOUT GENERAL ====== */
+.main{
+  flex:1 1 auto;
+  min-height:0;
+  display:grid;
+  grid-template-rows: minmax(260px, 33%) minmax(320px, 67%);
+  gap:14px;
+  overflow:hidden;
+}
+@media(max-height:760px){
+  .main{ grid-template-rows: minmax(260px, 40%) minmax(300px, 60%); }
+}
+
+/* TOP: KPIs + gráficos */
+.topSection{
+  min-height:0;
+  display:grid;
+  grid-template-columns: 400px 1fr;
+  gap:5px;
+  overflow:hidden;
+}
+
+/* ===== KPIs EN TABLA ===== */
+.kpiTable{
+  width:100%;
+  height:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  table-layout:fixed;
+  background:#fff;
+  border:3px solid var(--ink);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 10px 18px rgba(0,0,0,.10);
+}
+.kpiTable td{
+  padding: 5px 8px;
+  border-bottom:2px solid #eef2f5;
+  vertical-align:middle;
+}
+.kpiTable tr:last-child td{ border-bottom:none; }
+
+.kpiName{
+  font-weight:1000;
+  font-size:clamp(12px, 1.1vw, 14px);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.kpiVal{
+  text-align:right;
+  font-weight:1100;
+  font-size:clamp(18px, 2.3vw, 30px);
+  line-height:1;
+}
+.kpiUnit{
+  font-size:12px;
+  font-weight:900;
+  margin-left:6px;
+  opacity:.9;
+}
+.kpiRowStrong td{ background:#f8fafb; }
+
+.kpiFoot{
+  margin-top:10px;
+  background:#fff;
+  border:3px solid var(--ink);
+  border-radius:18px;
+  padding:8px 10px;
+  font-weight:900;
+  box-shadow:0 10px 18px rgba(0,0,0,.10);
+  font-size:clamp(11px, 1.1vw, 13px);
+}
+
+/* ===== Gráficos (2) ===== */
+.charts{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  height:100%;
+  min-height:0;
+}
+.chartCard{
+  background:#fff;
+  border:3px solid var(--ink);
+  border-radius:18px;
+  box-shadow:0 10px 18px rgba(0,0,0,.10);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+.chartHd{
+  padding:8px 10px;
+  border-bottom:3px solid var(--ink);
+  font-weight:1000;
+  background:#fff;
+  font-size:clamp(11px, 1.1vw, 13px);
+}
+.chartBd{
+  padding:8px 10px;
+  background:#fff;
+  flex:1 1 auto;
+  min-height:0;
+}
+.chartBd canvas{
+  width:100% !important;
+  height:100% !important;
+}
+
+/* ===== BOTTOM ===== */
+.bottomSection{ min-height:0; overflow:hidden; }
+
+.bottomGrid{
+  display:grid;
+  grid-template-columns: 1.25fr 1fr; /* izquierda más ancha */
+  gap:2px;
+  height:100%;
+  min-height:0;
+  overflow:hidden;
+}
+
+.blocksCol{
+  display:grid;
+  gap:5px;
+  height:100%;
+  min-height:0;
+  overflow:hidden;
+}
+
+/* Actividades */
+.act-block{
+  border:3px solid var(--ink);
+  border-radius:18px;
+  padding:5px 5px 4px;
+  background:#fff;
+  height:100%;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+.act-title{
+  font-weight:1000;
+  font-size:clamp(10px, 1.2vw, 12px);
+  margin-bottom:6px;
+  flex:0 0 auto;
+}
+.act-list{
+  overflow:hidden; /* ✅ sin scroll interno */
+  min-height:0;
+}
+
+.act-row{
+  display:grid;
+  grid-template-columns:72px 1fr 18px;
+  gap:5px;
+  align-items:stretch;
+  border-radius:16px;
+  border:2px solid var(--red);
+  overflow:hidden;
+  margin:6px 0;
+  background:var(--redSoft);
+}
+.act-code{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:1100;
+  color:#fff;
+  letter-spacing:.5px;
+  background:var(--red);
+  font-size:clamp(12px, 1.1vw, 13px);
+}
+.act-text{
+  padding:5px 5px;
+  font-weight:450;
+  line-height:1;
+  color:#000;
+  font-size:clamp(10px, 1.00vw, 12px);
+}
+.act-dotWrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding-right:6px;
+}
+.act-dot{
+  width:12px;height:12px;border-radius:999px;
+  border:2px solid rgba(0,0,0,.25);
+  box-shadow:0 4px 10px rgba(0,0,0,.12);
+  background:var(--red);
+}
+.act-row.is-yes{
+  border-color:#14a84a;
+  background:var(--greenSoft);
+}
+.act-row.is-yes .act-code{ background:var(--green); }
+.act-row.is-yes .act-dot{ background:var(--green); }
+.act-row.is-na{
+  border-color:#9aa1a7;
+  background:#eef1f4;
+}
+.act-row.is-na .act-code{ background:#9aa1a7; }
+.act-row.is-na .act-dot{ background:var(--gray); }
+
+/* Histórico semáforos (derecha) */
+.histWrap{
+  background:#fff;
+  border:3px solid var(--ink);
+  border-radius:18px;
+  box-shadow:0 10px 18px rgba(0,0,0,.10);
+  overflow:hidden;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+.histHd{
+  padding:4px 5px;
+  border-bottom:3px solid var(--ink);
+  font-weight:1000;
+  background:#fff;
+  font-size:clamp(10px, 1vw, 12px);
+  display:flex;
+  justify-content:space-between;
+  gap:5px;
+  align-items:center;
+}
+.histBd{
+  padding:4px 5px;
+  background:#fff;
+  flex:1 1 auto;
+  min-height:0;
+  overflow:hidden; /* ✅ sin scroll interno */
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.semTable{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  table-layout:fixed;
+  border:2px solid #e7ebee;
+  border-radius:14px;
+  overflow:hidden;
+}
+.semTable th, .semTable td{
+  border-bottom:1px solid #eef2f5;
+  padding:6px 6px;
+  font-weight:1000;
+  font-size:12px;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.semTable th{ background:#f8fafb; font-size:11px; }
+.semTable th.left,
+.semTable td.left{ text-align:left; padding-left:10px; }
+
+.semDot{
+  width:14px;
+  height:14px;
+  border-radius:999px;
+  display:inline-block;
+  border:2px solid rgba(0,0,0,.25);
+  box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
+.dot-yes{ background:var(--green); }
+.dot-no{ background:var(--red); }
+.dot-na{ background:var(--gray); }
+
+/* Tooltip */
+.tooltip{
+  position:fixed;
+  z-index:9999;
+  display:none;
+  width:min(520px, 92vw);
+  background:#fff;
+  border:3px solid var(--ink);
+  border-radius:16px;
+  box-shadow:0 18px 45px rgba(0,0,0,.25);
+  padding:12px 12px;
+  pointer-events:none;
+}
+.tooltip .t1{ font-weight:1100; margin-bottom:6px; }
+.tooltip .t2{ font-weight:600; line-height:1.25; }
+
+/* ================================
+   PATCH LAPTOP: reducir recortes por altura
+   (sin cambiar “estilo”, solo elasticidad)
+================================ */
+:root{
+  --gap: clamp(8px, 1.25vh, 14px);
+  --pad: clamp(8px, 1.35vh, 12px);
+  --padHd: clamp(8px, 1.1vh, 10px);
+  --rowMargin: clamp(4px, 0.9vh, 6px);
+}
+.wrap{ gap: var(--gap); }
+.charts{ gap: clamp(8px, 1.1vh, 10px); }
+.bottomGrid{ gap: clamp(8px, 1.1vh, 10px); }
+.blocksCol{ gap: clamp(8px, 1.1vh, 10px); }
+.main{
+  grid-template-rows: clamp(240px, 38vh, 360px) 1fr;
+}
+.topSection{
+  grid-template-columns: minmax(340px, 420px) 1fr;
+}
+.topSection, .bottomSection, .bottomGrid, .blocksCol,
+.card, .card-bd, .chartCard, .chartBd, .histWrap, .histBd,
+.act-block, .act-list{
+  min-height:0;
+  min-width:0;
+}
+@media (max-height: 780px){
+  .title h1{ font-size: clamp(16px, 1.8vw, 22px); }
+  .kpiVal{ font-size: clamp(16px, 2.0vw, 26px); }
+  .act-text{ font-size: clamp(10.5px, 1.0vw, 12.5px); }
+  .kpiTable td{ padding: clamp(8px, 1.1vh, 10px) clamp(10px, 1.2vh, 12px); }
+}
+@media (max-height: 700px){
+  .main{ grid-template-rows: clamp(250px, 42vh, 360px) 1fr; }
+  .chartHd, .histHd{ padding: 6px 10px; }
+  .chartBd, .histBd{ padding: 6px 10px; }
+  .act-title{ margin-bottom: 4px; }
+}
+</style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="title">
+        <h1>Compras • Dashboard</h1>
+      </div>
+
+      <div class="controls">
+        <div class="sub">Semana: <span id="weekLabel">----</span></div>
+        <div id="fetchStatus" class="status">Listo</div>
+        <a class="btn" href="index.html" style="text-decoration:none;display:inline-flex;align-items:center;color:#000;">Inicio</a>
+      </div>
+    </div>
+
+    <div class="main">
+
+      <!-- TOP (KPIs + 2 gráficos) -->
+      <div class="topSection">
+
+        <!-- KPIs (tabla) -->
+        <div class="card">
+          <div class="card-hd">
+            <div class="h">KPIs</div>
+          </div>
+
+          <div class="card-bd">
+            <table class="kpiTable" aria-label="KPIs">
+              <tbody>
+                <tr>
+                  <td class="kpiName">Cobertura Total</td>
+                  <td class="kpiVal"><span id="kpiCob">--</span><span class="kpiUnit">%</span></td>
+                </tr>
+                <tr>
+                  <td class="kpiName">Aging &gt; 60 días</td>
+                  <td class="kpiVal"><span id="kpiA60">--</span><span class="kpiUnit">%</span></td>
+                </tr>
+                <tr>
+                  <td class="kpiName">Aging &gt; 90 días</td>
+                  <td class="kpiVal"><span id="kpiA90">--</span><span class="kpiUnit">%</span></td>
+                </tr>
+                <tr>
+                  <td class="kpiName">Aging &gt; 180 días</td>
+                  <td class="kpiVal"><span id="kpiA180">--</span><span class="kpiUnit">%</span></td>
+                </tr>
+                <tr class="kpiRowStrong">
+                  <td class="kpiName">Sufijos / Inv OH</td>
+                  <td class="kpiVal"><span id="kpiSuf">--</span><span class="kpiUnit">%</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 2 gráficos -->
+        <div class="card">
+          <div class="card-hd">
+            <div class="h">Histórico</div>
+          </div>
+          <div class="card-bd">
+            <div class="charts">
+              <div class="chartCard">
+                <div class="chartHd">Cobertura Total (%)</div>
+                <div class="chartBd"><canvas id="chartCob"></canvas></div>
+              </div>
+              <div class="chartCard">
+                <div class="chartHd">Aging &gt; 90 días (%)</div>
+                <div class="chartBd"><canvas id="chartA90"></canvas></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BOTTOM: A+B vertical (izq) | histórico MdP (der) -->
+      <div class="bottomSection">
+        <div class="card" style="height:100%;">
+          <div class="card-bd">
+            <div class="bottomGrid">
+
+              <!-- IZQUIERDA = Bloque A + Bloque B -->
+              <div class="blocksCol">
+
+                <div class="act-block">
+                  <div class="act-title">MCI I: Incrementar Cobertura de organización de producto de 76% a 84% durante el 2026.</div>
+                  <div class="act-list">
+
+                    <div class="act-row" id="row_cmpA1">
+                      <div class="act-code">MdP1</div>
+                      <div class="act-text">Ajustar la compra de SKUs con cobertura inferior al 70%, de acuerdo con el análisis de demanda.</div>
+                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpA1"></span></div>
+                    </div>
+
+                    <div class="act-row" id="row_cmpA2">
+                      <div class="act-code">MdP2</div>
+                      <div class="act-text">Sostener reunión semanal con tres gerentes de marca para el análisis de PSI y la definición de planes de acción.</div>
+                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpA2"></span></div>
+                    </div>
+
+                    <div class="act-row" id="row_cmpA3">
+                      <div class="act-code">MdP3</div>
+                      <div class="act-text">Ejecutar compras de forma semanal.</div>
+                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpA3"></span></div>
+                    </div>
+
+                    <div class="act-row" id="row_cmpA4">
+                      <div class="act-code">MdP4</div>
+                      <div class="act-text">Seguimiento a colocación de órdenes a Fabricante</div>
+                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpA4"></span></div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="act-block">
+                  <div class="act-title">MCI II: Mantener los inventarios &gt; 90 días en un porcentaje ≤ 7% del inventario en plaza (OH) en la organización de producto Volumen, para el 31/12/2026.</div>
+                  <div class="act-list">
+
+                    <div class="act-row" id="row_cmpB1">
+                      <div class="act-code">MdP1</div>
+                      <div class="act-text">Dar seguimiento semanal a los backorders, asegurando su cierre dentro de los 3 días posteriores a la recepción del 100% del producto.</div>
+                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpB1"></span></div>
+                    </div>
+
+                    <div class="act-row" id="row_cmpB2">
+                      <div class="act-code">MdP2</div>
+                      <div class="act-text">Generar y revisar el reporte de capas de inventarios para identificar fluctuaciones y definir acciones correctivas en precio, importaciones, inventario comprometido (IC) entre otros.</div>
+                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpB2"></span></div>
+                    </div>
+
+                    <div class="act-row" id="row_cmpB3">
+                      <div class="act-code">MdP3</div>
+                      <div class="act-text">Monitoreo semanalmente el estatus de backorders y ETAs, garantizando visibilidad y control de abastecimiento.</div>
+                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpB3"></span></div>
+                    </div>
+
+                    <div class="act-row" id="row_cmpB4">
+                      <div class="act-code">MdP4</div>
+                      <div class="act-text">Dar seguimiento semanal al cumplimiento del forecast de clientes y marcas, identificando desviaciones y acciones de ajuste oportuno</div>
+                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpB4"></span></div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- DERECHA = Histórico MdP -->
+              <div class="histWrap">
+                <div class="histHd">
+                  <span>Histórico • MdP (Semáforos)</span>
+                  <span style="font-weight:1000;font-size:12px;opacity:.9;">Verde=SÍ · Rojo=NO · Gris=Sin dato</span>
+                </div>
+
+                <div class="histBd">
+                  <table class="semTable" id="semTable">
+                    <thead>
+                      <tr>
+                        <th class="left" style="width:99px;">Semana</th>
+                        <th data-tip="cmpA1">I.MdP1</th>
+                        <th data-tip="cmpA2">I.MdP2</th>
+                        <th data-tip="cmpA3">I.MdP3</th>
+                        <th data-tip="cmpA4">I.MdP4</th>
+                        <th data-tip="cmpB1">II.MdP1</th>
+                        <th data-tip="cmpB2">II.MdP2</th>
+                        <th data-tip="cmpB3">II.MdP3</th>
+                        <th data-tip="cmpB4">II.MdP4</th>
+                      </tr>
+                    </thead>
+                    <tbody id="semBody">
+                      <tr>
+                        <td class="left">----</td>
+                        <td><span class="semDot dot-na"></span></td>
+                        <td><span class="semDot dot-na"></span></td>
+                        <td><span class="semDot dot-na"></span></td>
+                        <td><span class="semDot dot-na"></span></td>
+                        <td><span class="semDot dot-na"></span></td>
+                        <td><span class="semDot dot-na"></span></td>
+                        <td><span class="semDot dot-na"></span></td>
+                        <td><span class="semDot dot-na"></span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div><!-- /bottomGrid -->
+          </div><!-- /card-bd -->
+        </div><!-- /card -->
+      </div><!-- /bottomSection -->
+
+    </div><!-- /main -->
+  </div><!-- /wrap -->
+
+  <!-- Tooltip -->
+  <div class="tooltip" id="tooltip">
+    <div class="t1" id="tipTitle">---</div>
+    <div class="t2" id="tipText">---</div>
+  </div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<script>
+"use strict";
+
+/* ========= ISO WEEK ========= */
+function getISOWeek(date){
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return { year: d.getUTCFullYear(), week: weekNo };
+}
+function semanaISO(dateObj){
+  const iso = getISOWeek(dateObj || new Date());
+  return `${iso.year}-${String(iso.week).padStart(2,"0")}`;
+}
+
+/* ========= FORMAT ========= */
+function fmtPct(v){
+  if(v === null || v === undefined || v === "") return "--";
+  const n = Number(v);
+  if(!Number.isFinite(n)) return "--";
+  return n.toFixed(2);
+}
+function setStatus(text, cls){
+  const el = document.getElementById("fetchStatus");
+  el.textContent = text;
+  el.classList.remove("bad","good");
+  if(cls) el.classList.add(cls);
+}
+
+/* ===== textos completos MdP (tooltip) ===== */
+const MDP_TEXT = {
+  cmpA1: "Ajustar la compra de SKUs con cobertura inferior al 70%, de acuerdo con el análisis de demanda.",
+  cmpA2: "Sostener reunión semanal con tres gerentes de marca para el análisis de PSI y la definición de planes de acción.",
+  cmpA3: "Ejecutar compras de forma semanal.",
+  cmpA4: "Seguimiento a colocación de órdenes a Fabricante",
+  cmpB1: "Dar seguimiento semanal a los backorders, asegurando su cierre dentro de los 3 días posteriores a la recepción del 100% del producto.",
+  cmpB2: "Generar y revisar el reporte de capas de inventarios para identificar fluctuaciones y definir acciones correctivas en precio, importaciones, inventario comprometido (IC) entre otros.",
+  cmpB3: "Monitoreo semanalmente el estatus de backorders y ETAs, garantizando visibilidad y control de abastecimiento.",
+  cmpB4: "Dar seguimiento semanal al cumplimiento del forecast de clientes y marcas, identificando desviaciones y acciones de ajuste oportuno"
+};
+const MDP_TITLE = {
+  cmpA1: "MCI I · MdP1",
+  cmpA2: "MCI I · MdP2",
+  cmpA3: "MCI I · MdP3",
+  cmpA4: "MCI I · MdP4",
+  cmpB1: "MCI II · MdP1",
+  cmpB2: "MCI II · MdP2",
+  cmpB3: "MCI II · MdP3",
+  cmpB4: "MCI II · MdP4"
+};
+
+/* ===== Tooltip engine ===== */
+const tipEl = document.getElementById("tooltip");
+const tipTitle = document.getElementById("tipTitle");
+const tipText  = document.getElementById("tipText");
+
+function showTip(title, text, x, y){
+  tipTitle.textContent = title;
+  tipText.textContent = text;
+  tipEl.style.display = "block";
+
+  const pad = 14;
+  const rect = tipEl.getBoundingClientRect();
+  let left = x + 16;
+  let top  = y + 16;
+
+  if(left + rect.width + pad > window.innerWidth) left = x - rect.width - 16;
+  if(top + rect.height + pad > window.innerHeight) top = y - rect.height - 16;
+
+  tipEl.style.left = left + "px";
+  tipEl.style.top  = top + "px";
+}
+function hideTip(){ tipEl.style.display = "none"; }
+
+document.getElementById("semTable").addEventListener("mousemove", (e)=>{
+  const th = e.target.closest("th[data-tip]");
+  if(!th){ hideTip(); return; }
+  const key = th.getAttribute("data-tip");
+  if(!key || !MDP_TEXT[key]){ hideTip(); return; }
+  showTip(MDP_TITLE[key], MDP_TEXT[key], e.clientX, e.clientY);
+});
+document.getElementById("semTable").addEventListener("mouseleave", hideTip);
+
+/* ===== estado MdP ===== */
+function setMdPState(key, val){
+  const row = document.getElementById("row_"+key);
+  if(!row) return;
+
+  row.classList.remove("is-yes","is-na");
+  if(val === null || val === undefined || val === ""){
+    row.classList.add("is-na");
+    return;
+  }
+  const s = String(val);
+  if(s === "1"){
+    row.classList.add("is-yes");
+  }else if(s === "0"){
+    // queda rojo por default
+  }else{
+    row.classList.add("is-na");
+  }
+}
+
+function applyKpis(d){
+  document.getElementById("kpiCob").textContent  = fmtPct(d.cobertura_total);
+  document.getElementById("kpiA60").textContent  = fmtPct(d.aging60);
+  document.getElementById("kpiA90").textContent  = fmtPct(d.aging90);
+  document.getElementById("kpiA180").textContent = fmtPct(d.aging180);
+  document.getElementById("kpiSuf").textContent  = fmtPct(d.sufijos);
+}
+function applyMdP(d){
+  setMdPState("cmpA1", d.cmpA1);
+  setMdPState("cmpA2", d.cmpA2);
+  setMdPState("cmpA3", d.cmpA3);
+  setMdPState("cmpA4", d.cmpA4);
+
+  setMdPState("cmpB1", d.cmpB1);
+  setMdPState("cmpB2", d.cmpB2);
+  setMdPState("cmpB3", d.cmpB3);
+  setMdPState("cmpB4", d.cmpB4);
+}
+
+/* ===== Tabla semáforo ===== */
+function dotClass(v){
+  if(v === null || v === undefined || v === "") return "dot-na";
+  const s = String(v);
+  if(s === "1") return "dot-yes";
+  if(s === "0") return "dot-no";
+  return "dot-na";
+}
+function renderHistTable(rows){
+  const tbody = document.getElementById("semBody");
+  tbody.innerHTML = "";
+
+  if(!Array.isArray(rows) || rows.length === 0){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="left">----</td>
+      <td><span class="semDot dot-na"></span></td>
+      <td><span class="semDot dot-na"></span></td>
+      <td><span class="semDot dot-na"></span></td>
+      <td><span class="semDot dot-na"></span></td>
+      <td><span class="semDot dot-na"></span></td>
+      <td><span class="semDot dot-na"></span></td>
+      <td><span class="semDot dot-na"></span></td>
+      <td><span class="semDot dot-na"></span></td>
+    `;
+    tbody.appendChild(tr);
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  for(const r of rows){
+    const semana = r.semana || "----";
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="left">${semana}</td>
+      <td><span class="semDot ${dotClass(r.cmpA1)}"></span></td>
+      <td><span class="semDot ${dotClass(r.cmpA2)}"></span></td>
+      <td><span class="semDot ${dotClass(r.cmpA3)}"></span></td>
+      <td><span class="semDot ${dotClass(r.cmpA4)}"></span></td>
+      <td><span class="semDot ${dotClass(r.cmpB1)}"></span></td>
+      <td><span class="semDot ${dotClass(r.cmpB2)}"></span></td>
+      <td><span class="semDot ${dotClass(r.cmpB3)}"></span></td>
+      <td><span class="semDot ${dotClass(r.cmpB4)}"></span></td>
+    `;
+    frag.appendChild(tr);
+  }
+  tbody.appendChild(frag);
+}
+
+/* ===== Charts ===== */
+let chartCob = null;
+let chartA90 = null;
+
+function buildLineChart(canvasId, labels, values){
+  const ctx = document.getElementById(canvasId).getContext("2d");
+  return new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "",
+        data: values,
+        tension: 0.3,
+        pointRadius: 3,
+        borderWidth: 2,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display:false }, tooltip: { enabled:true } },
+      scales: {
+        x: { ticks: { maxRotation:0, autoSkip:true } },
+        y: { ticks: { callback: (v)=> Number(v).toFixed(0) + "%" } }
+      }
+    }
+  });
+}
+
+function renderCharts(rows){
+  const labels = rows.map(r=>r.semana || "");
+  const cob = rows.map(r=>{
+    const n = Number(r.cobertura_total);
+    return Number.isFinite(n) ? n : null;
+  });
+  const a90 = rows.map(r=>{
+    const n = Number(r.aging90);
+    return Number.isFinite(n) ? n : null;
+  });
+
+  if(chartCob){ chartCob.destroy(); chartCob = null; }
+  if(chartA90){ chartA90.destroy(); chartA90 = null; }
+
+  chartCob = buildLineChart("chartCob", labels, cob);
+  chartA90 = buildLineChart("chartA90", labels, a90);
+}
+
+/* ===== fetch helpers ===== */
+async function fetchJson(url){
+  const res = await fetch(url, { cache:"no-store" });
+  const text = await res.text();
+  let json = null;
+  try{ json = JSON.parse(text); }catch(_){ json = null; }
+  return { res, json, text };
+}
+
+/* ====== util ISO week => Date lunes ====== */
+function isoWeekToDate(weekStr){
+  const [y, w] = String(weekStr).split("-").map(Number);
+  const simple = new Date(Date.UTC(y, 0, 1 + (w - 1) * 7));
+  const dow = simple.getUTCDay() || 7; // 1..7
+  if(dow <= 4) simple.setUTCDate(simple.getUTCDate() - dow + 1);
+  else simple.setUTCDate(simple.getUTCDate() + 8 - dow);
+  simple.setUTCHours(12,0,0,0);
+  return new Date(simple.getTime());
+}
+
+/* ===== list semanas hacia atrás desde una semana base ===== */
+function weeksBackFromWeek(baseWeek, count){
+  const out = [];
+  let d = isoWeekToDate(baseWeek);
+  for(let i=0; i<count; i++){
+    out.push(semanaISO(d));
+    d = new Date(d.getTime() - 7*24*60*60*1000);
+    d.setHours(12,0,0,0);
+  }
+  out.reverse();
+  return out;
+}
+
+/* ===== fallback original (desde hoy) ===== */
+function weeksBackList(count){
+  const out = [];
+  const seen = new Set();
+
+  let d = new Date();
+  d.setHours(12,0,0,0);
+
+  while(out.length < count){
+    const w = semanaISO(d);
+    if(!seen.has(w)){
+      seen.add(w);
+      out.push(w);
+    }
+    d = new Date(d.getTime() - 7*24*60*60*1000);
+    d.setHours(12,0,0,0);
+  }
+  out.reverse();
+  return out;
+}
+
+/* ===== buscar última semana con carga ===== */
+async function findLatestLoadedWeek(maxLookbackWeeks = 52){
+  let d = new Date();
+  d.setHours(12,0,0,0);
+
+  for(let i=0; i<maxLookbackWeeks; i++){
+    const w = semanaISO(d);
+    try{
+      const { res, json } = await fetchJson(`obtener_compras.php?semana=${encodeURIComponent(w)}`);
+      if(res.ok && json && json.ok && json.data){
+        return w;
+      }
+    }catch(_){ /* sigue */ }
+
+    d = new Date(d.getTime() - 7*24*60*60*1000);
+    d.setHours(12,0,0,0);
+  }
+  return null;
+}
+
+/* ===== HISTÓRICO usando SOLO obtener_compras.php ===== */
+async function loadHistory(weeksCount, baseWeek){
+  const weeks = baseWeek ? weeksBackFromWeek(baseWeek, weeksCount) : weeksBackList(weeksCount);
+  const rows = [];
+
+  for(const w of weeks){
+    try{
+      const { res, json } = await fetchJson(`obtener_compras.php?semana=${encodeURIComponent(w)}`);
+      if(res.ok && json && json.ok && json.data){
+        rows.push(Object.assign({ semana: w }, json.data));
+      }else{
+        rows.push({
+          semana: w,
+          cobertura_total: null,
+          aging90: null,
+          cmpA1: null, cmpA2: null, cmpA3: null, cmpA4: null,
+          cmpB1: null, cmpB2: null, cmpB3: null, cmpB4: null
+        });
+      }
+    }catch(_){
+      rows.push({
+        semana: w,
+        cobertura_total: null,
+        aging90: null,
+        cmpA1: null, cmpA2: null, cmpA3: null, cmpA4: null,
+        cmpB1: null, cmpB2: null, cmpB3: null, cmpB4: null
+      });
+    }
+  }
+
+  renderCharts(rows);
+  renderHistTable(rows);
+}
+
+/* ===== load ===== */
+async function loadAll(){
+  setStatus("Buscando última semana cargada...", null);
+
+  const lastWeek = await findLatestLoadedWeek(52); // ajusta si quieres
+  const sem = lastWeek || semanaISO(new Date());
+
+  document.getElementById("weekLabel").textContent = sem;
+
+  // 1) dato semana (KPIs + estado MdP) usando última semana cargada
+  try{
+    setStatus("Cargando...", null);
+    const { res, json } = await fetchJson(`obtener_compras.php?semana=${encodeURIComponent(sem)}`);
+
+    if(!res.ok || !json || !json.ok){
+      setStatus(lastWeek ? "Semana sin datos" : "Sin datos", "bad");
+      applyKpis({cobertura_total:null, aging60:null, aging90:null, aging180:null, sufijos:null});
+      applyMdP({cmpA1:null,cmpA2:null,cmpA3:null,cmpA4:null, cmpB1:null,cmpB2:null,cmpB3:null,cmpB4:null});
+    }else{
+      setStatus(lastWeek ? "OK (última carga)" : "OK", "good");
+      applyKpis(json.data || {});
+      applyMdP(json.data || {});
+    }
+  }catch(_){
+    setStatus("Error de conexión", "bad");
+    applyKpis({cobertura_total:null, aging60:null, aging90:null, aging180:null, sufijos:null});
+    applyMdP({cmpA1:null,cmpA2:null,cmpA3:null,cmpA4:null, cmpB1:null,cmpB2:null,cmpB3:null,cmpB4:null});
+  }
+
+  // 2) histórico (✅ 10 semanas terminando en la última cargada)
+  await loadHistory(10, sem);
+}
+
+loadAll();
+</script>
+
+</body>
+</html>

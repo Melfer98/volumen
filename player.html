@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Resultados del Player</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --yellow:#ffeb3b;
+  --panel: rgba(0,0,0,.35);
+  --panel2: rgba(255,255,255,.08);
+  --line: rgba(255,235,59,.45);
+
+  --ok:#1eea00;
+  --bad:#ff1744;
+  --gray: rgba(160,160,160,.55);
+
+  --glowCyan: rgba(0,229,255,.22);
+  --glowPink: rgba(255,61,255,.16);
+
+  --pad: clamp(8px, 1.2vh, 14px);
+  --gap: clamp(7px, 1.1vh, 12px);
+  --titleFont: clamp(9px, .85vw, 12px);
+  --statusFont: clamp(8px, .78vw, 11px);
+  --sectionFont: clamp(9px, .82vw, 11px);
+  --bodyFont: clamp(10px, .82vw, 12px);
+  --kpiLabel: clamp(9px, .76vw, 10px);
+  --kpiValue: clamp(10px, .85vw, 12px);
+  --photoW: clamp(145px, 12vw, 190px);
+  --photoH: clamp(165px, 26vh, 240px);
+  --chartH: clamp(170px, 24vh, 240px);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+html, body{
+  width:100%;
+  height:100%;
+}
+
+body{
+  min-height:100dvh;
+  font-family: Arial, sans-serif;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle at top, rgba(0,229,255,.18), transparent 45%),
+    radial-gradient(circle at 70% 20%, rgba(255,61,255,.14), transparent 45%),
+    linear-gradient(180deg, #0b1b4d 0%, #0a2a6b 55%, #061339 100%);
+  overflow:hidden;
+}
+
+.wrap{
+  width: min(98vw, 1700px);
+  height: min(96dvh, 980px);
+  background: var(--panel);
+  border: 2px solid var(--yellow);
+  border-radius: 16px;
+  padding: var(--pad);
+  box-shadow: 0 0 20px rgba(0,0,0,.4);
+  position: relative;
+  overflow:hidden;
+}
+
+.grid{
+  width:100%;
+  height:100%;
+  display:grid;
+  grid-template-columns: minmax(330px, 35%) minmax(0, 65%);
+  gap:var(--gap);
+  min-height:0;
+}
+
+.card{
+  height:100%;
+  width:100%;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 14px;
+  padding: var(--pad);
+  overflow:hidden;
+  display: flex;
+  flex-direction: column;
+  min-height:0;
+}
+
+/* LEFT */
+.leftCard{
+  align-items:center;
+  text-align:center;
+  gap:var(--gap);
+}
+
+.leftTop{
+  width:100%;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  min-height:0;
+}
+
+.titleBlock{
+  flex:1;
+  min-width:0;
+  text-align:left;
+}
+
+.title{
+  font-family:'Press Start 2P', cursive;
+  font-size:var(--titleFont);
+  color:#fff176;
+  text-shadow:0 0 6px #ffeb3b, 0 0 12px #ffeb3b;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.status{
+  margin-top:6px;
+  font-family:'Press Start 2P', cursive;
+  font-size:var(--statusFont);
+  opacity:.95;
+  color:#e1f5fe;
+  text-shadow:0 0 10px rgba(0,229,255,.22);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.btn{
+  font-family:'Press Start 2P', cursive;
+  font-size:clamp(8px, .75vw, 11px);
+  color:#111;
+  background: var(--yellow);
+  border:none;
+  padding:10px 12px;
+  border-radius:12px;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow: 0 0 14px rgba(255,235,59,.25);
+  white-space:nowrap;
+  flex:0 0 auto;
+}
+.btn:hover{ filter:brightness(1.05); }
+
+.playerPhoto{
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.18);
+  height:var(--photoH);
+  width: var(--photoW);
+  box-shadow: 0 0 18px var(--glowCyan);
+  align-self:center;
+  flex:0 0 auto;
+}
+.playerPhoto img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position: top center;
+  display:block;
+}
+
+.playerName{
+  width:100%;
+  text-align:center;
+  font-family:'Press Start 2P', cursive;
+  color:#111;
+  background: var(--yellow);
+  border-radius:12px;
+  padding:10px 10px;
+  font-size:clamp(10px, .9vw, 13px);
+  box-shadow: 0 0 14px rgba(255,235,59,.18);
+  flex:0 0 auto;
+}
+
+/* RIGHT */
+.rightCard{
+  gap:var(--gap);
+}
+
+.blocksTop{
+  display:grid;
+  grid-template-rows: auto auto auto;
+  gap:var(--gap);
+  min-height:0;
+  flex:0 0 auto;
+}
+
+.block{
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.14);
+  padding:clamp(8px, 1vh, 10px);
+  box-shadow: 0 0 18px rgba(255,235,59,.06);
+  min-height:0;
+  overflow:hidden;
+}
+
+.sectionTitle{
+  font-family:'Press Start 2P', cursive;
+  font-size:var(--sectionFont);
+  margin-bottom:8px;
+  color:#fff176;
+  text-shadow:0 0 10px rgba(255,235,59,.12);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* Compromisos */
+.row{
+  display:grid;
+  grid-template-columns: clamp(120px, 12vw, 150px) 1fr clamp(105px, 10vw, 140px);
+  gap:5px;
+  align-items:center;
+  margin-bottom:8px;
+  height:auto;
+  font-size:var(--bodyFont);
+}
+.row:last-child{ margin-bottom:0; }
+
+.textBox{
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:12px;
+  padding:8px 10px;
+  min-height:38px;
+  line-height:1.3;
+  font-size:var(--bodyFont);
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.badge{
+  font-family:'Press Start 2P', cursive;
+  font-size:clamp(8px, .72vw, 10px);
+  border-radius:999px;
+  padding:9px 8px;
+  border:1px solid rgba(255,255,255,.22);
+  text-align:center;
+  white-space:nowrap;
+}
+.badge.ok{ background: rgba(30,234,0,.18); }
+.badge.no{ background: rgba(255,23,68,.18); }
+.badge.na{ background: rgba(160,160,160,.18); }
+
+/* Métricas */
+.metricsGrid{
+  display:grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap:clamp(6px, .9vh, 10px);
+}
+.metricsGrid.mci2{
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.kpi{
+  background:var(--panel2);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:clamp(8px, .9vh, 10px);
+  overflow:hidden;
+}
+.kpi .label{
+  font-weight:900;
+  font-size:var(--kpiLabel);
+  margin-bottom:6px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.kpi .value{
+  font-weight:1000;
+  font-size:var(--kpiValue);
+  font-family:'Press Start 2P', cursive;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* Histórico */
+.histWrap{
+  width:100%;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 14px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  flex:1 1 auto;
+}
+.histHd{
+  padding:8px 10px;
+  border-bottom:1px solid rgba(255,255,255,.14);
+  font-weight:1000;
+  background: rgba(0,0,0,.10);
+  font-size:clamp(9px, .78vw, 11px);
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  align-items:center;
+  min-height:0;
+}
+.histBd{
+  padding:8px 10px;
+  background: rgba(0,0,0,.06);
+  flex:1 1 auto;
+  min-height:0;
+  overflow:auto;
+}
+
+.semTable{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  table-layout:fixed;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  overflow:hidden;
+}
+.semTable th, .semTable td{
+  border-bottom:1px solid rgba(255,255,255,.08);
+  padding:clamp(5px, .8vh, 7px) 4px;
+  font-weight:1000;
+  font-size:clamp(9px, .72vw, 11px);
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.semTable th{ background: rgba(255,255,255,.06); font-size:clamp(8px, .68vw, 10px); }
+.semTable th.left,
+.semTable td.left{ text-align:left; padding-left:8px; }
+
+.semDot{
+  width:clamp(12px, 1vw, 14px);
+  height:clamp(12px, 1vw, 14px);
+  border-radius:999px;
+  display:inline-block;
+  border:2px solid rgba(255,255,255,.22);
+  box-shadow: 0 4px 10px rgba(0,0,0,.12);
+}
+.dot-yes{ background: var(--ok); }
+.dot-no{ background: var(--bad); }
+.dot-na{ background: var(--gray); }
+
+/* Charts abajo uno a la par del otro */
+.chartsBottom{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:var(--gap);
+  flex:1 1 auto;
+  min-height:0;
+}
+
+.chartCard{
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 14px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+.chartHd{
+  padding:8px 10px;
+  border-bottom:1px solid rgba(255,255,255,.14);
+  font-weight:800;
+  background: rgba(0,0,0,.10);
+  font-size:clamp(10px, .8vw, 12px);
+  line-height:1.25;
+  white-space:normal;
+  overflow:visible;
+  text-overflow:unset;
+}
+.chartBd{
+  padding:8px 10px;
+  background: rgba(0,0,0,.06);
+  flex:1 1 auto;
+  min-height:0;
+}
+.chartBd canvas{ width:100% !important; height:100% !important; display:block; }
+
+/* Tooltip */
+.tooltip{
+  position:fixed;
+  z-index:9999;
+  display:none;
+  width:min(520px, 92vw);
+  background:#0b1b4d;
+  border:2px solid var(--yellow);
+  border-radius:14px;
+  box-shadow:0 18px 45px rgba(0,0,0,.25);
+  padding:12px 12px;
+  pointer-events:none;
+}
+.tooltip .t1{ font-family:'Press Start 2P', cursive; font-size:11px; margin-bottom:8px; color:#fff176; }
+.tooltip .t2{ font-weight:600; line-height:1.25; font-size:12px; }
+
+.err{
+  font-family:'Press Start 2P', cursive;
+  font-size:10px;
+  color:#ffcccb;
+  opacity:.95;
+  display:none;
+}
+
+/* blindaje anti-aplastes */
+.wrap, .grid, .card, .block, .chartsBottom,
+.chartCard, .chartBd, .histWrap, .histBd{
+  min-height:0;
+}
+
+/* Ajuste para pantallas bajas */
+@media(max-height:760px){
+  :root{
+    --photoW: clamp(125px, 10vw, 165px);
+    --photoH: clamp(135px, 21vh, 190px);
+    --pad: clamp(7px, .9vh, 10px);
+    --gap: clamp(6px, .8vh, 9px);
+    --bodyFont: 10px;
+  }
+  .playerName{ padding:8px 10px; }
+  .histHd{ padding:6px 8px; }
+  .histBd{ padding:6px 8px; }
+  .block{ padding:8px; }
+  .chartHd{ padding:6px 8px; -webkit-line-clamp:1; }
+  .chartBd{ padding:6px 8px; }
+}
+
+/* Tablets / pantallas medianas */
+@media(max-width:1180px){
+  .grid{
+    grid-template-columns: 40% 60%;
+  }
+  .metricsGrid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Mobile / vertical */
+@media(max-width:900px){
+  body{ overflow:auto; align-items:flex-start; }
+  .wrap{
+    width:96vw;
+    height:auto;
+    min-height:96dvh;
+    overflow:visible;
+    margin:2dvh 0;
+  }
+  .grid{
+    height:auto;
+    grid-template-columns:1fr;
+  }
+  .card{
+    height:auto;
+  }
+  .leftCard{
+    min-height:620px;
+  }
+  .rightCard{
+    min-height:760px;
+  }
+  .chartsBottom{
+    grid-template-columns:1fr;
+    min-height:520px;
+  }
+  .metricsGrid,
+  .metricsGrid.mci2{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+  .row{
+    grid-template-columns:1fr;
+  }
+  .badge{
+    justify-self:start;
+  }
+}
+
+@media(max-width:560px){
+  .metricsGrid,
+  .metricsGrid.mci2{
+    grid-template-columns:1fr;
+  }
+  .leftTop{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .btn{
+    text-align:center;
+  }
+}
+</style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <div class="grid">
+      <!-- LEFT: Foto, nombre, texto de resultado, botón de inicio e histórico -->
+      <div class="card leftCard">
+        <div class="leftTop">
+          <div class="titleBlock">
+            <div class="title" id="hdrTitle">RESULTADOS DEL PLAYER</div>
+            <div class="status" id="statusTop">SEMANA -- · ÚLTIMA CARGA</div>
+          </div>
+          <a class="btn" href="index.html">INICIO</a>
+        </div>
+
+        <div class="playerPhoto">
+          <img id="playerImg" src="images/fer.png" alt="player">
+        </div>
+
+        <div class="playerName" id="playerName">--</div>
+
+        <div class="histWrap">
+          <div class="histHd">
+            <span>Histórico • MdP (10 semanas)</span>
+            <span style="font-weight:1000;font-size:10px;opacity:.9;">Reciente → Antigua</span>
+          </div>
+          <div class="histBd">
+            <table class="semTable" id="semTableMdp">
+              <thead>
+                <tr>
+                  <th class="left" style="width:82px;">Semana</th>
+                  <th data-tip="actA1">I.1</th>
+                  <th data-tip="actA2">I.2</th>
+                  <th data-tip="actA3">I.3</th>
+                  <th data-tip="actB1">II.1</th>
+                  <th data-tip="actB2">II.2</th>
+                  <th data-tip="actB3">II.3</th>
+                  <th data-tip="actB4">II.4</th>
+                </tr>
+              </thead>
+              <tbody id="semBodyMdp"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Compromisos, medidas y gráficos -->
+      <div class="card rightCard">
+        <div class="blocksTop">
+          <div class="block">
+            <div class="sectionTitle" id="wkTitle">COMPROMISOS • SEMANA --</div>
+
+            <div class="row">
+              <div style="font-weight:900">Compromiso anterior</div>
+              <div class="textBox" id="compPrevTxt">—</div>
+              <div class="badge na" id="compPrevPill">--</div>
+            </div>
+
+            <div class="row">
+              <div style="font-weight:900">Compromiso nuevo</div>
+              <div class="textBox" id="compNextTxt">—</div>
+              <div class="badge na">PLAN</div>
+            </div>
+          </div>
+
+          <div class="block">
+            <div class="sectionTitle">MEDIDAS • MCI I</div>
+            <div class="metricsGrid">
+              <div class="kpi"><div class="label">Aging &gt; 60</div><div class="value" id="aging60">--</div></div>
+              <div class="kpi"><div class="label">Aging &gt; 90</div><div class="value" id="aging90">--</div></div>
+              <div class="kpi"><div class="label">Aging &gt; 180</div><div class="value" id="aging180">--</div></div>
+              <div class="kpi"><div class="label">Reservas</div><div class="value" id="reservas">--</div></div>
+              <div class="kpi"><div class="label">Sufijos</div><div class="value" id="sufijos">--</div></div>
+            </div>
+          </div>
+
+          <div class="block">
+            <div class="sectionTitle">MEDIDAS • MCI II</div>
+            <div class="metricsGrid mci2">
+              <div class="kpi"><div class="label">Margen YTD</div><div class="value" id="margenYtd">--</div></div>
+              <div class="kpi"><div class="label">Margen Semana Actual</div><div class="value" id="margenSem">--</div></div>
+              <div class="kpi"><div class="label">Pérdidas</div><div class="value" id="perdidas">--</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chartsBottom">
+          <div class="chartCard">
+            <div class="chartHd">MCI I • Reducir la proporción de inventarios con antigüedad mayor a 90 días respecto al inventario en plaza, del 9% al 6% en la organización de producto volumen para el 31 dic. 26.</div>
+            <div class="chartBd"><canvas id="chartA90"></canvas></div>
+          </div>
+          <div class="chartCard">
+            <div class="chartHd">MCI II • Incrementar el margen de ventas del 6.29% al 6.5% en la organización de producto para el 31 de diciembre de 2026.</div>
+            <div class="chartBd"><canvas id="chartMYTD"></canvas></div>
+          </div>
+        </div>
+
+        <div class="err" id="errBox">Ocurrió un error al consultar los datos.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tooltip" id="tooltip">
+    <div class="t1" id="tipTitle">---</div>
+    <div class="t2" id="tipText">---</div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<script>
+"use strict";
+
+const PLAYER_IMG = {
+  "NESTOR":"images/nestor.png",
+  "ALE":"images/ale.png",
+  "HECTOR":"images/hector.png",
+  "BEA":"images/bea.png",
+  "LUIS":"images/luis.png",
+  "REYNI":"images/reyni.png",
+  "MARLON":"images/marlon.png",
+  "TANIA":"images/tania.png",
+  "MOISES":"images/moises.png",
+  "VANE":"images/vane.png",
+  "FER":"images/fer.png"
+};
+
+const MDP_TEXT = {
+  actA1: "Revisar las de órdenes abiertas tres veces por semana, con el objetivo de cerrar aquellas que no cuenten con una PO asociada, dar seguimiento a backorders (BO) y realizar la reasignación de producto cuando aplique.",
+  actA2: "Realizar al menos 3 reuniones con clientes, presenciales o virtuales, para presentar propuestas comerciales de producto según catalogación: exceso, producto lenta rotación y antigüedad.",
+  actA3: "Implementar promoción mensual enfocada en inventario en exceso, aging >60 días y aging >180 dias con seguimiento semanal de la rotación y ajustes correspondiente.",
+  actB1: "Ajustar semanalmente precios y/o costos precios sobre inventario en exceso, antigüedad, sufijos y lenta rotación con base en el análisis PSI.",
+  actB2: "Revisar dos veces por semana el reporte de venta en pérdida y descuentos, con el objetivo de definir planes de acción que minimicen pérdidas no justificadas.",
+  actB3: "Enviar los ship & debits los días lunes y jueves.",
+  actB4: "Definir mensualmente una estrategia comercial sobre productos seleccionado de mayor margen porcentual por marca con seguimiento semanal de su ejecución."
+};
+
+const MDP_TITLE = {
+  actA1: "MCI I · MdP1",
+  actA2: "MCI I · MdP2",
+  actA3: "MCI I · MdP3",
+  actB1: "MCI II · MdP1",
+  actB2: "MCI II · MdP2",
+  actB3: "MCI II · MdP3",
+  actB4: "MCI II · MdP4"
+};
+
+function qs(name){ return new URLSearchParams(location.search).get(name); }
+function normalizePlayerKey(x){ return String(x||"").trim().toUpperCase().replace(/\s+/g,''); }
+
+function week2DigitsFromKey(weekKey){
+  const m = String(weekKey || "").match(/^\d{4}-(\d{2})$/);
+  return m ? m[1] : "--";
+}
+
+function weekSortValue(weekKey){
+  const m = String(weekKey || "").match(/^(\d{4})-(\d{2})$/);
+  if(!m) return 0;
+  return (Number(m[1]) * 100) + Number(m[2]);
+}
+
+function getWeekKey(row){
+  return row?.week_key || row?.semana || "";
+}
+
+function getLast8RecentFirst(history){
+  const rows = Array.isArray(history) ? [...history] : [];
+  rows.sort((a,b) => weekSortValue(getWeekKey(b)) - weekSortValue(getWeekKey(a)));
+  return rows.slice(0,10);
+}
+
+function fmtMoney(v){
+  const n = Number(v ?? 0);
+  return '$' + (isFinite(n) ? n.toFixed(2) : '0.00');
+}
+
+/* ✅ REGLA: 1 = 1% (NO 100%) */
+function pctToUI(v){
+  let n = Number(v ?? 0);
+  if(!isFinite(n)) n = 0;
+  return n;
+}
+function fmtPct(v){ return pctToUI(v).toFixed(2) + '%'; }
+
+function setText(id, val){
+  const el = document.getElementById(id);
+  if(el) el.textContent = val;
+}
+
+function getField(obj, ...keys){
+  for(const k of keys){
+    if(obj && Object.prototype.hasOwnProperty.call(obj, k) && obj[k] !== null && obj[k] !== undefined){
+      return obj[k];
+    }
+  }
+  return null;
+}
+
+/* ===== Tooltip ===== */
+const tipEl = document.getElementById("tooltip");
+const tipTitle = document.getElementById("tipTitle");
+const tipText  = document.getElementById("tipText");
+
+function showTip(title, text, x, y){
+  tipTitle.textContent = title;
+  tipText.textContent = text;
+  tipEl.style.display = "block";
+
+  const pad = 14;
+  const rect = tipEl.getBoundingClientRect();
+  let left = x + 16;
+  let top  = y + 16;
+
+  if(left + rect.width + pad > window.innerWidth) left = x - rect.width - 16;
+  if(top + rect.height + pad > window.innerHeight) top = y - rect.height - 16;
+
+  tipEl.style.left = left + "px";
+  tipEl.style.top  = top + "px";
+}
+function hideTip(){ tipEl.style.display = "none"; }
+
+document.getElementById("semTableMdp").addEventListener("mousemove", (e)=>{
+  const th = e.target.closest("th[data-tip]");
+  if(!th){ hideTip(); return; }
+  const key = th.getAttribute("data-tip");
+  if(!key || !MDP_TEXT[key]){ hideTip(); return; }
+  showTip(MDP_TITLE[key] || key.toUpperCase(), MDP_TEXT[key], e.clientX, e.clientY);
+});
+document.getElementById("semTableMdp").addEventListener("mouseleave", hideTip);
+
+/* ===== Tabla semáforo ===== */
+function dotClass(v){
+  if(v === null || v === undefined || v === "") return "dot-na";
+  const s = String(v);
+  if(s === "1") return "dot-yes";
+  if(s === "0") return "dot-no";
+  return "dot-na";
+}
+function renderHistTable(history){
+  const tbody = document.getElementById("semBodyMdp");
+  tbody.innerHTML = "";
+
+  const rows = getLast8RecentFirst(history);
+  const frag = document.createDocumentFragment();
+
+  for(const r of rows){
+    const wk = getWeekKey(r) || "----";
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="left">${wk}</td>
+      <td><span class="semDot ${dotClass(r.actA1)}"></span></td>
+      <td><span class="semDot ${dotClass(r.actA2)}"></span></td>
+      <td><span class="semDot ${dotClass(r.actA3)}"></span></td>
+      <td><span class="semDot ${dotClass(r.actB1)}"></span></td>
+      <td><span class="semDot ${dotClass(r.actB2)}"></span></td>
+      <td><span class="semDot ${dotClass(r.actB3)}"></span></td>
+      <td><span class="semDot ${dotClass(r.actB4)}"></span></td>
+    `;
+    frag.appendChild(tr);
+  }
+  tbody.appendChild(frag);
+}
+
+/* ===== Charts ===== */
+let chartA90 = null;
+let chartMYTD = null;
+
+function buildLineChart(canvasId, labels, values){
+  const ctx = document.getElementById(canvasId).getContext("2d");
+  return new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "",
+        data: values,
+        tension: 0.3,
+        pointRadius: 3,
+        borderWidth: 2,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display:false }, tooltip: { enabled:true } },
+      scales: {
+        x: { ticks: { maxRotation:0, autoSkip:true } },
+        y: { ticks: { callback: (v)=> Number(v).toFixed(0) + "%" } }
+      }
+    }
+  });
+}
+
+function renderCharts(history){
+  const rows = getLast8RecentFirst(history).slice().reverse();
+  const labels = rows.map(r => getWeekKey(r) || "");
+  const a90 = rows.map(r => {
+    const n = Number(getField(r, "aging90"));
+    return Number.isFinite(n) ? n : null;
+  });
+  const mytd = rows.map(r => {
+    const n = Number(getField(r, "margen_ytd"));
+    return Number.isFinite(n) ? n : null;
+  });
+
+  if(chartA90){ chartA90.destroy(); chartA90 = null; }
+  if(chartMYTD){ chartMYTD.destroy(); chartMYTD = null; }
+
+  chartA90 = buildLineChart("chartA90", labels, a90);
+  chartMYTD = buildLineChart("chartMYTD", labels, mytd);
+}
+
+/* ===== API ===== */
+async function loadPlayer(player){
+  const res = await fetch("api_player.php?player=" + encodeURIComponent(player), { cache:"no-store" });
+  const text = await res.text();
+  let json;
+  try { json = JSON.parse(text); }
+  catch(e){ throw new Error("api_player.php NO JSON: " + text.slice(0,200)); }
+  if(!res.ok) throw new Error("api_player.php HTTP " + res.status);
+  if(!json.ok) throw new Error(json.detail || json.error || "api_player.php inválida");
+  return json;
+}
+
+function setPrevPill(cumplio){
+  const prevPill = document.getElementById("compPrevPill");
+  if(!prevPill) return;
+  prevPill.classList.remove("ok","no","na");
+  if(cumplio === null || cumplio === undefined || cumplio === ""){
+    prevPill.classList.add("na");
+    prevPill.textContent = "--";
+    return;
+  }
+  const ok = Number(cumplio) === 1;
+  prevPill.classList.add(ok ? "ok" : "no");
+  prevPill.textContent = ok ? "CUMPLIDO" : "NO CUMPLIDO";
+}
+
+function renderAll(player, payload){
+  const weekKey = payload.week_key || payload.weekKey || payload.latest?.week_key || "";
+  const wk2 = week2DigitsFromKey(weekKey);
+
+  setText("hdrTitle", "RESULTADOS DEL PLAYER • " + player);
+  setText("wkTitle", "COMPROMISOS • SEMANA " + wk2);
+  setText("statusTop", weekKey ? ("SEMANA " + wk2 + " · ÚLTIMA CARGA") : "SIN DATOS");
+  setText("playerName", player);
+
+  const img = document.getElementById("playerImg");
+  if(img) img.src = PLAYER_IMG[player] || "images/fer.png";
+
+  const latestData = payload.latest?.data || payload.data || payload.latest || {};
+  setText("aging60",  fmtPct(getField(latestData, "aging60")));
+  setText("aging90",  fmtPct(getField(latestData, "aging90")));
+  setText("aging180", fmtPct(getField(latestData, "aging180")));
+  setText("reservas", fmtPct(getField(latestData, "reservas")));
+  setText("sufijos",  fmtPct(getField(latestData, "sufijos")));
+
+  setText("margenSem", fmtPct(getField(latestData, "margen_semanal")));
+  setText("margenYtd", fmtPct(getField(latestData, "margen_ytd")));
+  setText("perdidas",  fmtMoney(getField(latestData, "perdidas")));
+
+  const prev = payload.latest?.prev || payload.prev || {};
+  const next = payload.latest?.next || payload.next || {};
+
+  setText("compPrevTxt", prev.compromiso_prev_text || prev.compromiso_prev || "—");
+  setPrevPill(prev.cumplio_prev);
+  setText("compNextTxt", next.compromiso_next || payload.compromiso_next || "—");
+
+  const history = Array.isArray(payload.history) ? payload.history : [];
+  renderHistTable(history);
+  renderCharts(history);
+}
+
+/* ===== INIT ===== */
+(async function init(){
+  const player = normalizePlayerKey(qs("player")) || "FER";
+  try{
+    const payload = await loadPlayer(player);
+    renderAll(player, payload);
+  }catch(e){
+    console.error(e);
+    setText("hdrTitle", "ERROR • NO SE PUDO CARGAR");
+    setText("statusTop", "Revisa api_player.php");
+    document.getElementById("errBox").style.display = "block";
+  }
+})();
+</script>
+
+</body>
+</html>

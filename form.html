@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formularios</title>
+
+<style>
+:root{
+  --ink:#111;
+  --radius:14px;
+  --yellow:#ffcc00;
+  --yellow-soft:#ffe680;
+  --bg1:#5fffd5;
+  --bg2:#60efff;
+  --soft:#f3f5f7;
+  --inputBorder:#cfd6dd;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+
+/* Home */
+.container{
+  display:flex;flex-direction:column;gap:20px;
+  background:#fff;padding:40px;border-radius:var(--radius);
+  border:3px solid var(--ink);
+  box-shadow:0 15px 40px rgba(0,0,0,.25);
+  text-align:center;min-width:320px;
+}
+h1{font-size:1.4rem;color:#000;}
+.btn{
+  padding:18px 26px;border-radius:12px;border:3px solid var(--ink);
+  font-weight:900;font-size:1.1rem;background:var(--yellow);color:#000;
+  cursor:pointer;transition:.2s;
+}
+.btn:hover{background:var(--yellow-soft);transform:scale(1.03);}
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+  transform:none;
+}
+
+/* Modal base */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.45);
+  display:none;align-items:center;justify-content:center;
+  padding:18px;z-index:999;
+}
+.modal-overlay.show{display:flex;}
+.modal{
+  width:min(980px,96vw);
+  max-height:92vh;
+  overflow:auto;
+  background:#fff;
+  border:3px solid var(--ink);
+  border-radius:22px;
+  box-shadow:0 18px 45px rgba(0,0,0,.25);
+}
+.modal-header{
+  padding:22px;
+  display:flex;
+  justify-content:center;
+  flex-direction:column;
+  gap:10px;
+}
+.week-title{
+  font-weight:900;
+  font-size:30px;
+  letter-spacing:1px;
+  text-align:center;
+  width:100%;
+}
+.sub-title{
+  text-align:center;
+  font-weight:900;
+  font-size:18px;
+}
+.divider{border-top:3px solid var(--ink);}
+.modal-content{padding:18px 22px;}
+
+/* Altura del cuadro de las fotos (selector Player) */
+#modalPick .modal-content{
+  max-height:560px;
+  overflow:auto;
+}
+
+fieldset{
+  border:3px solid var(--ink);
+  border-radius:16px;
+  padding:16px;
+  margin-top:16px;
+  background:var(--soft);
+}
+legend{font-weight:900;color:#000;padding:0 8px;}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:14px 16px;
+  margin-top:10px;
+}
+.field label{font-weight:800;display:block;margin-bottom:6px;color:#000;}
+.field input{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:2px solid var(--inputBorder);
+  font-size:14px;
+  background:#fff;
+}
+
+.actions{
+  margin-top:18px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.btn-form{
+  padding:14px 22px;
+  border-radius:14px;
+  border:3px solid var(--ink);
+  font-weight:900;
+  background:var(--yellow);
+  color:#000;
+  cursor:pointer;
+  transition:.15s;
+}
+.btn-form:hover{background:var(--yellow-soft);transform:scale(1.03);}
+.status{font-weight:900;color:#000;}
+
+/* Player selector grid */
+.player-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:12px;
+}
+@media(max-width:980px){ .player-grid{grid-template-columns:repeat(4,1fr);} }
+@media(max-width:640px){ .player-grid{grid-template-columns:repeat(3,1fr);} }
+
+.player-tile{
+  border:3px solid var(--ink);
+  border-radius:14px;
+  overflow:hidden;
+  cursor:pointer;
+  box-shadow:0 10px 18px rgba(0,0,0,.18);
+  background:#fff;
+  transition:.15s;
+}
+.player-tile:hover{transform:scale(1.03);}
+
+/* ✅ IMAGEN COMPLETA (sin recorte) */
+.player-tile img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#fff;
+  display:block;
+  filter:grayscale(100%);
+  transition:filter .2s ease;
+}
+.player-tile:hover img{filter:grayscale(0%);}
+
+/* ===== Actividades estilo scoreboard (NO / SÍ) ===== */
+.act-wrap{ margin-top: 10px; }
+
+.act-block{
+  border:3px solid var(--ink);
+  border-radius:18px;
+  padding:14px 14px 10px;
+  background:#fff;
+  margin-top:16px;
+}
+.act-title{
+  font-weight:900;
+  font-size:16px;
+  margin-bottom:10px;
+}
+
+/* Por defecto: NO (rojo) */
+.act-row{
+  display:grid;
+  grid-template-columns:86px 1fr 170px;
+  gap:12px;
+  align-items:stretch;
+  border-radius:16px;
+  border:2px solid #d83b3b;
+  overflow:hidden;
+  margin:10px 0;
+  background:#ffd0d0;
+}
+.act-code{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:1000;
+  color:#fff;
+  letter-spacing:.5px;
+  background:#e53935;
+}
+.act-text{
+  padding:12px 12px;
+  font-weight:450;
+  line-height:1.25;
+  color:#000;
+}
+.act-toggle{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px;
+}
+
+/* Estado SI (verde) cuando el checkbox está marcado */
+.act-row:has(.yesno input:checked){
+  border-color:#14a84a;
+  background:#c9ffd8;
+}
+.act-row:has(.yesno input:checked) .act-code{
+  background:#00c853;
+}
+
+/* Switch estilo NO / SÍ: por defecto NO (rojo) */
+.yesno{
+  position:relative;
+  width:150px;
+  height:46px;
+  border:3px solid var(--ink);
+  border-radius:999px;
+  background:#ffb7b7; /* rojo suave */
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  font-weight:1000;
+}
+.yesno .lbl{
+  z-index:2;
+  text-align:center;
+  font-size:14px;
+  color:#000;
+}
+.yesno .knob{
+  position:absolute;
+  top:4px;
+  left:4px; /* NO */
+  width:calc(50% - 8px);
+  height:calc(100% - 8px);
+  border-radius:999px;
+  background:#000;
+  transition:.18s ease;
+}
+.yesno .lbl-no{ color:#fff; } /* NO activo por defecto */
+.yesno input{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+  z-index:3;
+}
+
+/* cuando está marcado = SÍ (verde) */
+.yesno input:checked ~ .knob{ left:calc(50% + 4px); }
+.yesno input:checked ~ .lbl-no{ color:#000; }
+.yesno input:checked ~ .lbl-si{ color:#fff; }
+.yesno:has(input:checked){ background:#bff7cf; } /* verde suave */
+
+.compromiso-next{
+  display:grid;
+  grid-template-columns:86px 1fr;
+  gap:12px;
+  align-items:stretch;
+  border-radius:16px;
+  border:2px solid #9e9e9e;   /* borde gris */
+  overflow:hidden;
+  margin:10px 0;
+  background:#eeeeee;         /* fondo gris claro */
+}
+
+.compromiso-next .tag{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:1000;
+  color:#000;
+  letter-spacing:.5px;
+  background:#bdbdbd;         /* gris medio */
+}
+
+.compromiso-next textarea{
+  width:100%;
+  border:2px solid #cfd6dd;
+  border-radius:12px;
+  padding:12px;
+  font-size:14px;
+  resize:vertical;
+  background:#ffffff;
+}
+
+
+@media (max-width: 860px){
+  .act-row{ grid-template-columns: 80px 1fr; }
+  .act-toggle{ grid-column: 1 / -1; justify-content:flex-end; }
+}
+
+/* success */
+.success-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);
+  display:none;align-items:center;justify-content:center;z-index:2000;
+  padding:18px;
+}
+.success-overlay.show{display:flex;}
+.success-card{
+  width:min(780px,96vw);
+  background:#fff;border:3px solid var(--ink);
+  border-radius:22px;padding:30px;text-align:center;
+  box-shadow:0 18px 45px rgba(0,0,0,.25);
+}
+.success-title{font-size:34px;font-weight:900;margin-bottom:10px;}
+.success-text{font-size:18px;font-weight:800;}
+
+@media(max-width:720px){
+  .grid{grid-template-columns:1fr;}
+  .week-title{font-size:24px;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Selecciona el formulario</h1>
+  <button class="btn" id="openGeneral">General</button>
+  <button class="btn" id="openVolume">Volumen</button>
+  <button class="btn" id="openCompras">Compras</button>
+  <div id="formsAvailability" class="status" aria-live="polite"></div>
+</div>
+
+<!-- =========================
+     MODAL GENERAL
+========================= -->
+<div class="modal-overlay" id="modalGeneral">
+  <div class="modal">
+    <div class="modal-header">
+      <div id="weekTitleGeneral" class="week-title">Resultados Semana ----</div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="modal-content">
+      <form id="generalForm" action="guardar_general.php" method="post">
+        <input type="hidden" id="semanaGeneral" name="semana">
+
+        <fieldset>
+          <legend>MCI 1: Resultado Global Inventario</legend>
+          <div class="grid">
+            <div class="field"><label>Aging &gt; 60 días (%)</label><input name="aging60" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Aging &gt; 90 días (%)</label><input name="aging90" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Aging &gt; 180 días (%)</label><input name="aging180" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Reservas Inventario (%)</label><input name="reservas" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Sufijos / Inv OH (%)</label><input name="sufijos" type="number" step="0.01" placeholder="0.00"></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>MCI 2: Resultado Global Márgen</legend>
+          <div class="grid">
+            <div class="field"><label>Margen Acumulado YTD (%)</label><input name="margen_ytd" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Margen Semanal Total (%)</label><input name="margen_semanal" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Pérdidas acumuladas Total ($)</label><input name="perdidas" type="number" step="0.01" placeholder="0.00"></div>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button class="btn-form" type="submit">Enviar</button>
+          <span id="statusGeneral" class="status"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- =========================
+     MODAL VOLUMEN 1: PICK PLAYER
+========================= -->
+<div class="modal-overlay" id="modalPick">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="week-title">Volumen</div>
+      <div class="sub-title">Selecciona el Player</div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="modal-content">
+      <div class="player-grid" id="playerGrid">
+        <div class="player-tile" data-player="NESTOR"><img src="images/nestor.png" alt="NESTOR"></div>
+        <div class="player-tile" data-player="ALE"><img src="images/ale.png" alt="ALE"></div>
+        <div class="player-tile" data-player="HECTOR"><img src="images/hector.png" alt="HECTOR"></div>
+        <div class="player-tile" data-player="BEA"><img src="images/bea.png" alt="BEA"></div>
+        <div class="player-tile" data-player="LUIS"><img src="images/luis.png" alt="LUIS"></div>
+        <div class="player-tile" data-player="REYNI"><img src="images/reyni.png" alt="REYNI"></div>
+        <div class="player-tile" data-player="MARLON"><img src="images/marlon.png" alt="MARLON"></div>
+        <div class="player-tile" data-player="TANIA"><img src="images/tania.png" alt="TANIA"></div>
+        <div class="player-tile" data-player="MOISES"><img src="images/moises.png" alt="MOISES"></div>
+        <div class="player-tile" data-player="VANE"><img src="images/vane.png" alt="VANE"></div>
+        <div class="player-tile" data-player="FER"><img src="images/fer.png" alt="FER"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================
+     MODAL VOLUMEN 2: FORM
+========================= -->
+<div class="modal-overlay" id="modalVolume">
+  <div class="modal">
+    <div class="modal-header">
+      <div id="weekTitleVol" class="week-title">Resultados Semana ----</div>
+      <div class="sub-title">Player seleccionado: <span id="playerLabel">---</span></div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="modal-content">
+      <form id="volumeForm" action="guardar_volumen.php" method="post">
+        <input type="hidden" name="semana" id="semanaVol">
+        <input type="hidden" name="player" id="playerInput">
+
+        <!-- nuevos hidden (NO cambian diseño) -->
+        <input type="hidden" name="prev_semana" id="prev_semana" value="">
+        <input type="hidden" name="cumplio_prev" id="cumplio_prev" value="0">
+
+        <fieldset>
+          <legend>MCI 1: Resultado Inventario</legend>
+          <div class="grid">
+            <div class="field"><label>Aging &gt; 60 días (%)</label><input name="aging60" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Aging &gt; 90 días (%)</label><input name="aging90" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Aging &gt; 180 días (%)</label><input name="aging180" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Reservas Inventario (%)</label><input name="reservas" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Sufijos / Inv OH (%)</label><input name="sufijos" type="number" step="0.01" placeholder="0.00"></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>MCI 2: Resultado Márgen</legend>
+          <div class="grid">
+            <div class="field"><label>Margen Acumulado YTD (%)</label><input name="margen_ytd" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Margen Semanal Total (%)</label><input name="margen_semanal" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Pérdidas acumuladas Total ($)</label><input name="perdidas" type="number" step="0.01" placeholder="0.00"></div>
+          </div>
+        </fieldset>
+
+        <!-- NUEVO: Compromisos sin tocar tamaños -->
+        <fieldset>
+          <legend>Compromisos</legend>
+
+          <div class="act-wrap">
+            <div class="act-block">
+              <div class="act-title">Compromiso de la semana pasada</div>
+
+              <div class="act-row">
+                <div class="act-code">Prev</div>
+                <div class="act-text" id="compromisoPrevText">Cargando compromiso de la semana pasada...</div>
+                <div class="act-toggle">
+                  <!-- IMPORTANTE: orden exacto para que se desplace -->
+                  <label class="yesno">
+                    <input type="checkbox" id="cumplioPrevSwitch">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="compromiso-next">
+                <div class="tag">Next</div>
+                <div style="padding:12px;">
+                  <textarea name="compromiso_next"
+                    placeholder="Escribe el compromiso para la próxima semana..."></textarea>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Medidas de Predicción</legend>
+
+          <div class="act-wrap">
+
+            <div class="act-block">
+              <div class="act-title">Bloque A · Medidas de predicción sobre el inventario</div>
+
+              <div class="act-row">
+                <div class="act-code">MdP1</div>
+                <div class="act-text">Revisar las de órdenes abiertas tres veces por semana, con el objetivo de cerrar aquellas que no cuenten con una PO asociada, dar seguimiento a backorders (BO) y realizar la reasignación de producto cuando aplique.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="actA1" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="act-row">
+                <div class="act-code">MdP2</div>
+                <div class="act-text">Realizar al menos 3 reuniones con clientes, presenciales o virtuales, para presentar propuestas comerciales de producto según catalogación: exceso, producto lenta rotación y antigüedad.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="actA2" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="act-row">
+                <div class="act-code">MdP3</div>
+                <div class="act-text">Implementar promoción mensual enfocada en inventario en exceso, aging &gt;60 días y aging &gt;180 días con seguimiento semanal de la rotación y ajustes correspondiente.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="actA3" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="act-block">
+              <div class="act-title">Bloque B · Medidas de predicción sobre el márgen</div>
+
+              <div class="act-row">
+                <div class="act-code">MdP1</div>
+                <div class="act-text">Ajustar semanalmente precios y/o costos precios sobre inventario en exceso, antigüedad, sufijos y lenta rotación con base en el análisis PSI.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="actB1" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="act-row">
+                <div class="act-code">MdP2</div>
+                <div class="act-text">Revisar dos veces por semana el reporte de venta en pérdida y descuentos, con el objetivo de definir planes de acción que minimicen pérdidas no justificadas.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="actB2" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="act-row">
+                <div class="act-code">MdP3</div>
+                <div class="act-text">Enviar los ship &amp; debits los días lunes y jueves.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="actB3" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="act-row">
+                <div class="act-code">MdP4</div>
+                <div class="act-text">Definir mensualmente una estrategia comercial sobre productos seleccionado de mayor margen porcentual por marca con seguimiento semanal de su ejecución.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="actB4" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button class="btn-form" type="submit">Enviar</button>
+          <span id="statusVol" class="status"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- =========================
+     MODAL COMPRAS
+========================= -->
+<div class="modal-overlay" id="modalCompras">
+  <div class="modal">
+    <div class="modal-header">
+      <div id="weekTitleCompras" class="week-title">Resultados Semana ----</div>
+      <div class="sub-title">Compras</div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="modal-content">
+      <form id="comprasForm" action="guardar_compras.php" method="post">
+        <input type="hidden" name="semana" id="semanaCompras">
+
+        <fieldset>
+          <legend>MCI 1: Cobertura</legend>
+          <div class="grid">
+            <div class="field"><label>Cobertura Total (%)</label><input name="cobertura_total" type="number" step="0.01" placeholder="0.00"></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>MCI 2: Inventarios</legend>
+          <div class="grid">
+            <div class="field"><label>Aging &gt; 60 días (%)</label><input name="aging60" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Aging &gt; 90 días (%)</label><input name="aging90" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Aging &gt; 180 días (%)</label><input name="aging180" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Sufijos / Inv OH (%)</label><input name="sufijos" type="number" step="0.01" placeholder="0.00"></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Medidas de Predicción</legend>
+
+          <div class="act-wrap">
+
+            <div class="act-block">
+              <div class="act-title">Bloque A . Medidas de predicción sobre el inventario</div>
+
+              <div class="act-row">
+                <div class="act-code">MdP1</div>
+                <div class="act-text">Ajustar la compra de SKUs con cobertura inferior al 70%, de acuerdo con el análisis de demanda.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="cmpA1" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="act-row">
+                <div class="act-code">MdP2</div>
+                <div class="act-text">Sostener reunión semanal con tres gerentes de marca para el análisis de PSI y la definición de planes de acción.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="cmpA2" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="act-row">
+                <div class="act-code">MdP3</div>
+                <div class="act-text">Ejecutar compras de forma semanal.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="cmpA3" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="act-row">
+                <div class="act-code">MdP4</div>
+                <div class="act-text">Seguimiento a colocación de órdenes a Fabricante</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="cmpA4" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="act-block">
+              <div class="act-title">Bloque B. Medidas de predicción sobre el márgen.</div>
+
+              <div class="act-row">
+                <div class="act-code">MdP1</div>
+                <div class="act-text">Dar seguimiento semanal a los backorders, asegurando su cierre dentro de los 3 días posteriores a la recepción del 100% del producto.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="cmpB1" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="act-row">
+                <div class="act-code">MdP2</div>
+                <div class="act-text">Generar y revisar el reporte de capas de inventarios para identificar fluctuaciones y definir acciones correctivas en precio, importaciones, inventario comprometido (IC) entre otros.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="cmpB2" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="act-row">
+                <div class="act-code">MdP3</div>
+                <div class="act-text">Monitoreo semanalmente el estatus de backorders y ETAs, garantizando visibilidad y control de abastecimiento.</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="cmpB3" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="act-row">
+                <div class="act-code">MdP4</div>
+                <div class="act-text">Dar seguimiento semanal al cumplimiento del forecast de clientes y marcas, identificando desviaciones y acciones de ajuste oportuno</div>
+                <div class="act-toggle">
+                  <label class="yesno">
+                    <input type="checkbox" name="cmpB4" value="1">
+                    <span class="lbl lbl-no">NO</span>
+                    <span class="lbl lbl-si">SÍ</span>
+                    <span class="knob"></span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button class="btn-form" type="submit">Enviar</button>
+          <span id="statusCompras" class="status"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Success -->
+<div class="success-overlay" id="success">
+  <div class="success-card">
+    <div class="success-title">✅ ¡Guardado con éxito!</div>
+    <div class="success-text">Gracias por completar el formulario. Serás redirigido al inicio.</div>
+  </div>
+</div>
+
+<script>
+const modalGeneral = document.getElementById("modalGeneral");
+const modalPick = document.getElementById("modalPick");
+const modalVolume = document.getElementById("modalVolume");
+const modalCompras = document.getElementById("modalCompras");
+const success = document.getElementById("success");
+
+const statusGeneral = document.getElementById("statusGeneral");
+const statusVol = document.getElementById("statusVol");
+const statusCompras = document.getElementById("statusCompras");
+
+function getISOWeek(date){
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return { year: d.getUTCFullYear(), week: weekNo };
+}
+function semanaISO(){
+  const iso = getISOWeek(new Date());
+  return `${iso.year}-${String(iso.week).padStart(2,"0")}`;
+}
+function semanaISOAnterior(){
+  const d = new Date();
+  d.setDate(d.getDate() - 7);
+  const iso = getISOWeek(d);
+  return `${iso.year}-${String(iso.week).padStart(2,"0")}`;
+}
+function esLunes(){
+  return new Date().getDay() === 1;
+}
+function openModal(m){ m.classList.add("show"); }
+function closeModal(m){ m.classList.remove("show"); }
+
+function prevSemanaStr(sem){
+  const m = sem.match(/^(\d{4})-(\d{2})$/);
+  if(!m) return null;
+  const y = parseInt(m[1],10);
+  const w = parseInt(m[2],10);
+  const jan4 = new Date(Date.UTC(y, 0, 4));
+  const mondayWeek1 = new Date(jan4);
+  mondayWeek1.setUTCDate(jan4.getUTCDate() - ((jan4.getUTCDay() || 7) - 1));
+  mondayWeek1.setUTCDate(mondayWeek1.getUTCDate() + ((w - 1) * 7) - 7);
+  const iso = getISOWeek(new Date(
+    mondayWeek1.getUTCFullYear(),
+    mondayWeek1.getUTCMonth(),
+    mondayWeek1.getUTCDate()
+  ));
+  return `${iso.year}-${String(iso.week).padStart(2,'0')}`;
+}
+
+/* Abrir General */
+const openGeneralBtn = document.getElementById("openGeneral");
+const openVolumeBtn = document.getElementById("openVolume");
+const openComprasBtn = document.getElementById("openCompras");
+const formsAvailability = document.getElementById("formsAvailability");
+const formButtons = [openGeneralBtn, openVolumeBtn, openComprasBtn];
+
+if(esLunes()){
+  formsAvailability.textContent = `Disponibles hoy para reportar la semana ${semanaISOAnterior()}.`;
+}else{
+  formButtons.forEach(button => { button.disabled = true; });
+  formsAvailability.textContent = "Los formularios están disponibles únicamente los lunes.";
+}
+
+openGeneralBtn.addEventListener("click", () => {
+  if(!esLunes()) return;
+  const s = semanaISOAnterior();
+  document.getElementById("weekTitleGeneral").textContent = `Resultados Semana ${s}`;
+  document.getElementById("semanaGeneral").value = s;
+  statusGeneral.textContent = "";
+  openModal(modalGeneral);
+});
+
+/* Abrir Volumen -> selector */
+openVolumeBtn.addEventListener("click", () => {
+  if(!esLunes()) return;
+  openModal(modalPick);
+});
+
+/* Abrir Compras */
+openComprasBtn.addEventListener("click", () => {
+  if(!esLunes()) return;
+  const s = semanaISOAnterior();
+  document.getElementById("weekTitleCompras").textContent = `Resultados Semana ${s}`;
+  document.getElementById("semanaCompras").value = s;
+  statusCompras.textContent = "";
+  openModal(modalCompras);
+});
+
+/* Cerrar por click fuera + ESC */
+[modalGeneral, modalPick, modalVolume, modalCompras].forEach(m=>{
+  m.addEventListener("click", (e)=>{ if(e.target === m) closeModal(m); });
+});
+document.addEventListener("keydown", (e)=>{
+  if(e.key === "Escape"){
+    closeModal(modalGeneral);
+    closeModal(modalPick);
+    closeModal(modalVolume);
+    closeModal(modalCompras);
+  }
+});
+
+/* set hidden cumplio_prev cuando cambie switch */
+document.getElementById("cumplioPrevSwitch").addEventListener("change", (e)=>{
+  document.getElementById("cumplio_prev").value = e.target.checked ? "1" : "0";
+});
+
+/* cargar compromiso prev desde PHP */
+async function loadPrevCommit(player, semana){
+  const prevSem = prevSemanaStr(semana);
+  document.getElementById("prev_semana").value = prevSem || "";
+
+  // reset UI
+  document.getElementById("compromisoPrevText").textContent = "Cargando compromiso de la semana pasada...";
+  document.getElementById("cumplioPrevSwitch").checked = false;
+  document.getElementById("cumplio_prev").value = "0";
+
+  try{
+    const res = await fetch(`obtener_compromiso_prev.php?player=${encodeURIComponent(player)}&semana=${encodeURIComponent(semana)}`, {cache:"no-store"});
+    const json = await res.json();
+
+    if(!res.ok || !json || !json.ok){
+      document.getElementById("compromisoPrevText").textContent = "No se encontró compromiso de la semana pasada.";
+      return;
+    }
+
+    document.getElementById("prev_semana").value = json.prev_semana || (prevSem || "");
+
+    const t = (json.compromiso_prev || "").trim();
+    document.getElementById("compromisoPrevText").textContent =
+      t !== "" ? t : `Sin compromiso registrado en la semana pasada (${json.prev_semana}).`;
+
+  }catch(_){
+    document.getElementById("compromisoPrevText").textContent = "Error al cargar compromiso de la semana pasada.";
+  }
+}
+
+/* Selección de player -> abre formulario volumen */
+document.getElementById("playerGrid").addEventListener("click", async (e)=>{
+  const tile = e.target.closest(".player-tile");
+  if(!tile) return;
+
+  const player = tile.dataset.player;
+  const s = semanaISOAnterior();
+
+  document.getElementById("playerInput").value = player;
+  document.getElementById("playerLabel").textContent = player;
+
+  document.getElementById("semanaVol").value = s;
+  document.getElementById("weekTitleVol").textContent = `Resultados Semana ${s}`;
+
+  // cargar compromiso prev
+  await loadPrevCommit(player, s);
+
+  statusVol.textContent = "";
+  closeModal(modalPick);
+  openModal(modalVolume);
+});
+
+/* Submit helper */
+async function submitForm(formEl, statusEl){
+  statusEl.textContent = "Guardando...";
+
+  try{
+    const res = await fetch(formEl.action, { method:"POST", body:new FormData(formEl) });
+    const text = await res.text();
+    let json = null;
+    try { json = JSON.parse(text); } catch(_){}
+
+    if(res.status === 409 && json && json.error === "DUPLICATE_WEEK"){
+      statusEl.textContent = "Ya existe un resultado guardado para esta semana ❌";
+      return;
+    }
+
+    if(res.status === 403 && json && json.error === "NOT_MONDAY"){
+      statusEl.textContent = "Los formularios solo se pueden guardar los lunes ❌";
+      return;
+    }
+
+    if(!res.ok || !json || !json.ok){
+      statusEl.textContent = "Error al guardar ❌";
+      return;
+    }
+
+    closeModal(modalGeneral);
+    closeModal(modalVolume);
+    closeModal(modalCompras);
+
+    success.classList.add("show");
+    setTimeout(()=>{ window.location.href = "https://volumen.fercifuentes.com/index.html"; }, 1800);
+
+  }catch(err){
+    statusEl.textContent = "Error de conexión ❌";
+  }
+}
+
+/* Submit General */
+document.getElementById("generalForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  submitForm(e.currentTarget, statusGeneral);
+});
+
+/* Submit Volumen */
+document.getElementById("volumeForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  if(!document.getElementById("playerInput").value){
+    statusVol.textContent = "Selecciona un player ❌";
+    return;
+  }
+  submitForm(e.currentTarget, statusVol);
+});
+
+/* Submit Compras */
+document.getElementById("comprasForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  submitForm(e.currentTarget, statusCompras);
+});
+
+// Evitar submit con Enter en todos los formularios
+document.querySelectorAll("form").forEach(form => {
+  form.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
+      e.preventDefault();
+    }
+  });
+});
+</script>
+
+</body>
+</html>
