@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Dashboard • Resultados General</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -340,6 +340,78 @@ body{
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr));}
   .players-grid{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(6,minmax(0,1fr));}
 }
+
+/* ===== REDISEÑO 2026 · MODERNO EJECUTIVO / VERDE PREMIUM ===== */
+:root{
+  --yellow:#c9f7df; --panel:#0b1f18; --panel2:rgba(255,255,255,.055);
+  --line:rgba(130,220,176,.18); --bg:#06130f; --blue:#173c2d;
+  --coral:#3ddc97; --soft:#f4fbf7; --premium:#49e3a4; --premium2:#18a66a;
+}
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 12% 8%,rgba(49,196,132,.20),transparent 32%),
+    radial-gradient(circle at 90% 92%,rgba(20,103,72,.24),transparent 38%),
+    linear-gradient(145deg,#04100c,#0a2118 55%,#071710);
+}
+.wrap{
+  background:linear-gradient(145deg,rgba(12,37,28,.97),rgba(5,22,16,.98));
+  border:1px solid rgba(115,235,180,.20); border-radius:24px;
+  box-shadow:0 30px 80px rgba(0,0,0,.40),0 0 0 1px rgba(255,255,255,.025) inset;
+}
+.top-title{
+  font-family:Inter,Arial,sans-serif; font-weight:800; letter-spacing:.12em;
+  font-size:clamp(15px,1.25vw,21px); color:#f4fff9;
+}
+.form-icon{
+  background:rgba(74,227,164,.10); border:1px solid rgba(74,227,164,.25);
+  border-radius:12px; padding:9px; backdrop-filter:blur(12px);
+}
+.form-icon svg{fill:var(--premium);}
+.form-icon:hover{transform:translateY(-2px);background:rgba(74,227,164,.16);}
+.panel{
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.025));
+  border:1px solid rgba(159,236,199,.12); border-radius:20px;
+  box-shadow:0 12px 32px rgba(0,0,0,.16) inset;
+}
+.panel h3{
+  font-family:Inter,Arial,sans-serif;font-weight:800;letter-spacing:.11em;
+  color:#9ce9c5;text-transform:uppercase;
+}
+.goal{
+  background:linear-gradient(90deg,rgba(56,197,132,.12),rgba(255,255,255,.025));
+  border-left:3px solid var(--premium); border-radius:12px;color:#dcebe4;
+}
+.goal b{color:#7ff0bb;}
+.kpi{
+  background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.035));
+  border:1px solid rgba(138,222,181,.15); border-radius:15px;
+  box-shadow:0 8px 22px rgba(0,0,0,.12); transition:.2s ease;
+}
+.kpi:hover{transform:translateY(-2px);border-color:rgba(96,229,164,.35);}
+.kpi .label{color:#a9c5b7;font-weight:700;}
+.kpi .value{color:#f4fff9;font-weight:800;letter-spacing:-.02em;}
+.bar{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.06);}
+.bar span{background:linear-gradient(90deg,var(--premium2),var(--premium));}
+.media-box{
+  background:rgba(255,255,255,.035);border:1px solid rgba(141,226,184,.13);
+  border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.16);
+}
+.player-card{
+  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
+  border:1px solid rgba(139,226,183,.14);border-radius:16px;
+  box-shadow:0 8px 22px rgba(0,0,0,.18);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.player-card:hover{transform:translateY(-3px);border-color:rgba(74,227,164,.45);box-shadow:0 14px 30px rgba(0,0,0,.25);}
+.player-card:hover img{transform:scale(1.035);}
+.luz{border:1px solid rgba(255,255,255,.35);box-shadow:0 2px 8px rgba(0,0,0,.45);}
+.luz.green{background:#39e58c;box-shadow:0 0 10px rgba(57,229,140,.55);}
+.luz.red{background:#ff5364;box-shadow:0 0 10px rgba(255,83,100,.45);}
+.kpi.kpi-ok{border-color:rgba(57,229,140,.65);box-shadow:0 0 0 1px rgba(57,229,140,.12) inset;}
+.kpi.kpi-ok .label{color:#9decc3}.kpi.kpi-ok .value{color:#eafff4}.kpi.kpi-ok .bar span{background:#39e58c!important}
+.kpi.kpi-bad{border-color:rgba(255,83,100,.68);box-shadow:0 0 0 1px rgba(255,83,100,.12) inset;}
+.kpi.kpi-bad .label{color:#ffb3bc}.kpi.kpi-bad .value{color:#fff0f2}.kpi.kpi-bad .bar span{background:#ff5364!important}
+
 </style>
 </head>
 
