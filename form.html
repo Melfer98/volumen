@@ -384,6 +384,30 @@ input,select,textarea,input::placeholder,textarea::placeholder,select option{
 }
 input::placeholder,textarea::placeholder{opacity:.65!important;}
 
+
+/* GENERAL: typed values must render black in every browser */
+#generalForm input,
+#generalForm input:focus,
+#generalForm input:active,
+#generalForm input:valid,
+#generalForm input:invalid,
+#generalForm input:-webkit-autofill,
+#generalForm input:-webkit-autofill:hover,
+#generalForm input:-webkit-autofill:focus,
+#generalForm textarea,
+#generalForm select {
+  color:#000!important;
+  -webkit-text-fill-color:#000!important;
+  caret-color:#000!important;
+  opacity:1!important;
+}
+#generalForm input::placeholder,
+#generalForm textarea::placeholder {
+  color:#000!important;
+  -webkit-text-fill-color:#000!important;
+  opacity:.55!important;
+}
+
 </style>
 </head>
 
