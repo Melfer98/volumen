@@ -403,20 +403,20 @@ input::placeholder,textarea::placeholder{color:#000!important;opacity:.65!import
         <fieldset>
           <legend>MCI 1: Resultado Global Inventario</legend>
           <div class="grid">
-            <div class="field"><label>Aging &gt; 60 días (%)</label><input name="aging60" type="number" step="0.01" placeholder="0.00"></div>
-            <div class="field"><label>Aging &gt; 90 días (%)</label><input name="aging90" type="number" step="0.01" placeholder="0.00"></div>
-            <div class="field"><label>Aging &gt; 180 días (%)</label><input name="aging180" type="number" step="0.01" placeholder="0.00"></div>
-            <div class="field"><label>Reservas Inventario (%)</label><input name="reservas" type="number" step="0.01" placeholder="0.00"></div>
-            <div class="field"><label>Sufijos / Inv OH (%)</label><input name="sufijos" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Aging &gt; 60 días (%)</label><input name="aging60" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"></div>
+            <div class="field"><label>Aging &gt; 90 días (%)</label><input name="aging90" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"></div>
+            <div class="field"><label>Aging &gt; 180 días (%)</label><input name="aging180" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"></div>
+            <div class="field"><label>Reservas Inventario (%)</label><input name="reservas" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"></div>
+            <div class="field"><label>Sufijos / Inv OH (%)</label><input name="sufijos" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"></div>
           </div>
         </fieldset>
 
         <fieldset>
           <legend>MCI 2: Resultado Global Márgen</legend>
           <div class="grid">
-            <div class="field"><label>Margen Acumulado YTD (%)</label><input name="margen_ytd" type="number" step="0.01" placeholder="0.00"></div>
-            <div class="field"><label>Margen Semanal Total (%)</label><input name="margen_semanal" type="number" step="0.01" placeholder="0.00"></div>
-            <div class="field"><label>Pérdidas acumuladas Total ($)</label><input name="perdidas" type="number" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label>Margen Acumulado YTD (%)</label><input name="margen_ytd" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"></div>
+            <div class="field"><label>Margen Semanal Total (%)</label><input name="margen_semanal" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"></div>
+            <div class="field"><label>Pérdidas acumuladas Total ($)</label><input name="perdidas" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00"></div>
           </div>
         </fieldset>
 
@@ -976,6 +976,10 @@ document.getElementById("playerGrid").addEventListener("click", async (e)=>{
 
 /* Submit helper */
 async function submitForm(formEl, statusEl){
+  // Normaliza decimales escritos con coma (ej. 6,25 -> 6.25)
+  formEl.querySelectorAll('input[inputmode="decimal"]').forEach(input => {
+    input.value = String(input.value || "").trim().replace(",", ".");
+  });
   statusEl.textContent = "Guardando...";
 
   try{
