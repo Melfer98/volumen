@@ -373,6 +373,17 @@ input,select,textarea{color:#000!important}
 *:not(.luz){color:#000!important;text-shadow:none!important}
 input,select,textarea,button,a,span,div,p,h1,h2,h3,h4,h5,h6,label,th,td,strong,b,small{color:#000!important}
 input::placeholder,textarea::placeholder{color:#000!important;opacity:.65!important}
+
+/* FORM: force every visible text element to black */
+#modalGeneral *,#modalVolume *,#modalCompras *,#modalPick *,
+.container *,form *,fieldset *,legend,label,.field,.field label,.status,.week-title,.sub-title,
+input,select,textarea,input::placeholder,textarea::placeholder,select option{
+  color:#000!important;
+  -webkit-text-fill-color:#000!important;
+  text-shadow:none!important;
+}
+input::placeholder,textarea::placeholder{opacity:.65!important;}
+
 </style>
 </head>
 
