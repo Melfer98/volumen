@@ -1107,7 +1107,7 @@ th,.semTable th{background:#a42f49!important}
             <div class="kpis">
               <!-- ✅ > 0.16 => verde, si no rojo -->
               <div class="kpi" id="kpiMYtd">
-                <div class="label">Incremento % Margen YTD</div>
+                <div class="label">Margen % YTD</div>
                 <div class="value" id="margenYtd">--</div>
                 <div class="bar"><span id="barMYtd"></span></div>
               </div>
@@ -1365,7 +1365,7 @@ function renderDashboard(payload){
   /* ✅ Reglas:
      - Aging > 90: <= 6 => verde, si no rojo
      - Aging > 180: == 0 => verde, > 0 => rojo
-     - Incremento % Margen YTD: > 0.16 => verde, si no rojo
+     - Margen % YTD: > 0.16 => verde, si no rojo
   */
   const a60 = toNum(d.aging60);
   if(Number.isFinite(a60)) setKpiState("kpiA60", a60 <= 10);
