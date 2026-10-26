@@ -1350,7 +1350,7 @@ function pctToUI(v){
   if(!isFinite(n)) n = 0;
   return n;
 }
-function fmtPct(v){ return pctToUI(v).toFixed(2) + '%'; }
+function fmtPct(v){ const n=pctToUI(v);return Number.isFinite(n)?n.toFixed(2)+'%':"—"; }
 
 function setText(id, val){
   const el = document.getElementById(id);
