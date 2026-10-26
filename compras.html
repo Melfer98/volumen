@@ -854,159 +854,79 @@ body{font-family:Inter,Arial,sans-serif!important;padding:9px!important;color:#f
 @media(max-height:750px){.topbar{min-height:46px!important;padding:6px 12px!important}.card-hd{padding:6px 10px!important}.kpiTable td{padding:4px 9px!important}.act-title{height:36px!important;min-height:36px!important;font-size:9px!important}.act-list{height:calc(100% - 42px)!important}}
 @media(max-width:850px){.topSection{grid-template-columns:minmax(180px,38%) minmax(0,1fr)!important}.bottomGrid{grid-template-columns:minmax(0,52%) minmax(0,48%)!important}.charts{grid-template-columns:1fr!important;grid-template-rows:repeat(2,minmax(0,1fr))!important}.chartHd{padding:5px!important;font-size:10px!important}.kpiName{font-size:9px!important}.kpiVal{font-size:16px!important}.act-text{font-size:8px!important}.histHd span:last-child{display:none!important}.semTable th{font-size:7px!important}.semDot{width:9px!important;height:9px!important}}
 
+
+/* Purchases adopts Player social profile layout */
+html,body{height:100%!important;overflow:hidden!important}
+body{padding:clamp(6px,.8vh,12px)!important}
+body>.comprasProfile{height:100%!important;width:100%!important;max-width:1800px!important;margin:auto!important;display:block!important;overflow:hidden!important}
+.comprasProfile>.grid{display:grid!important;grid-template-columns:minmax(250px,29%) minmax(0,1fr)!important;gap:clamp(7px,.8vw,15px)!important;height:100%!important;min-height:0!important}
+.comprasProfile .card{border:1px solid #dcb580!important;border-radius:20px!important;background:linear-gradient(145deg,#79263e,#541c30)!important;min-height:0!important;overflow:hidden!important}
+.comprasProfile .leftCard{display:flex!important;flex-direction:column!important;align-items:stretch!important}
+.comprasProfile .leftTop{display:flex!important;justify-content:space-between!important;align-items:center!important;padding:13px!important;gap:7px!important;flex:0 0 auto!important}
+.comprasProfile .title{font:900 12px Inter,Arial,sans-serif!important;letter-spacing:.04em!important;color:#fffaf1!important}
+.comprasProfile .status{font:800 10px Inter,Arial,sans-serif!important;color:#f9dcc7!important;background:transparent!important;border:0!important;padding:5px 0!important}
+.comprasProfile .btn{font:900 11px Inter,Arial,sans-serif!important;text-decoration:none!important;padding:9px 12px!important;border-radius:11px!important;color:#371624!important;-webkit-text-fill-color:#371624!important}
+.comprasProfile .playerPhoto{width:clamp(145px,21vh,215px)!important;height:clamp(145px,21vh,215px)!important;border:5px solid #f7e0b6!important;border-radius:50%!important;background:linear-gradient(140deg,#b93e56,#1b7a53)!important;box-shadow:0 5px 0 #a63a50,0 10px 25px #320d24!important;margin:5px auto 10px!important;flex:0 0 auto!important;display:grid!important;place-items:center!important}
+.purchaseAvatar{font-size:clamp(54px,9vh,95px);line-height:1;filter:drop-shadow(0 4px 6px #572437)}
+.comprasProfile .playerName{text-align:center!important;font:900 clamp(20px,2vw,28px) Inter,Arial,sans-serif!important;color:#fffaf1!important;-webkit-text-fill-color:#fffaf1!important}
+.comprasProfile .profileSubtitle{text-align:center!important;font:800 9px Inter,Arial,sans-serif!important;letter-spacing:.06em!important;color:#f5d6c8!important;padding:5px 8px 13px!important}
+.comprasProfile .liveDot{display:inline-block;width:8px;height:8px;background:#2bdd7d;border-radius:50%;margin-right:5px}
+.comprasProfile .histWrap{flex:1 1 auto!important;min-height:0!important;margin:0 11px 11px!important;width:calc(100% - 22px)!important;border-radius:14px!important;display:flex!important;flex-direction:column!important}
+.comprasProfile .histHd{min-height:45px!important;flex:0 0 auto!important}
+.comprasProfile .histBd{flex:1 1 auto!important;min-height:0!important;overflow:hidden!important}
+.comprasProfile .semTable{height:100%!important}
+.comprasProfile .semTable th{font-size:clamp(7px,.65vw,10px)!important}
+.comprasProfile .semTable td{font-size:clamp(8px,.7vw,11px)!important}
+.comprasProfile .semTable th.left{width:60px!important}
+.comprasProfile .semDot{width:clamp(10px,.85vw,15px)!important;height:clamp(10px,.85vw,15px)!important}
+.comprasProfile .rightCard{display:flex!important;flex-direction:column!important;gap:clamp(7px,.85vh,13px)!important;padding:clamp(9px,1.2vh,17px)!important}
+.comprasProfile .feedHeader{display:flex!important;align-items:center!important;justify-content:space-between!important;flex:0 0 auto!important}
+.comprasProfile .feedEyebrow{font:900 10px Inter,Arial,sans-serif!important;letter-spacing:.14em!important;color:#ffe2ad!important}
+.comprasProfile .feedHeader h2{font:900 clamp(19px,2vw,29px) Inter,Arial,sans-serif!important;color:#fffaf1!important;margin:4px 0!important}
+.comprasProfile .feedHeader p{font:600 11px Inter,Arial,sans-serif!important;color:#f2d5cb!important}
+.comprasProfile .feedStar{color:#ffe0a0!important}
+.comprasProfile .feedIcon{width:40px;height:40px;border-radius:12px;background:#b63a51;border:1px solid #e8c37f;color:#ffe4a3;display:grid;place-items:center;font-size:24px}
+.comprasProfile .blocksTop{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:clamp(6px,.8vh,12px)!important;flex:0 0 auto!important}
+.comprasProfile .block{border:1px solid #d5a779!important;border-radius:14px!important;background:linear-gradient(145deg,#883149,#68253c)!important;padding:clamp(7px,.9vh,12px)!important;min-height:0!important}
+.comprasProfile .metricBlock{grid-column:1/-1!important}
+.comprasProfile .sectionTitle{font:900 11px Inter,Arial,sans-serif!important;letter-spacing:.07em!important;color:#fffaf1!important;margin-bottom:7px!important}
+.comprasProfile .metricsGrid{display:block!important;background:transparent!important}
+.comprasProfile .kpiTable{width:100%!important;height:auto!important;border-spacing:6px 0!important;table-layout:fixed!important}
+.comprasProfile .kpiTable tbody{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:6px!important}
+.comprasProfile .kpiTable tr{display:flex!important;flex-direction:column!important;min-width:0!important;border-radius:12px!important;overflow:hidden!important;background:#fffaf1!important}
+.comprasProfile .kpiTable td{display:block!important;min-width:0!important;border-radius:0!important;background:transparent!important;padding:8px!important}
+.comprasProfile .kpiTable .kpiName{font-size:clamp(9px,.76vw,11px)!important;white-space:normal!important;min-height:30px!important}
+.comprasProfile .kpiTable .kpiVal{text-align:left!important;font-size:clamp(15px,1.55vw,23px)!important}
+.comprasProfile .kpiTable tr.kpi-good{background:#e4f7eb!important;border:2px solid #249c58!important}
+.comprasProfile .kpiTable tr.kpi-bad{background:#ffe7eb!important;border:2px solid #d72d49!important}
+.comprasProfile .kpiTable tr.kpi-good td,.comprasProfile .kpiTable tr.kpi-bad td{background:transparent!important}
+.comprasProfile .actionBlock .act-block{padding:0!important;background:transparent!important;border:0!important;overflow:visible!important}
+.comprasProfile .act-title{height:clamp(42px,6vh,62px)!important;min-height:clamp(42px,6vh,62px)!important;font-size:clamp(9px,.77vw,11px)!important;overflow:auto!important}
+.comprasProfile .act-list{height:auto!important;display:grid!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;gap:5px!important}
+.comprasProfile .act-row{min-height:clamp(28px,3.7vh,43px)!important;height:clamp(28px,3.7vh,43px)!important}
+.comprasProfile .act-text{font-size:clamp(9px,.72vw,11px)!important;overflow:auto!important}
+.comprasProfile .chartsBottom{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;flex:1 1 auto!important;min-height:0!important}
+.comprasProfile .chartCard{height:100%!important;min-height:0!important}
+.comprasProfile .chartHd{min-height:40px!important}
+.comprasProfile .chartBd{min-height:0!important;flex:1 1 auto!important}
+@media(max-height:750px){.comprasProfile .playerPhoto{width:clamp(110px,18vh,160px)!important;height:clamp(110px,18vh,160px)!important}.comprasProfile .act-title{height:34px!important;min-height:34px!important}.comprasProfile .act-row{height:25px!important;min-height:25px!important}.comprasProfile .kpiTable td{padding:5px!important}.comprasProfile .feedHeader p{display:none!important}}
+@media(max-width:760px){.comprasProfile>.grid{grid-template-columns:minmax(0,36%) minmax(0,64%)!important;gap:5px!important}.comprasProfile .leftTop{padding:5px!important;flex-wrap:wrap!important}.comprasProfile .title{font-size:8px!important}.comprasProfile .status{font-size:8px!important}.comprasProfile .playerPhoto{width:min(95%,120px)!important;height:auto!important;aspect-ratio:1!important}.purchaseAvatar{font-size:40px}.comprasProfile .playerName{font-size:15px!important}.comprasProfile .profileSubtitle{font-size:7px!important}.comprasProfile .histWrap{margin:0 3px 4px!important;width:calc(100% - 6px)!important}.comprasProfile .histHd{font-size:8px!important;padding:4px!important;min-height:32px!important}.comprasProfile .histHd span:last-child{display:none!important}.comprasProfile .semTable th{font-size:6px!important}.comprasProfile .semTable td{font-size:7px!important;padding:1px!important}.comprasProfile .semDot{width:8px!important;height:8px!important}.comprasProfile .rightCard{padding:5px!important;gap:5px!important}.comprasProfile .feedHeader h2{font-size:13px!important}.comprasProfile .feedEyebrow,.comprasProfile .feedHeader p,.comprasProfile .feedIcon{display:none!important}.comprasProfile .blocksTop{grid-template-columns:1fr!important;gap:4px!important}.comprasProfile .metricBlock{grid-column:1!important}.comprasProfile .block{padding:4px!important}.comprasProfile .kpiTable tbody{gap:2px!important}.comprasProfile .kpiTable td{padding:2px!important}.comprasProfile .kpiTable .kpiName{font-size:7px!important;min-height:25px!important}.comprasProfile .kpiTable .kpiVal{font-size:10px!important}.comprasProfile .kpiUnit{display:none!important}.comprasProfile .act-title{font-size:8px!important;height:24px!important;min-height:24px!important}.comprasProfile .act-row{height:19px!important;min-height:19px!important}.comprasProfile .act-text{font-size:7px!important}.comprasProfile .chartsBottom{grid-template-columns:1fr!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;gap:4px!important}.comprasProfile .chartHd{min-height:22px!important;font-size:8px!important;padding:3px!important}.comprasProfile .chartBd{padding:3px!important}}
+
 </style>
 </head>
 
 <body>
-  <div class="wrap">
-
-    <div class="topbar">
-      <div class="title">
-        <h1>Compras • Dashboard</h1>
+<div class="wrap comprasProfile">
+  <div class="grid">
+    <aside class="card leftCard">
+      <div class="leftTop">
+        <div class="titleBlock"><div class="title">COMPRAS · RESULTADOS</div><div class="status">Semana <span id="weekLabel">----</span> · <span id="fetchStatus">Listo</span></div></div>
+        <a class="btn" href="index.html">INICIO</a>
       </div>
-
-      <div class="controls">
-        <div class="sub">Semana: <span id="weekLabel">----</span></div>
-        <div id="fetchStatus" class="status">Listo</div>
-        <a class="btn" href="index.html" style="text-decoration:none;display:inline-flex;align-items:center;color:#000;">Inicio</a>
-      </div>
-    </div>
-
-    <div class="main">
-
-      <!-- TOP (KPIs + 2 gráficos) -->
-      <div class="topSection">
-
-        <!-- KPIs (tabla) -->
-        <div class="card">
-          <div class="card-hd">
-            <div class="h">KPIs</div>
-          </div>
-
-          <div class="card-bd">
-            <table class="kpiTable" aria-label="KPIs">
-              <tbody>
-                <tr>
-                  <td class="kpiName">Cobertura Total</td>
-                  <td class="kpiVal"><span id="kpiCob">--</span><span class="kpiUnit">%</span></td>
-                </tr>
-                <tr>
-                  <td class="kpiName">Aging &gt; 60 días</td>
-                  <td class="kpiVal"><span id="kpiA60">--</span><span class="kpiUnit">%</span></td>
-                </tr>
-                <tr>
-                  <td class="kpiName">Aging &gt; 90 días</td>
-                  <td class="kpiVal"><span id="kpiA90">--</span><span class="kpiUnit">%</span></td>
-                </tr>
-                <tr>
-                  <td class="kpiName">Aging &gt; 180 días</td>
-                  <td class="kpiVal"><span id="kpiA180">--</span><span class="kpiUnit">%</span></td>
-                </tr>
-                <tr class="kpiRowStrong">
-                  <td class="kpiName">Sufijos / Inv OH</td>
-                  <td class="kpiVal"><span id="kpiSuf">--</span><span class="kpiUnit">%</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- 2 gráficos -->
-        <div class="card">
-          <div class="card-hd">
-            <div class="h">Histórico</div>
-          </div>
-          <div class="card-bd">
-            <div class="charts">
-              <div class="chartCard">
-                <div class="chartHd">Cobertura Total (%)</div>
-                <div class="chartBd"><canvas id="chartCob"></canvas></div>
-              </div>
-              <div class="chartCard">
-                <div class="chartHd">Aging &gt; 90 días (%)</div>
-                <div class="chartBd"><canvas id="chartA90"></canvas></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- BOTTOM: A+B vertical (izq) | histórico MdP (der) -->
-      <div class="bottomSection">
-        <div class="card" style="height:100%;">
-          <div class="card-bd">
-            <div class="bottomGrid">
-
-              <!-- IZQUIERDA = Bloque A + Bloque B -->
-              <div class="blocksCol">
-
-                <div class="act-block">
-                  <div class="act-title">MCI I: Incrementar Cobertura de organización de producto de 76% a 84% durante el 2026.</div>
-                  <div class="act-list">
-
-                    <div class="act-row" id="row_cmpA1">
-                      <div class="act-code">MdP1</div>
-                      <div class="act-text">Ajustar la compra de SKUs con cobertura inferior al 70%, de acuerdo con el análisis de demanda.</div>
-                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpA1"></span></div>
-                    </div>
-
-                    <div class="act-row" id="row_cmpA2">
-                      <div class="act-code">MdP2</div>
-                      <div class="act-text">Sostener reunión semanal con tres gerentes de marca para el análisis de PSI y la definición de planes de acción.</div>
-                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpA2"></span></div>
-                    </div>
-
-                    <div class="act-row" id="row_cmpA3">
-                      <div class="act-code">MdP3</div>
-                      <div class="act-text">Ejecutar compras de forma semanal.</div>
-                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpA3"></span></div>
-                    </div>
-
-                    <div class="act-row" id="row_cmpA4">
-                      <div class="act-code">MdP4</div>
-                      <div class="act-text">Seguimiento a colocación de órdenes a Fabricante</div>
-                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpA4"></span></div>
-                    </div>
-
-                  </div>
-                </div>
-
-                <div class="act-block">
-                  <div class="act-title">MCI II: Mantener los inventarios &gt; 90 días en un porcentaje ≤ 7% del inventario en plaza (OH) en la organización de producto Volumen, para el 31/12/2026.</div>
-                  <div class="act-list">
-
-                    <div class="act-row" id="row_cmpB1">
-                      <div class="act-code">MdP1</div>
-                      <div class="act-text">Dar seguimiento semanal a los backorders, asegurando su cierre dentro de los 3 días posteriores a la recepción del 100% del producto.</div>
-                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpB1"></span></div>
-                    </div>
-
-                    <div class="act-row" id="row_cmpB2">
-                      <div class="act-code">MdP2</div>
-                      <div class="act-text">Generar y revisar el reporte de capas de inventarios para identificar fluctuaciones y definir acciones correctivas en precio, importaciones, inventario comprometido (IC) entre otros.</div>
-                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpB2"></span></div>
-                    </div>
-
-                    <div class="act-row" id="row_cmpB3">
-                      <div class="act-code">MdP3</div>
-                      <div class="act-text">Monitoreo semanalmente el estatus de backorders y ETAs, garantizando visibilidad y control de abastecimiento.</div>
-                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpB3"></span></div>
-                    </div>
-
-                    <div class="act-row" id="row_cmpB4">
-                      <div class="act-code">MdP4</div>
-                      <div class="act-text">Dar seguimiento semanal al cumplimiento del forecast de clientes y marcas, identificando desviaciones y acciones de ajuste oportuno</div>
-                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpB4"></span></div>
-                    </div>
-
-                  </div>
-                </div>
-
-              </div>
-
-              <!-- DERECHA = Histórico MdP -->
-              <div class="histWrap">
+      <div class="playerPhoto" aria-label="Área de Compras"><div class="purchaseAvatar">🛒</div></div>
+      <div class="playerName">COMPRAS</div>
+      <div class="profileSubtitle"><span class="liveDot"></span> PERFIL DE RESULTADOS · ABASTECIMIENTO</div>
+      <div class="histWrap">
                 <div class="histHd">
                   <span>Histórico • MdP (Semáforos)</span>
                   <span style="font-weight:1000;font-size:12px;opacity:.9;">Verde=SÍ · Rojo=NO · Gris=Sin dato</span>
@@ -1043,21 +963,65 @@ body{font-family:Inter,Arial,sans-serif!important;padding:9px!important;color:#f
                   </table>
                 </div>
               </div>
+    </aside>
+    <main class="card rightCard">
+      <div class="feedHeader"><div><span class="feedEyebrow">PERFORMANCE FEED</span><h2>Desempeño de Compras <span class="feedStar">✦</span></h2><p>Cobertura, inventario y evolución de 12 semanas</p></div><div class="feedIcon">✦</div></div>
+      <div class="blocksTop">
+        <section class="block metricBlock"><div class="sectionTitle">MEDIDAS · COBERTURA E INVENTARIO</div><div class="metricsGrid"><table class="kpiTable" aria-label="KPIs">
+              <tbody>
+                <tr>
+                  <td class="kpiName">Cobertura Total</td>
+                  <td class="kpiVal"><span id="kpiCob">--</span><span class="kpiUnit">%</span></td>
+                </tr>
+                <tr>
+                  <td class="kpiName">Aging &gt; 60 días</td>
+                  <td class="kpiVal"><span id="kpiA60">--</span><span class="kpiUnit">%</span></td>
+                </tr>
+                <tr>
+                  <td class="kpiName">Aging &gt; 90 días</td>
+                  <td class="kpiVal"><span id="kpiA90">--</span><span class="kpiUnit">%</span></td>
+                </tr>
+                <tr>
+                  <td class="kpiName">Aging &gt; 180 días</td>
+                  <td class="kpiVal"><span id="kpiA180">--</span><span class="kpiUnit">%</span></td>
+                </tr>
+                <tr class="kpiRowStrong">
+                  <td class="kpiName">Sufijos / Inv OH</td>
+                  <td class="kpiVal"><span id="kpiSuf">--</span><span class="kpiUnit">%</span></td>
+                </tr>
+              </tbody>
+            </table></div></section>
+        <section class="block actionBlock"><div class="act-block">
+                  <div class="act-title">MCI I: Incrementar Cobertura de organización de producto de 76% a 84% durante el 2026.</div>
+                  <div class="act-list">
 
-            </div><!-- /bottomGrid -->
-          </div><!-- /card-bd -->
-        </div><!-- /card -->
-      </div><!-- /bottomSection -->
+                    <div class="act-row" id="row_cmpA1">
+                      <div class="act-code">MdP1</div>
+                      <div class="act-text">Ajustar la compra de SKUs con cobertura inferior al 70%, de acuerdo con el análisis de demanda.</div>
+                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpA1"></span></div>
+                    </div></section>
+        <section class="block actionBlock"><div class="act-block">
+                  <div class="act-title">MCI II: Mantener los inventarios &gt; 90 días en un porcentaje ≤ 7% del inventario en plaza (OH) en la organización de producto Volumen, para el 31/12/2026.</div>
+                  <div class="act-list">
 
-    </div><!-- /main -->
-  </div><!-- /wrap -->
-
-  <!-- Tooltip -->
-  <div class="tooltip" id="tooltip">
-    <div class="t1" id="tipTitle">---</div>
-    <div class="t2" id="tipText">---</div>
+                    <div class="act-row" id="row_cmpB1">
+                      <div class="act-code">MdP1</div>
+                      <div class="act-text">Dar seguimiento semanal a los backorders, asegurando su cierre dentro de los 3 días posteriores a la recepción del 100% del producto.</div>
+                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpB1"></span></div>
+                    </div></section>
+      </div>
+      <div class="chartsBottom"><div class="chartCard">
+                <div class="chartHd">Cobertura Total (%)</div>
+                <div class="chartBd"><canvas id="chartCob"></canvas></div>
+              </div>
+<div class="chartCard">
+                <div class="chartHd">Aging &gt; 90 días (%)</div>
+                <div class="chartBd"><canvas id="chartA90"></canvas></div>
+              </div></div>
+    </main>
   </div>
-
+</div>
+<div class="tooltip" id="tooltip"><div class="t1" id="tipTitle">---</div><div class="t2" id="tipText">---</div></div>
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
 
