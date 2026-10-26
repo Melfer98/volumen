@@ -1346,7 +1346,6 @@ function weeksBackFromWeek(baseWeek, count){
     d = new Date(d.getTime() - 7*24*60*60*1000);
     d.setHours(12,0,0,0);
   }
-  out.reverse();
   return out;
 }
 
@@ -1381,11 +1380,11 @@ async function loadAll(){
     const sorted=recent.filter(r=>r&&/^\d{4}-\d{2}$/.test(String(r.semana||""))).sort((a,b)=>String(b.semana).localeCompare(String(a.semana)));
     const latest=sorted[0]||null;
     const todayWeek=semanaISO(new Date());
-    const baseWeek=latest && String(latest.semana)>todayWeek ? String(latest.semana) : todayWeek;
+    const baseWeek=[todayWeek,"2026-44",latest?.semana||""].sort().at(-1);
     const weekKeys=weeksBackFromWeek(baseWeek,12);
     const byWeek=new Map(sorted.map(r=>[String(r.semana),r]));
     const history=weekKeys.map(semana=>byWeek.get(semana)||{semana});
-    document.getElementById("weekLabel").textContent=latest?.semana||todayWeek;
+    document.getElementById("weekLabel").textContent=baseWeek;
     setStatus(latest?"OK (última carga)":"Sin datos",latest?"good":"bad");
     applyKpis(latest||{}); applyMdP(latest||{});
     renderHistTable(history);
