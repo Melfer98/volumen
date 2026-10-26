@@ -703,6 +703,13 @@ body .players-grid .player-card .semaforo .luz{
 /* Keep only Laura visible in the upper-right portrait slot */
 body .panel.left .left-media>.media-box:not(.lau){display:none!important}
 body .panel.left .left-media>.media-box.lau{flex:1 1 auto!important;min-height:0!important}
+
+/* Match coverage KPI dimensions to all other KPI cards */
+body .mci-block #kpiCobTotal{width:100%!important;max-width:none!important;min-width:0!important;align-self:stretch!important;justify-self:stretch!important}
+@media(min-width:900px){
+ body>.wrap .mci-block #kpiCobTotal{height:100%!important;min-height:0!important}
+ body>.wrap .mci-block:has(#kpiCobTotal) .kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-rows:minmax(0,1fr)!important}
+}
 </style>
 </head>
 
@@ -734,7 +741,7 @@ body .panel.left .left-media>.media-box.lau{flex:1 1 auto!important;min-height:0
             </div>
 
             <div class="kpis">
-              <div class="kpi">
+              <div class="kpi" id="kpiA60">
                 <div class="label">Aging &gt; 60 días</div>
                 <div class="value" id="aging60">--</div>
                 <div class="bar"><span id="bar60"></span></div>
@@ -1037,6 +1044,9 @@ function renderDashboard(payload){
      - Aging > 180: == 0 => verde, > 0 => rojo
      - Incremento % Margen YTD: > 0.16 => verde, si no rojo
   */
+  const a60 = toNum(d.aging60);
+  if(Number.isFinite(a60)) setKpiState("kpiA60", a60 <= 10);
+  else setKpiState("kpiA60", null);
   const a90 = toNum(d.aging90);
   if(Number.isFinite(a90)) setKpiState("kpiA90", a90 <= 6);
   else setKpiState("kpiA90", null);
@@ -1184,7 +1194,7 @@ function wirePlayerClicks(){
     renderCoberturaTotal({data:payload.compras || {}});
   }catch(e){
     console.error(e); applySemaforos([], true);
-    ["kpiA90","kpiA180","kpiMYtd","kpiCobTotal"].forEach(id=>setKpiState(id,null));
+    ["kpiA60","kpiA90","kpiA180","kpiMYtd","kpiCobTotal"].forEach(id=>setKpiState(id,null));
     const el=document.getElementById("cobTotal"); if(el) el.textContent="--"; setBar("barCobTotal",0);
   }finally{ wirePlayerClicks(); }
 })();
