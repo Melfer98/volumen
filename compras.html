@@ -937,6 +937,16 @@ body>.comprasProfile{height:100%!important;width:100%!important;max-width:1800px
  .comprasProfile .semTable tbody tr{height:8.333%!important}
 }
 
+
+/* Purchases portrait: actual Rene photograph, matching Player */
+.comprasProfile .playerPhoto{overflow:hidden!important}
+.comprasProfile .playerPhoto img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 20%!important;border-radius:50%!important;background:transparent!important}
+/* KPI numbers: no individual background or filled highlight */
+.comprasProfile .kpiTable .kpiVal,.comprasProfile .kpiTable .kpiVal *,
+.comprasProfile .kpiTable .kpiUnit{background:transparent!important;background-image:none!important;box-shadow:none!important;border:0!important;text-shadow:none!important}
+.comprasProfile .kpiTable tr.kpi-good .kpiVal{color:#116c3b!important;-webkit-text-fill-color:#116c3b!important}
+.comprasProfile .kpiTable tr.kpi-bad .kpiVal{color:#b11c36!important;-webkit-text-fill-color:#b11c36!important}
+
 </style>
 </head>
 
@@ -948,7 +958,7 @@ body>.comprasProfile{height:100%!important;width:100%!important;max-width:1800px
         <div class="titleBlock"><div class="title">COMPRAS · RESULTADOS</div><div class="status">Semana <span id="weekLabel">----</span> · <span id="fetchStatus">Listo</span></div></div>
         <a class="btn" href="index.html">INICIO</a>
       </div>
-      <div class="playerPhoto" aria-label="Área de Compras"><div class="purchaseAvatar">🛒</div></div>
+      <div class="playerPhoto" aria-label="Fotografía de René"><img src="images/rene.png" alt="René" loading="eager" decoding="async"></div>
       <div class="playerName">COMPRAS</div>
       <div class="profileSubtitle"><span class="liveDot"></span> PERFIL DE RESULTADOS · ABASTECIMIENTO</div>
       <div class="histWrap">
@@ -1340,19 +1350,18 @@ async function loadAll(){
     const {res,json}=await fetchJson("https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=compras&limit=12");
     if(!res.ok || !json || !json.ok) throw new Error("API");
     const recent=Array.isArray(json.data)?json.data:[];
-    if(!recent.length){
-      document.getElementById("weekLabel").textContent="--";
-      setStatus("Sin datos","bad");
-      applyKpis({}); applyMdP({});
-      renderCharts([]); renderHistTable([]);
-      return;
-    }
-    const latest=recent[0];
-    document.getElementById("weekLabel").textContent=latest.semana || "--";
-    setStatus("OK (última carga)","good");
-    applyKpis(latest); applyMdP(latest);
-    const rows=recent.slice().reverse();
-    renderCharts(rows); renderHistTable(rows);
+    const sorted=recent.filter(r=>r&&/^\\d{4}-\\d{2}$/.test(String(r.semana||""))).sort((a,b)=>String(b.semana).localeCompare(String(a.semana)));
+    const latest=sorted[0]||null;
+    const todayWeek=semanaISO(new Date());
+    const baseWeek=latest && String(latest.semana)>todayWeek ? String(latest.semana) : todayWeek;
+    const weekKeys=weeksBackFromWeek(baseWeek,12);
+    const byWeek=new Map(sorted.map(r=>[String(r.semana),r]));
+    const history=weekKeys.map(semana=>byWeek.get(semana)||{semana});
+    document.getElementById("weekLabel").textContent=latest?.semana||todayWeek;
+    setStatus(latest?"OK (última carga)":"Sin datos",latest?"good":"bad");
+    applyKpis(latest||{}); applyMdP(latest||{});
+    renderHistTable(history);
+    renderCharts(history.slice().reverse());
   }catch(_){
     setStatus("Error de conexión","bad"); applyKpis({}); applyMdP({});
   }
