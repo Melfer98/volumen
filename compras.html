@@ -1292,7 +1292,7 @@ function weeksBackList(count){
 async function loadAll(){
   setStatus("Cargando...", null);
   try{
-    const {res,json}=await fetchJson("https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=compras&limit=10");
+    const {res,json}=await fetchJson("https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=compras&limit=12");
     if(!res.ok || !json || !json.ok) throw new Error("API");
     const recent=Array.isArray(json.data)?json.data:[];
     if(!recent.length){
