@@ -1054,11 +1054,12 @@ th,.semTable th{background:#a42f49!important}
 .bell-audio-toggle:focus-visible{outline:3px solid #fff;outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.christmas-bell{animation:none}}
 
+.christmas-bells{position:absolute;top:7px;left:70px;right:16px;z-index:19;display:flex;justify-content:space-between;pointer-events:none}.bell-group{display:flex;gap:8px}.christmas-bell{font-size:clamp(15px,1.5vw,24px);animation:bell-sway 3s ease-in-out infinite;transform-origin:50% 0}.christmas-bell:nth-child(even){animation-delay:-1.5s}@media(max-width:900px){.christmas-bells{left:62px;right:8px}.bell-group{gap:2px}.bell-group .christmas-bell:nth-child(n+4){display:none}}
 </style>
 </head>
 
 <body>
-<div class="christmas-bells"><span class="christmas-bell" aria-hidden="true">🔔</span><span class="christmas-bell" aria-hidden="true">🔔</span><button class="bell-audio-toggle" id="bellAudioToggle" type="button" aria-pressed="false" title="Activar sonido de cascabeles">🔇 Activar sonido</button></div>
+
 <div class="snowfall" aria-hidden="true">
 <span class="snowflake" style="--snow-x:11%;--snow-size:8px;--snow-duration:11s;--snow-delay:0s;--snow-drift:-55px;--snow-opacity:0.35">❄︎</span>
 <span class="snowflake" style="--snow-x:48%;--snow-size:15px;--snow-duration:14s;--snow-delay:-5s;--snow-drift:-38px;--snow-opacity:0.42">❄︎</span>
@@ -1115,7 +1116,7 @@ th,.semTable th{background:#a42f49!important}
 <span class="snowflake" style="--snow-x:30%;--snow-size:13px;--snow-duration:24s;--snow-delay:-22s;--snow-drift:-34px;--snow-opacity:0.7">❄︎</span>
 <span class="snowflake" style="--snow-x:71%;--snow-size:10px;--snow-duration:13s;--snow-delay:-2s;--snow-drift:-11px;--snow-opacity:0.7">❄︎</span>
 </div>
-  <div class="wrap">
+  <div class="wrap"><div class="christmas-bells" aria-hidden="true"><div class="bell-group"><span class="christmas-bell">&#128276;</span><span class="christmas-bell">&#128276;</span><span class="christmas-bell">&#128276;</span><span class="christmas-bell">&#128276;</span><span class="christmas-bell">&#128276;</span></div><div class="bell-group"><span class="christmas-bell">&#128276;</span><span class="christmas-bell">&#128276;</span><span class="christmas-bell">&#128276;</span><span class="christmas-bell">&#128276;</span><span class="christmas-bell">&#128276;</span></div></div>
 
 <a href="https://melfer98.github.io/volumen/form.html" class="form-icon" title="Abrir formulario">
   <svg viewBox="0 0 24 24" aria-hidden="true">
