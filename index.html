@@ -1037,10 +1037,49 @@ th,.semTable th{background:#a42f49!important}
  body>.wrap>.grid>.panel.left{grid-template-columns:minmax(0,1fr) 155px!important}
 }
 
+
+/* Copos navideños: capa decorativa discreta, sin bloquear controles */
+.snowfall{position:fixed;inset:0;z-index:100;pointer-events:none;overflow:hidden;contain:strict}
+.snowflake{position:absolute;top:-25px;left:var(--snow-x);font-size:var(--snow-size);line-height:1;color:rgba(255,255,255,var(--snow-opacity));text-shadow:0 0 5px rgba(255,255,255,.28);animation:snow-fall var(--snow-duration) linear var(--snow-delay) infinite;will-change:transform;user-select:none}
+@keyframes snow-fall{from{transform:translate3d(0,-25px,0) rotate(0deg)}to{transform:translate3d(var(--snow-drift),calc(100dvh + 50px),0) rotate(260deg)}}
+@media(prefers-reduced-motion:reduce){.snowfall{display:none!important}}
+
 </style>
 </head>
 
 <body>
+<div class="snowfall" aria-hidden="true">
+<span class="snowflake" style="--snow-x:11%;--snow-size:8px;--snow-duration:11s;--snow-delay:0s;--snow-drift:-55px;--snow-opacity:0.35">❄</span>
+<span class="snowflake" style="--snow-x:48%;--snow-size:15px;--snow-duration:14s;--snow-delay:-5s;--snow-drift:-38px;--snow-opacity:0.42">❄</span>
+<span class="snowflake" style="--snow-x:85%;--snow-size:10px;--snow-duration:17s;--snow-delay:-10s;--snow-drift:-21px;--snow-opacity:0.49">❄</span>
+<span class="snowflake" style="--snow-x:22%;--snow-size:17px;--snow-duration:20s;--snow-delay:-15s;--snow-drift:-4px;--snow-opacity:0.56">❄</span>
+<span class="snowflake" style="--snow-x:59%;--snow-size:12px;--snow-duration:23s;--snow-delay:-20s;--snow-drift:13px;--snow-opacity:0.63">❄</span>
+<span class="snowflake" style="--snow-x:96%;--snow-size:19px;--snow-duration:13s;--snow-delay:-2s;--snow-drift:30px;--snow-opacity:0.70">❄</span>
+<span class="snowflake" style="--snow-x:33%;--snow-size:14px;--snow-duration:16s;--snow-delay:-7s;--snow-drift:47px;--snow-opacity:0.77">❄</span>
+<span class="snowflake" style="--snow-x:70%;--snow-size:9px;--snow-duration:19s;--snow-delay:-12s;--snow-drift:-46px;--snow-opacity:0.39">❄</span>
+<span class="snowflake" style="--snow-x:7%;--snow-size:16px;--snow-duration:22s;--snow-delay:-17s;--snow-drift:-29px;--snow-opacity:0.46">❄</span>
+<span class="snowflake" style="--snow-x:44%;--snow-size:11px;--snow-duration:12s;--snow-delay:-22s;--snow-drift:-12px;--snow-opacity:0.53">❄</span>
+<span class="snowflake" style="--snow-x:81%;--snow-size:18px;--snow-duration:15s;--snow-delay:-4s;--snow-drift:5px;--snow-opacity:0.60">❄</span>
+<span class="snowflake" style="--snow-x:18%;--snow-size:13px;--snow-duration:18s;--snow-delay:-9s;--snow-drift:22px;--snow-opacity:0.67">❄</span>
+<span class="snowflake" style="--snow-x:55%;--snow-size:8px;--snow-duration:21s;--snow-delay:-14s;--snow-drift:39px;--snow-opacity:0.74">❄</span>
+<span class="snowflake" style="--snow-x:92%;--snow-size:15px;--snow-duration:11s;--snow-delay:-19s;--snow-drift:-54px;--snow-opacity:0.36">❄</span>
+<span class="snowflake" style="--snow-x:29%;--snow-size:10px;--snow-duration:14s;--snow-delay:-1s;--snow-drift:-37px;--snow-opacity:0.43">❄</span>
+<span class="snowflake" style="--snow-x:66%;--snow-size:17px;--snow-duration:17s;--snow-delay:-6s;--snow-drift:-20px;--snow-opacity:0.50">❄</span>
+<span class="snowflake" style="--snow-x:3%;--snow-size:12px;--snow-duration:20s;--snow-delay:-11s;--snow-drift:-3px;--snow-opacity:0.57">❄</span>
+<span class="snowflake" style="--snow-x:40%;--snow-size:19px;--snow-duration:23s;--snow-delay:-16s;--snow-drift:14px;--snow-opacity:0.64">❄</span>
+<span class="snowflake" style="--snow-x:77%;--snow-size:14px;--snow-duration:13s;--snow-delay:-21s;--snow-drift:31px;--snow-opacity:0.71">❄</span>
+<span class="snowflake" style="--snow-x:14%;--snow-size:9px;--snow-duration:16s;--snow-delay:-3s;--snow-drift:48px;--snow-opacity:0.78">❄</span>
+<span class="snowflake" style="--snow-x:51%;--snow-size:16px;--snow-duration:19s;--snow-delay:-8s;--snow-drift:-45px;--snow-opacity:0.40">❄</span>
+<span class="snowflake" style="--snow-x:88%;--snow-size:11px;--snow-duration:22s;--snow-delay:-13s;--snow-drift:-28px;--snow-opacity:0.47">❄</span>
+<span class="snowflake" style="--snow-x:25%;--snow-size:18px;--snow-duration:12s;--snow-delay:-18s;--snow-drift:-11px;--snow-opacity:0.54">❄</span>
+<span class="snowflake" style="--snow-x:62%;--snow-size:13px;--snow-duration:15s;--snow-delay:0s;--snow-drift:6px;--snow-opacity:0.61">❄</span>
+<span class="snowflake" style="--snow-x:99%;--snow-size:8px;--snow-duration:18s;--snow-delay:-5s;--snow-drift:23px;--snow-opacity:0.68">❄</span>
+<span class="snowflake" style="--snow-x:36%;--snow-size:15px;--snow-duration:21s;--snow-delay:-10s;--snow-drift:40px;--snow-opacity:0.75">❄</span>
+<span class="snowflake" style="--snow-x:73%;--snow-size:10px;--snow-duration:11s;--snow-delay:-15s;--snow-drift:-53px;--snow-opacity:0.37">❄</span>
+<span class="snowflake" style="--snow-x:10%;--snow-size:17px;--snow-duration:14s;--snow-delay:-20s;--snow-drift:-36px;--snow-opacity:0.44">❄</span>
+<span class="snowflake" style="--snow-x:47%;--snow-size:12px;--snow-duration:17s;--snow-delay:-2s;--snow-drift:-19px;--snow-opacity:0.51">❄</span>
+<span class="snowflake" style="--snow-x:84%;--snow-size:19px;--snow-duration:20s;--snow-delay:-7s;--snow-drift:-2px;--snow-opacity:0.58">❄</span>
+</div>
   <div class="wrap">
 
 <a href="https://melfer98.github.io/volumen/form.html" class="form-icon" title="Abrir formulario">
