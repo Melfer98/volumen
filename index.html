@@ -651,6 +651,26 @@ body{display:block!important;overflow-y:auto!important}
  body>.wrap .mci-block .kpi{padding:4px 6px!important}
 }
 
+
+/* Center seven traffic lights over each player portrait */
+body .players-grid .player-card{position:relative!important}
+body .players-grid .player-card .semaforo{
+ position:absolute!important;
+ left:50%!important;right:auto!important;
+ bottom:6px!important;
+ transform:translateX(-50%)!important;
+ width:max-content!important;max-width:calc(100% - 12px)!important;
+ margin:0!important;padding:0!important;
+ display:flex!important;flex-direction:row!important;
+ align-items:center!important;justify-content:center!important;
+ gap:clamp(2px,.28vw,5px)!important;
+ z-index:10!important;
+}
+body .players-grid .player-card .semaforo .luz{
+ display:block!important;flex:0 1 auto!important;
+ width:clamp(9px,.9vw,16px)!important;height:clamp(9px,.9vw,16px)!important;
+ min-width:0!important;aspect-ratio:1!important;
+}
 </style>
 </head>
 
