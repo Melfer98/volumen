@@ -691,7 +691,6 @@ a{color:#9bf2c7!important;-webkit-text-fill-color:#9bf2c7!important}
               <div class="kpi"><div class="label">Aging &gt; 60</div><div class="value" id="aging60">--</div></div>
               <div class="kpi"><div class="label">Aging &gt; 90</div><div class="value" id="aging90">--</div></div>
               <div class="kpi"><div class="label">Aging &gt; 180</div><div class="value" id="aging180">--</div></div>
-              <div class="kpi"><div class="label">Reservas</div><div class="value" id="reservas">--</div></div>
               <div class="kpi"><div class="label">Sufijos</div><div class="value" id="sufijos">--</div></div>
             </div>
           </div>
@@ -990,7 +989,6 @@ function renderAll(player, payload){
   setText("aging60",  fmtPct(getField(latestData, "aging60")));
   setText("aging90",  fmtPct(getField(latestData, "aging90")));
   setText("aging180", fmtPct(getField(latestData, "aging180")));
-  setText("reservas", fmtPct(getField(latestData, "reservas")));
   setText("sufijos",  fmtPct(getField(latestData, "sufijos")));
 
   setText("margenSem", fmtPct(getField(latestData, "margen_semanal")));
