@@ -1227,7 +1227,7 @@ th,.semTable th{background:#a42f49!important}
           </div>
 
           <div class="player-card" data-player="rene"><img src="images/rene.png" alt="" loading="lazy" decoding="async">
-            <div class="semaforo"><span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span><span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span></div>
+            <div class="semaforo"><span class="luz a1 gray"></span><span class="luz a2 gray"></span><span class="luz a3 gray"></span><span class="luz a4 gray"></span><span class="luz b1 gray"></span><span class="luz b2 gray"></span><span class="luz b3 gray"></span><span class="luz b4 gray"></span></div>
           </div>
 
         </div>
@@ -1486,6 +1486,25 @@ function applySemaforos(rows, makeGrayAll){
   });
 }
 
+
+/* René pertenece a Compras: cuatro MdP por cada MCI (8 semáforos). */
+async function loadReneSemaforos(){
+  const card=document.querySelector('.player-card[data-player="rene"]');
+  if(!card)return;
+  const dots=[...card.querySelectorAll(".semaforo .luz")];
+  dots.forEach(dot=>setLightState(dot,"gray"));
+  try{
+    const res=await fetch("https://qtdllzlsittpuzetmtwh.supabase.co/functions/v1/scoreboard-api?action=compras&limit=12",{cache:"no-store"});
+    const json=await res.json();
+    if(!res.ok||!json?.ok)throw new Error("Compras no disponible");
+    const rows=Array.isArray(json.data)?json.data:[];
+    const latest=rows[0];
+    if(!latest)return;
+    const keys=["cmpA1","cmpA2","cmpA3","cmpA4","cmpB1","cmpB2","cmpB3","cmpB4"];
+    keys.forEach((key,i)=>setLightState(dots[i],toLightState(pick(latest,key,key.toLowerCase()))));
+  }catch(err){console.warn("Semáforos de René:",err)}
+}
+
 function wirePlayerClicks(){
   document.querySelectorAll(".player-card").forEach(card => {
     card.style.cursor = "pointer";
@@ -1515,6 +1534,7 @@ function wirePlayerClicks(){
     if(t) t.textContent = "SCOREBOARD VOLUME SEMANA " + week2DigitsFromKey(usedWeek);
     applySemaforos(payload.rows || [], false);
     renderCoberturaTotal({data:payload.compras || {}});
+    await loadReneSemaforos();
   }catch(e){
     console.error(e); applySemaforos([], true);
     ["kpiA60","kpiA90","kpiA180","kpiMYtd","kpiCobTotal"].forEach(id=>setKpiState(id,null));
