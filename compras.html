@@ -947,6 +947,27 @@ body>.comprasProfile{height:100%!important;width:100%!important;max-width:1800px
 .comprasProfile .kpiTable tr.kpi-good .kpiVal{color:#116c3b!important;-webkit-text-fill-color:#116c3b!important}
 .comprasProfile .kpiTable tr.kpi-bad .kpiVal{color:#b11c36!important;-webkit-text-fill-color:#b11c36!important}
 
+
+/* Match Player's clean history and chart styling */
+.comprasProfile .histHd{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:5px!important;background:#8e3047!important;color:#fffaf1!important;-webkit-text-fill-color:#fffaf1!important}
+.comprasProfile .histHd span:last-child{font-size:9px!important;white-space:nowrap!important}
+.comprasProfile .histBd{padding:5px!important;background:#fffaf1!important}
+.comprasProfile .semTable{height:100%!important;width:100%!important;table-layout:fixed!important;border-collapse:separate!important;border-spacing:0!important;background:#fffaf1!important}
+.comprasProfile .semTable thead{height:29px!important}
+.comprasProfile .semTable tbody{height:calc(100% - 29px)!important}
+.comprasProfile .semTable tbody tr{height:8.333333%!important}
+.comprasProfile .semTable th{background:#8e3047!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:clamp(8px,.65vw,10px)!important;padding:4px 1px!important}
+.comprasProfile .semTable td{background:#fffaf1!important;color:#5c3845!important;-webkit-text-fill-color:#5c3845!important;border-bottom:1px solid #e9d9c7!important;text-align:center!important;vertical-align:middle!important;padding:1px!important}
+.comprasProfile .semTable td.left{color:#802a42!important;-webkit-text-fill-color:#802a42!important;font-weight:900!important}
+.comprasProfile .semDot{display:inline-block!important;width:clamp(12px,1.2vw,20px)!important;height:clamp(12px,1.2vw,20px)!important;border-radius:50%!important;border:2px solid #fff!important;vertical-align:middle!important}
+.comprasProfile .semDot.dot-yes{background:#08a64b!important;box-shadow:0 0 0 2px #087a3b!important}
+.comprasProfile .semDot.dot-no{background:#ed2440!important;box-shadow:0 0 0 2px #b31b32!important}
+.comprasProfile .semDot.dot-na{background:#a7adb5!important;box-shadow:0 0 0 2px #7d8791!important}
+.comprasProfile .chartCard{background:#fffaf1!important;border:1px solid #e5c78f!important}
+.comprasProfile .chartHd{background:#8f3046!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
+.comprasProfile .chartBd{background:#fffaf1!important}
+@media(max-width:760px){.comprasProfile .semDot{width:9px!important;height:9px!important;border-width:1px!important}.comprasProfile .histHd span:last-child{font-size:7px!important}}
+
 </style>
 </head>
 
@@ -963,23 +984,23 @@ body>.comprasProfile{height:100%!important;width:100%!important;max-width:1800px
       <div class="profileSubtitle"><span class="liveDot"></span> PERFIL DE RESULTADOS · ABASTECIMIENTO</div>
       <div class="histWrap">
                 <div class="histHd">
-                  <span>Histórico • MdP (Semáforos)</span>
-                  <span style="font-weight:1000;font-size:12px;opacity:.9;">Verde=SÍ · Rojo=NO · Gris=Sin dato</span>
+                  <span>Histórico • MdP (12 semanas)</span>
+                  <span style="font-weight:1000;font-size:12px;opacity:.9;">Reciente → Antigua</span>
                 </div>
 
                 <div class="histBd">
                   <table class="semTable" id="semTable">
                     <thead>
                       <tr>
-                        <th class="left" style="width:99px;">Semana</th>
-                        <th data-tip="cmpA1">I.MdP1</th>
-                        <th data-tip="cmpA2">I.MdP2</th>
-                        <th data-tip="cmpA3">I.MdP3</th>
-                        <th data-tip="cmpA4">I.MdP4</th>
-                        <th data-tip="cmpB1">II.MdP1</th>
-                        <th data-tip="cmpB2">II.MdP2</th>
-                        <th data-tip="cmpB3">II.MdP3</th>
-                        <th data-tip="cmpB4">II.MdP4</th>
+                        <th class="left" style="width:68px;">Semana</th>
+                        <th data-tip="cmpA1">I.1</th>
+                        <th data-tip="cmpA2">I.2</th>
+                        <th data-tip="cmpA3">I.3</th>
+                        <th data-tip="cmpA4">I.4</th>
+                        <th data-tip="cmpB1">II.1</th>
+                        <th data-tip="cmpB2">II.2</th>
+                        <th data-tip="cmpB3">II.3</th>
+                        <th data-tip="cmpB4">II.4</th>
                       </tr>
                     </thead>
                     <tbody id="semBody">
@@ -1255,7 +1276,14 @@ function buildLineChart(canvasId, labels, values){
         data: values,
         tension: 0.3,
         pointRadius: 3,
-        borderWidth: 2,
+        borderWidth: 3,
+        borderColor: isCob ? "#138553" : "#dc354b",
+        backgroundColor: isCob ? "#138553" : "#dc354b",
+        pointBackgroundColor: isCob ? "#138553" : "#dc354b",
+        pointBorderColor: "#ffffff",
+        pointBorderWidth: 2,
+        pointHoverRadius: 6,
+        spanGaps: false,
         fill: false
       }]
     },
@@ -1274,11 +1302,11 @@ function buildLineChart(canvasId, labels, values){
 function renderCharts(rows){
   const labels = rows.map(r=>r.semana || "");
   const cob = rows.map(r=>{
-    const n = Number(r.cobertura_total);
+    const n = r.cobertura_total === null || r.cobertura_total === undefined || r.cobertura_total === "" ? NaN : Number(r.cobertura_total);
     return Number.isFinite(n) ? n : null;
   });
   const a90 = rows.map(r=>{
-    const n = Number(r.aging90);
+    const n = r.aging90 === null || r.aging90 === undefined || r.aging90 === "" ? NaN : Number(r.aging90);
     return Number.isFinite(n) ? n : null;
   });
 
