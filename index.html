@@ -1620,52 +1620,40 @@ function wirePlayerClicks(){
 
 
 <script>
-/* Sonido navideño generado localmente, sin archivos externos.
-   Los navegadores requieren interacción del usuario para habilitar audio. */
+/* Cascabeles musicales sintetizados en el navegador. */
 (function(){
-  const btn=document.getElementById('bellAudioToggle');
-  let ctx=null,enabled=false,lastPlayed=0,interval=null;
-  function chime(){
-    if(!enabled||!ctx||ctx.state!=='running')return;
-    const t=ctx.currentTime;
-    [0,0.11,0.24].forEach((offset,i)=>{
-      const base=[1174.66,1318.51,1567.98][i];
-      [1,2.01,2.99].forEach((harm,j)=>{
-        const osc=ctx.createOscillator(),gain=ctx.createGain();
-        osc.type='sine';osc.frequency.setValueAtTime(base*harm,t+offset);
-        const vol=[.045,.014,.005][j];
-        gain.gain.setValueAtTime(.0001,t+offset);
-        gain.gain.exponentialRampToValueAtTime(vol,t+offset+.012);
-        gain.gain.exponentialRampToValueAtTime(.0001,t+offset+1.15);
-        osc.connect(gain);gain.connect(ctx.destination);
-        osc.start(t+offset);osc.stop(t+offset+1.2);
-      });
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC)return;
+  let audio=null,playing=false;
+  function note(f,t){
+    [1,2.01,2.98].forEach((h,i)=>{
+      const o=audio.createOscillator(),g=audio.createGain();
+      o.type='sine';o.frequency.value=f*h;
+      g.gain.setValueAtTime(.0001,t);
+      g.gain.exponentialRampToValueAtTime([.032,.012,.004][i],t+.01);
+      g.gain.exponentialRampToValueAtTime(.0001,t+.65);
+      o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.7);
     });
   }
-  async function enable(){
-    const AudioContext=window.AudioContext||window.webkitAudioContext;
-    if(!AudioContext){btn.textContent='Audio no disponible';btn.disabled=true;return}
+  function play(){
+    if(!playing||document.hidden||audio.state!=='running')return;
+    const t=audio.currentTime+.05;
+    [1318.5,1568,1760,1568,1318.5,1174.7,1318.5,1568,1760,1975.5,1760,1568].forEach((f,i)=>note(f,t+i*.2));
+  }
+  async function begin(){
+    if(playing)return;
     try{
-      ctx=ctx||new AudioContext();
-      await ctx.resume();
-      enabled=true;btn.textContent='🔔 Silenciar';btn.setAttribute('aria-pressed','true');
-      chime();interval=window.setInterval(chime,14000);
-    }catch(e){console.warn('No se pudo activar el sonido',e)}
+      audio=audio||new AC();
+      await audio.resume();
+      if(audio.state!=='running')return;
+      playing=true;play();setInterval(play,13000);
+      document.removeEventListener('pointerdown',begin);
+      document.removeEventListener('keydown',begin);
+    }catch(e){console.warn('Audio no disponible',e)}
   }
-  function disable(){
-    enabled=false;if(interval){clearInterval(interval);interval=null}
-    btn.textContent='🔇 Activar sonido';btn.setAttribute('aria-pressed','false');
-  }
-  btn.addEventListener('click',function(e){e.stopPropagation();if(enabled)disable();else enable()});
-  document.addEventListener('click',function firstClick(e){
-    if(e.target===btn||btn.contains(e.target))return;
-    if(!enabled)enable();
-    document.removeEventListener('click',firstClick);
-  });
-  document.addEventListener('visibilitychange',function(){
-    if(document.hidden&&interval){clearInterval(interval);interval=null}
-    else if(!document.hidden&&enabled&&!interval)interval=setInterval(chime,14000);
-  });
+  document.addEventListener('pointerdown',begin);
+  document.addEventListener('keydown',begin);
+  begin();
 })();
 </script>
 
