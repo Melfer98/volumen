@@ -620,6 +620,37 @@ body{display:block!important;overflow-y:auto!important}
 }
 @media (min-width:1050px) and (max-height:649px){.wrap{margin:0!important;width:100%!important}.left-stack{grid-template-columns:repeat(3,minmax(0,1fr))!important}.mci-block:first-of-type{grid-column:auto!important}}
 
+
+/* SCREEN-FIT V2: consistent hierarchy and no vertical scrolling on desktop */
+@media (min-width:900px){
+ html,body{height:100%!important;max-height:100%!important;overflow:hidden!important}
+ body>.wrap{width:100%!important;max-width:none!important;height:100dvh!important;min-height:0!important;max-height:100dvh!important;margin:0!important;padding:8px 12px!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;box-sizing:border-box!important}
+ body>.wrap>.top-title{font-size:clamp(17px,1.55vw,26px)!important;line-height:1.15!important;padding:7px 55px 9px!important;flex:0 0 auto!important}
+ body>.wrap>.grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,42fr) minmax(0,58fr)!important;gap:8px!important;flex:1 1 auto!important;height:0!important;min-height:0!important;overflow:hidden!important}
+ body>.wrap>.grid>.panel.left{display:block!important;min-height:0!important;height:100%!important;overflow:hidden!important;padding:8px 10px!important}
+ body>.wrap>.grid>.panel.left>.left-stack{display:grid!important;grid-template-columns:1.3fr 1fr .78fr!important;grid-template-rows:minmax(0,1fr)!important;gap:9px!important;height:100%!important;min-height:0!important;align-items:stretch!important}
+ body>.wrap .left-stack>.mci-block,body>.wrap .left-stack>.mci-block:first-of-type{grid-column:auto!important;min-width:0!important;height:100%!important;min-height:0!important;padding:8px!important;display:flex!important;flex-direction:column!important;gap:6px!important;overflow:hidden!important}
+ body>.wrap .mci-block h3{font-size:clamp(11px,.9vw,15px)!important;margin:0!important;line-height:1.15!important}
+ body>.wrap .mci-block .goal{font-size:clamp(9px,.68vw,12px)!important;line-height:1.25!important;padding:7px 8px!important;margin:0!important;flex:0 0 auto!important}
+ body>.wrap .mci-block .kpis{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-rows:minmax(0,1fr)!important;gap:6px!important;min-height:0!important;flex:1 1 auto!important;align-content:stretch!important}
+ body>.wrap .mci-block:first-of-type .kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body>.wrap .mci-block .kpi{width:auto!important;min-width:0!important;min-height:0!important;height:auto!important;padding:7px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;overflow:hidden!important}
+ body>.wrap .kpi .label{font-size:clamp(9px,.68vw,12px)!important;line-height:1.18!important;overflow-wrap:anywhere!important}
+ body>.wrap .kpi .value{font-size:clamp(15px,1.45vw,25px)!important;line-height:1.15!important;white-space:nowrap!important;overflow:visible!important}
+ body>.wrap .kpi .bar{margin-top:5px!important;height:5px!important}
+ body>.wrap>.grid>.panel.players{height:100%!important;min-height:0!important;overflow:hidden!important;padding:8px 10px!important;display:flex!important;flex-direction:column!important}
+ body>.wrap>.grid>.panel.players:before{font-size:12px!important;margin-bottom:6px!important;flex:0 0 auto!important}
+ body>.wrap .players-grid{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;grid-auto-rows:minmax(0,1fr)!important;gap:7px!important;flex:1 1 auto!important;height:0!important;min-height:0!important;overflow:hidden!important}
+ body>.wrap .players-grid>.player-card{width:100%!important;height:100%!important;min-height:0!important;aspect-ratio:auto!important;overflow:hidden!important}
+ body>.wrap .player-card img{height:100%!important;max-height:100%!important;object-fit:cover!important}
+ body>.wrap .left-media{display:none!important}
+}
+@media (min-width:900px) and (max-height:760px){
+ body>.wrap>.grid{grid-template-rows:minmax(0,46fr) minmax(0,54fr)!important}
+ body>.wrap .mci-block .goal{font-size:9px!important;padding:4px 6px!important}
+ body>.wrap .mci-block .kpi{padding:4px 6px!important}
+}
+
 </style>
 </head>
 
