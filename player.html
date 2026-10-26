@@ -862,6 +862,24 @@ th,.semTable th{background:#a42f49!important}
 .kpi.kpi-ok .value{color:#167342!important;-webkit-text-fill-color:#167342!important;font-weight:900!important}
 .kpi.kpi-ok .bar span{background:#248b54!important}
 
+
+/* PLAYER: strong traffic-light colors, compliance and readable charts */
+.semTable{background:#fffaf1!important;border:1px solid #e8cfa5!important}
+.semTable th{background:#8e3046!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
+.semTable td{background:#fffaf1!important;color:#35242b!important;-webkit-text-fill-color:#35242b!important;border-bottom:1px solid #e8dccc!important}
+.semTable td.left{font-weight:900!important;color:#722b40!important;-webkit-text-fill-color:#722b40!important}
+.semDot{width:clamp(14px,1.15vw,18px)!important;height:clamp(14px,1.15vw,18px)!important;border:2px solid rgba(255,255,255,.95)!important}
+.semDot.dot-yes{background:#08a64b!important;box-shadow:0 0 0 2px #087a3b,0 0 9px rgba(8,166,75,.3)!important}
+.semDot.dot-no{background:#ed2440!important;box-shadow:0 0 0 2px #b31b32,0 0 9px rgba(237,36,64,.3)!important}
+.semDot.dot-na{background:#a7adb5!important;box-shadow:0 0 0 2px #7d8791!important}
+#compPrevPill.badge{font-weight:900!important;letter-spacing:.025em!important;border:2px solid transparent!important}
+#compPrevPill.badge.ok{background:#d8f8e5!important;color:#116b39!important;-webkit-text-fill-color:#116b39!important;border-color:#1caa59!important}
+#compPrevPill.badge.no{background:#ffe2e5!important;color:#b21b35!important;-webkit-text-fill-color:#b21b35!important;border-color:#e62b47!important}
+#compPrevPill.badge.na{background:#f1ede7!important;color:#59515a!important;-webkit-text-fill-color:#59515a!important;border-color:#bdb3ad!important}
+.chartCard{background:#fffaf1!important;border:1px solid #e5c78f!important}
+.chartHd{background:#8f3046!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border-color:#e5c78f!important}
+.chartBd{background:#fffaf1!important}
+
 </style>
 </head>
 
@@ -1132,6 +1150,7 @@ let chartA90 = null;
 let chartMYTD = null;
 
 function buildLineChart(canvasId, labels, values){
+  const isAging = canvasId === "chartA90";
   const ctx = document.getElementById(canvasId).getContext("2d");
   return new Chart(ctx, {
     type: "line",
@@ -1149,10 +1168,10 @@ function buildLineChart(canvasId, labels, values){
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display:false }, tooltip: { enabled:true } },
+      plugins: { legend: { display:false }, tooltip: { enabled:true, backgroundColor:"#442333", titleColor:"#fffaf1", bodyColor:"#fffaf1" } },
       scales: {
-        x: { ticks: { maxRotation:0, autoSkip:true } },
-        y: { ticks: { callback: (v)=> Number(v).toFixed(0) + "%" } }
+        x: { ticks: { maxRotation:0, autoSkip:true, color:"#513640", font:{weight:"bold"} }, grid:{color:"rgba(98,63,70,.10)"} },
+        y: { ticks: { color:"#513640", callback: (v)=> Number(v).toFixed(0) + "%" }, grid:{color:"rgba(98,63,70,.15)"} }
       }
     }
   });
