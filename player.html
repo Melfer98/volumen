@@ -1187,7 +1187,7 @@ body>.wrap .metricsGrid .kpi.kpi-bad .label,body>.wrap .metricsGrid .kpi.kpi-bad
 
         <div class="histWrap">
           <div class="histHd">
-            <span>Histórico • MdP (10 semanas)</span>
+            <span>Histórico • MdP (12 semanas)</span>
             <span style="font-weight:1000;font-size:10px;opacity:.9;">Reciente → Antigua</span>
           </div>
           <div class="histBd">
@@ -1329,10 +1329,10 @@ function getWeekKey(row){
   return row?.week_key || row?.semana || "";
 }
 
-function getLast8RecentFirst(history){
+function getLast12RecentFirst(history){
   const rows = Array.isArray(history) ? [...history] : [];
   rows.sort((a,b) => weekSortValue(getWeekKey(b)) - weekSortValue(getWeekKey(a)));
-  return rows.slice(0,10);
+  return rows.slice(0,12);
 }
 
 function fmtMoney(v){
@@ -1406,7 +1406,7 @@ function renderHistTable(history){
   const tbody = document.getElementById("semBodyMdp");
   tbody.innerHTML = "";
 
-  const rows = getLast8RecentFirst(history);
+  const rows = getLast12RecentFirst(history);
   const frag = document.createDocumentFragment();
 
   for(const r of rows){
@@ -1466,7 +1466,7 @@ function buildLineChart(canvasId, labels, values){
 }
 
 function renderCharts(history){
-  const rows = getLast8RecentFirst(history).slice().reverse();
+  const rows = getLast12RecentFirst(history).slice().reverse();
   const labels = rows.map(r => getWeekKey(r) || "");
   const a90 = rows.map(r => {
     const n = Number(getField(r, "aging90"));
