@@ -564,6 +564,34 @@ div#titleTop.top-title{
 .tooltip{background:#f2faf5!important;border-color:#35d493!important;color:#10291e!important}
 .tooltip .t1,.tooltip .t2{color:#123b2a!important;-webkit-text-fill-color:#123b2a!important}
 :focus-visible{outline-color:#47dca0!important}
+
+/* VERTICAL DASHBOARD 2026 */
+html,body{height:auto!important;min-height:100%!important;overflow:auto!important}
+body{display:block!important;overflow-y:auto!important}
+.wrap{width:min(96%,1540px)!important;height:auto!important;min-height:100vh!important;margin:18px auto!important;padding:24px!important;overflow:visible!important}
+.top-title{position:relative!important;display:block!important;text-align:center!important;padding:12px 55px 24px!important;font-size:clamp(20px,2.2vw,32px)!important;line-height:1.3!important}
+.grid{display:flex!important;flex-direction:column!important;gap:22px!important;height:auto!important;min-height:0!important;overflow:visible!important}
+.panel.left,.panel.players{width:100%!important;height:auto!important;min-height:0!important;overflow:visible!important;padding:22px!important}
+.left-stack{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important;height:auto!important;overflow:visible!important}
+.left-stack>br,.left-media{display:none!important}
+.mci-block{min-width:0!important;padding:18px!important;background:rgba(255,255,255,.045)!important;border:1px solid rgba(103,232,173,.2)!important;border-radius:18px!important}
+.mci-block:first-of-type{grid-column:1/-1}
+.mci-block h3{font-size:17px!important;margin-bottom:12px!important}
+.goal{height:auto!important;min-height:0!important;line-height:1.5!important;margin-bottom:14px!important;padding:12px 15px!important}
+.kpis{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important;height:auto!important}
+.kpi{min-width:0!important;min-height:112px!important;padding:15px!important;border-radius:14px!important}
+.kpi .label{font-size:13px!important;white-space:normal!important;line-height:1.35!important}
+.kpi .value{font-size:clamp(22px,2vw,32px)!important;line-height:1.25!important;overflow:visible!important}
+.bar{margin-top:12px!important;height:9px!important}
+.panel.players:before{content:"EQUIPO VOLUMEN";display:block;color:#f4fff9;font-weight:800;letter-spacing:.12em;font-size:17px;margin-bottom:18px}
+.players-grid{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;grid-template-rows:none!important;grid-auto-rows:auto!important;gap:14px!important;height:auto!important;overflow:visible!important}
+.player-card{position:relative!important;min-width:0!important;height:auto!important;aspect-ratio:4/4.5!important;overflow:hidden!important}
+.player-card img{width:100%!important;height:100%!important;object-fit:cover!important}
+.player-placeholder{height:100%!important;min-height:0!important}
+.semaforo{position:absolute!important;bottom:5px!important;left:3%!important;width:94%!important;display:flex!important;justify-content:center!important;gap:3px!important}
+.luz{width:clamp(9px,1vw,17px)!important;height:clamp(9px,1vw,17px)!important;flex-shrink:1!important}
+@media(max-width:1100px){.players-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:700px){.wrap{width:100%!important;margin:0!important;padding:12px!important;border-radius:0!important}.left-stack{grid-template-columns:1fr!important}.mci-block:first-of-type{grid-column:auto}.players-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}.panel.left,.panel.players{padding:12px!important}.kpi{min-height:96px!important;padding:10px!important}.top-title{font-size:19px!important;padding:14px 45px 20px!important}}
 </style>
 </head>
 
@@ -613,12 +641,6 @@ div#titleTop.top-title{
                 <div class="label">Aging &gt; 180 días</div>
                 <div class="value" id="aging180">--</div>
                 <div class="bar"><span id="bar180"></span></div>
-              </div>
-
-              <div class="kpi">
-                <div class="label">Reservas Inventario</div>
-                <div class="value" id="reservas">--</div>
-                <div class="bar"><span id="barRes"></span></div>
               </div>
 
               <div class="kpi">
@@ -886,7 +908,6 @@ function renderDashboard(payload){
   s("aging60",   fmtPct(d.aging60));
   s("aging90",   fmtPct(d.aging90));
   s("aging180",  fmtPct(d.aging180));
-  s("reservas",  fmtPct(d.reservas));
   s("sufijos",   fmtPct(d.sufijos));
 
   s("margenYtd", fmtPct(d.margen_ytd));
@@ -896,7 +917,6 @@ function renderDashboard(payload){
   setBar("bar60",   d.aging60);
   setBar("bar90",   d.aging90);
   setBar("bar180",  d.aging180);
-  setBar("barRes",  d.reservas);
   setBar("barSuf",  d.sufijos);
   setBar("barMYtd", d.margen_ytd);
   setBar("barMSem", d.margen_semanal);
