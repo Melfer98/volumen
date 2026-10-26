@@ -1152,6 +1152,13 @@ body>.wrap .metricsGrid .kpi .label,body>.wrap .metricsGrid .kpi .value{color:#3
  .blocksTop>.block:first-child .row>.textBox{height:30px!important;max-height:30px!important;overflow:auto!important}
 }
 
+
+/* KPI compliance cards: explicit contrast over previous neutral metric overrides */
+body>.wrap .metricsGrid .kpi.kpi-ok{background:#e8f8ee!important;border:2px solid #208b50!important;box-shadow:0 0 0 1px rgba(32,139,80,.12),0 4px 12px rgba(32,139,80,.14)!important}
+body>.wrap .metricsGrid .kpi.kpi-ok .label,body>.wrap .metricsGrid .kpi.kpi-ok .value{color:#126a3a!important;-webkit-text-fill-color:#126a3a!important}
+body>.wrap .metricsGrid .kpi.kpi-bad{background:#fff0f1!important;border:2px solid #df3348!important;box-shadow:0 0 0 1px rgba(223,51,72,.12),0 4px 12px rgba(223,51,72,.16)!important}
+body>.wrap .metricsGrid .kpi.kpi-bad .label,body>.wrap .metricsGrid .kpi.kpi-bad .value{color:#b91e35!important;-webkit-text-fill-color:#b91e35!important}
+
 </style>
 </head>
 
@@ -1539,6 +1546,34 @@ function renderAll(player, payload){
   setText("margenSem", fmtPct(getField(latestData, "margen_semanal")));
   setText("margenYtd", fmtPct(getField(latestData, "margen_ytd")));
   setText("perdidas",  fmtMoney(getField(latestData, "perdidas")));
+
+  // Semáforos de métricas: mismas reglas de cumplimiento del dashboard principal.
+  // Los KPI sin objetivo definido se mantienen neutros.
+  const setMetricState = (id, isOk) => {
+    const valueEl = document.getElementById(id);
+    const card = valueEl?.closest(".kpi");
+    if(!card) return;
+    card.classList.remove("kpi-ok", "kpi-bad");
+    if(isOk === true) card.classList.add("kpi-ok");
+    else if(isOk === false) card.classList.add("kpi-bad");
+  };
+  const metricNum = key => {
+    const raw = getField(latestData, key);
+    if(raw === null || raw === undefined || String(raw).trim() === "") return NaN;
+    const n = Number(String(raw).replace("%", "").replace(/,/g, "").trim());
+    return Number.isFinite(n) ? n : NaN;
+  };
+  const a60 = metricNum("aging60");
+  const a90 = metricNum("aging90");
+  const a180 = metricNum("aging180");
+  const mytd = metricNum("margen_ytd");
+  setMetricState("aging60", Number.isFinite(a60) ? a60 <= 10 : null);
+  setMetricState("aging90", Number.isFinite(a90) ? a90 <= 6 : null);
+  setMetricState("aging180", Number.isFinite(a180) ? a180 === 0 : null);
+  setMetricState("margenYtd", Number.isFinite(mytd) ? mytd > 0.16 : null);
+  setMetricState("sufijos", null);
+  setMetricState("margenSem", null);
+  setMetricState("perdidas", null);
 
   const prev = payload.latest?.prev || payload.prev || {};
   const next = payload.latest?.next || payload.next || {};
