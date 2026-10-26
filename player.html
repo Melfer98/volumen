@@ -880,6 +880,132 @@ th,.semTable th{background:#a42f49!important}
 .chartHd{background:#8f3046!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border-color:#e5c78f!important}
 .chartBd{background:#fffaf1!important}
 
+
+/* PLAYER PROFILE + PERFORMANCE FEED · complete visual layout */
+html,body{height:auto!important;min-height:100%!important}
+body{display:block!important;overflow:auto!important;padding:18px!important;font-family:Inter,Arial,sans-serif!important}
+body>.wrap{
+ width:min(1500px,100%)!important;height:auto!important;min-height:calc(100dvh - 36px)!important;
+ margin:auto!important;padding:0!important;border:1px solid rgba(255,218,159,.52)!important;
+ border-radius:24px!important;overflow:visible!important;background:transparent!important;
+ box-shadow:none!important;
+}
+body>.wrap>.grid{
+ display:grid!important;grid-template-columns:minmax(265px,29%) minmax(0,1fr)!important;
+ gap:18px!important;height:auto!important;align-items:start!important;
+}
+body>.wrap>.grid>.card{height:auto!important;min-width:0!important;border-radius:22px!important;padding:0!important;overflow:hidden!important}
+body>.wrap>.grid>.leftCard{display:flex!important;flex-direction:column!important;gap:0!important;position:sticky!important;top:18px!important}
+.profileCover{
+ display:flex;justify-content:space-between;align-items:flex-start;
+ min-height:132px;padding:24px 22px;
+ background:radial-gradient(circle at 88% 20%,rgba(255,225,166,.22),transparent 45%),
+ linear-gradient(125deg,#c43e55,#8d2944 66%,#215842)!important;
+ border-bottom:2px solid rgba(255,225,166,.45);
+}
+.profileEyebrow,.feedEyebrow{font:800 10px Inter,Arial,sans-serif!important;letter-spacing:.17em;color:#ffe6b1!important}
+.profileSparkle{color:#ffe4a8;font-size:22px;letter-spacing:8px}
+.leftTop{order:0!important;padding:17px 20px 0!important;align-items:center!important}
+.leftTop .title{font:800 12px Inter,Arial,sans-serif!important;letter-spacing:.05em!important;text-shadow:none!important;white-space:normal!important}
+.leftTop .status{font:700 10px Inter,Arial,sans-serif!important;letter-spacing:.04em!important;white-space:normal!important}
+.leftTop .btn{font:800 11px Inter,Arial,sans-serif!important;letter-spacing:.05em!important}
+.playerPhoto{
+ width:154px!important;height:154px!important;aspect-ratio:1!important;
+ margin:-6px auto 12px!important;border-radius:50%!important;
+ border:5px solid #f8e4bb!important;box-shadow:0 5px 0 #a63a50,0 10px 24px rgba(31,4,14,.3)!important;
+ background:#672b41!important;position:relative!important;z-index:2!important;
+}
+.playerPhoto img{object-fit:cover!important;object-position:top center!important}
+.playerDefault{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.playerName{
+ width:auto!important;max-width:90%!important;margin:2px auto 5px!important;
+ background:none!important;color:#fffaf0!important;-webkit-text-fill-color:#fffaf0!important;
+ font:900 clamp(18px,2vw,26px) Inter,Arial,sans-serif!important;
+ letter-spacing:.01em!important;box-shadow:none!important;padding:0!important;
+ overflow-wrap:anywhere!important;
+}
+.profileSubtitle{font:800 9px Inter,Arial,sans-serif;letter-spacing:.07em;color:#f5d6c8;padding:3px 12px 22px;text-align:center}
+.liveDot{display:inline-block;width:8px;height:8px;background:#32e080;border-radius:50%;box-shadow:0 0 0 3px rgba(50,224,128,.16);margin-right:5px}
+.profileDivider{color:#ffe0a0;padding:0 4px}
+.histWrap{margin:0 16px 18px!important;width:calc(100% - 32px)!important;flex:none!important;border-radius:16px!important}
+.histHd{padding:14px 12px!important;font:800 12px Inter,Arial,sans-serif!important}
+.histHd span:last-child{font:600 9px Inter,Arial,sans-serif!important}
+.histBd{padding:9px!important;overflow-x:auto!important}
+.semTable th,.semTable td{padding:8px 3px!important}
+body>.wrap>.grid>.rightCard{display:flex!important;flex-direction:column!important;gap:16px!important;padding:22px!important}
+.feedHeader{display:flex;justify-content:space-between;align-items:center;padding:5px 4px 2px}
+.feedHeader h2{font:900 clamp(24px,2.6vw,34px) Inter,Arial,sans-serif!important;letter-spacing:-.04em!important;margin:5px 0!important}
+.feedHeader p{font:500 12px Inter,Arial,sans-serif;color:#f2d7d1}
+.feedStar{color:#ffe0a0!important}
+.feedIcon{display:grid;place-items:center;width:48px;height:48px;border-radius:16px;background:#b63a51;border:1px solid #e8c37f;color:#ffe4a3;font-size:28px}
+.blocksTop{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ grid-template-rows:auto auto!important;gap:14px!important;flex:none!important;
+}
+.blocksTop>.block{min-width:0!important;padding:17px!important;border-radius:17px!important;overflow:visible!important}
+.blocksTop>.block:first-child{grid-column:1/-1!important;background:linear-gradient(135deg,#8d2e48,#65253b)!important}
+.blocksTop>.block:nth-child(2){grid-column:1!important}
+.blocksTop>.block:nth-child(3){grid-column:2!important}
+.sectionTitle{
+ font:900 12px Inter,Arial,sans-serif!important;letter-spacing:.065em!important;
+ white-space:normal!important;text-overflow:clip!important;margin-bottom:14px!important;
+}
+.blocksTop>.block:first-child .row{
+ display:grid!important;grid-template-columns:minmax(105px,23%) minmax(0,1fr) auto!important;
+ align-items:center!important;gap:12px!important;
+ margin-bottom:10px!important;border-radius:13px!important;padding:12px!important;
+ background:rgba(255,249,237,.08)!important;border:1px solid rgba(255,225,174,.2)!important;
+}
+.blocksTop>.block:first-child .row:last-child{margin-bottom:0!important}
+.blocksTop>.block:first-child .row>div:first-child{font:800 12px Inter,Arial,sans-serif!important}
+.blocksTop .textBox{
+ display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important;
+ min-height:0!important;font:600 12px/1.5 Inter,Arial,sans-serif!important;
+ padding:11px!important;
+}
+.blocksTop .badge{font:900 10px Inter,Arial,sans-serif!important;letter-spacing:.03em!important}
+.metricsGrid,.metricsGrid.mci2{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:10px!important;background:transparent!important;
+}
+.metricsGrid .kpi{padding:15px!important;min-height:92px!important;border-radius:13px!important}
+.metricsGrid .kpi .label{font:800 11px Inter,Arial,sans-serif!important;white-space:normal!important;overflow:visible!important}
+.metricsGrid .kpi .value{font:900 clamp(16px,1.7vw,24px) Inter,Arial,sans-serif!important;overflow:visible!important;white-space:normal!important}
+.chartsBottom{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:14px!important;min-height:0!important;flex:none!important;
+}
+.chartCard{height:280px!important;border-radius:17px!important;overflow:hidden!important}
+.chartHd{
+ font:700 11px/1.5 Inter,Arial,sans-serif!important;min-height:92px!important;
+ padding:14px!important;overflow:auto!important;flex:none!important;
+}
+.chartBd{flex:1!important;min-height:0!important;padding:14px!important}
+.err{flex:none!important}
+@media(max-width:1050px){
+ body>.wrap>.grid{grid-template-columns:minmax(235px,32%) minmax(0,1fr)!important;gap:12px!important}
+ body>.wrap>.grid>.rightCard{padding:15px!important}
+ .blocksTop>.block:first-child .row{grid-template-columns:1fr auto!important}
+ .blocksTop>.block:first-child .row>.textBox{grid-column:1/-1!important;grid-row:2!important}
+ .blocksTop>.block:first-child .row>.badge{grid-column:2!important;grid-row:1!important}
+ .blocksTop>.block:first-child .row>div:first-child{grid-column:1!important;grid-row:1!important}
+}
+@media(max-width:760px){
+ body{padding:10px!important}
+ body>.wrap{min-height:0!important;border:none!important}
+ body>.wrap>.grid{display:flex!important;flex-direction:column!important;gap:12px!important}
+ body>.wrap>.grid>.leftCard{width:100%!important;position:static!important}
+ .profileCover{min-height:92px!important}
+ .playerPhoto{width:120px!important;height:120px!important}
+ .histWrap{margin:0 12px 12px!important;width:calc(100% - 24px)!important}
+ body>.wrap>.grid>.rightCard{width:100%!important;padding:15px!important}
+ .blocksTop{grid-template-columns:1fr!important}
+ .blocksTop>.block{grid-column:1/-1!important}
+ .chartsBottom{grid-template-columns:1fr!important}
+ .chartCard{height:290px!important}
+ .chartHd{min-height:0!important;max-height:110px!important}
+}
+
 </style>
 </head>
 
@@ -889,6 +1015,7 @@ th,.semTable th{background:#a42f49!important}
     <div class="grid">
       <!-- LEFT: Foto, nombre, texto de resultado, botón de inicio e histórico -->
       <div class="card leftCard">
+        <div class="profileCover"><span class="profileEyebrow">SCOREBOARD · PLAYER PROFILE</span><span class="profileSparkle">✦  ✧  ✦</span></div>
         <div class="leftTop">
           <div class="titleBlock">
             <div class="title" id="hdrTitle">RESULTADOS DEL PLAYER</div>
@@ -903,6 +1030,7 @@ th,.semTable th{background:#a42f49!important}
         </div>
 
         <div class="playerName" id="playerName">--</div>
+        <div class="profileSubtitle"><span class="liveDot"></span> PERFIL DE RESULTADOS <span class="profileDivider">·</span> DESEMPEÑO SEMANAL</div>
 
         <div class="histWrap">
           <div class="histHd">
@@ -931,6 +1059,7 @@ th,.semTable th{background:#a42f49!important}
 
       <!-- RIGHT: Compromisos, medidas y gráficos -->
       <div class="card rightCard">
+        <div class="feedHeader"><div><span class="feedEyebrow">PERFORMANCE FEED</span><h2>Mi desempeño <span class="feedStar">✦</span></h2><p>Compromisos, indicadores y evolución semanal</p></div><div class="feedIcon">✦</div></div>
         <div class="blocksTop">
           <div class="block">
             <div class="sectionTitle" id="wkTitle">COMPROMISOS • SEMANA --</div>
