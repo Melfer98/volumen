@@ -1007,6 +1007,105 @@ body>.wrap>.grid>.rightCard{display:flex!important;flex-direction:column!importa
 }
 
 
+
+/* Responsive fullscreen Player: preserve social-dashboard composition */
+html,body{width:100%!important;height:100%!important;min-height:0!important;overflow:hidden!important}
+body{display:block!important;height:100dvh!important;padding:clamp(5px,.8vh,12px)!important;overflow:hidden!important}
+body>.wrap{width:100%!important;max-width:1800px!important;height:100%!important;min-height:0!important;margin:auto!important;overflow:hidden!important;padding:0!important}
+body>.wrap>.grid{height:100%!important;min-height:0!important;gap:clamp(6px,.8vw,15px)!important;grid-template-columns:minmax(230px,29%) minmax(0,1fr)!important}
+body>.wrap>.grid>.card{height:100%!important;min-height:0!important;overflow:hidden!important}
+body>.wrap>.grid>.leftCard{position:relative!important;top:auto!important;min-height:0!important}
+.profileCover{min-height:clamp(56px,10vh,105px)!important;padding:clamp(9px,1.5vh,20px)!important;flex:0 0 auto!important}
+.leftTop{padding:clamp(7px,1vh,14px) 13px 0!important;flex:0 0 auto!important}
+.playerPhoto{
+ width:clamp(145px,19vh,210px)!important;
+ height:clamp(145px,19vh,210px)!important;
+ margin:clamp(-7px,-.5vh,-3px) auto clamp(5px,.8vh,10px)!important;
+ flex:0 0 auto!important;
+}
+.playerName{font-size:clamp(15px,1.6vw,25px)!important;flex:0 0 auto!important}
+.profileSubtitle{padding:2px 8px clamp(6px,1vh,13px)!important;flex:0 0 auto!important}
+.histWrap{flex:1 1 auto!important;min-height:0!important;margin:0 12px 12px!important;width:calc(100% - 24px)!important}
+.histHd{padding:clamp(7px,1vh,12px)!important;flex:0 0 auto!important}
+.histBd{min-height:0!important;overflow:auto!important;padding:5px!important}
+.semTable th,.semTable td{padding:clamp(3px,.55vh,7px) 2px!important}
+body>.wrap>.grid>.rightCard{height:100%!important;min-height:0!important;padding:clamp(9px,1.2vh,18px)!important;gap:clamp(6px,.85vh,13px)!important}
+.feedHeader{flex:0 0 auto!important;padding:0!important}
+.feedHeader h2{font-size:clamp(18px,2vw,30px)!important}
+.feedHeader p{font-size:clamp(9px,.8vw,12px)!important}
+.feedIcon{width:clamp(32px,4vh,46px)!important;height:clamp(32px,4vh,46px)!important}
+.blocksTop{flex:0 0 auto!important;gap:clamp(6px,.8vh,12px)!important}
+.blocksTop>.block{padding:clamp(8px,1vh,14px)!important}
+.sectionTitle{margin-bottom:clamp(5px,.7vh,10px)!important}
+.blocksTop>.block:first-child .row{padding:clamp(6px,.8vh,10px)!important;margin-bottom:clamp(5px,.65vh,8px)!important}
+.blocksTop .textBox{padding:clamp(5px,.7vh,9px)!important;line-height:1.25!important;max-height:clamp(35px,5.5vh,60px)!important;overflow:auto!important}
+.metricsGrid,.metricsGrid.mci2{gap:clamp(5px,.7vh,9px)!important}
+.metricsGrid .kpi{min-height:clamp(51px,7vh,85px)!important;padding:clamp(6px,.85vh,12px)!important}
+.metricsGrid .kpi .value{font-size:clamp(14px,1.55vw,23px)!important}
+.chartsBottom{flex:1 1 auto!important;min-height:0!important;gap:clamp(6px,.8vw,13px)!important}
+.chartCard{height:100%!important;min-height:0!important}
+.chartHd{min-height:0!important;max-height:clamp(48px,9vh,90px)!important;padding:clamp(6px,.85vh,12px)!important;overflow:auto!important}
+.chartBd{min-height:0!important;flex:1 1 auto!important;padding:clamp(5px,.7vh,12px)!important}
+body>.wrap .blocksTop>.block:first-child .row>div:first-child,
+body>.wrap .blocksTop .textBox,body>.wrap .feedHeader,
+body>.wrap .profileSubtitle{color:#fff9f0!important;-webkit-text-fill-color:#fff9f0!important}
+body>.wrap .blocksTop .textBox{background:#68283d!important;border-color:#ad7e77!important}
+body>.wrap .metricsGrid .kpi .label,body>.wrap .metricsGrid .kpi .value{color:#33232b!important;-webkit-text-fill-color:#33232b!important}
+@media(max-height:720px){
+ .profileCover{min-height:50px!important}
+ .playerPhoto{width:clamp(128px,20vh,165px)!important;height:clamp(128px,20vh,165px)!important}
+ .profileSubtitle{padding-bottom:4px!important}
+ .feedHeader p{display:none!important}
+ .blocksTop>.block{padding:6px!important}
+ .blocksTop>.block:first-child .row{padding:4px 7px!important}
+ .metricsGrid .kpi{min-height:45px!important;padding:5px!important}
+ .chartHd{max-height:48px!important}
+}
+@media(max-width:760px){
+ body{padding:5px!important}
+ body>.wrap>.grid{display:grid!important;grid-template-columns:minmax(0,38%) minmax(0,62%)!important;gap:5px!important}
+ body>.wrap>.grid>.leftCard,body>.wrap>.grid>.rightCard{width:100%!important;min-width:0!important}
+ .profileCover{min-height:55px!important;padding:7px!important}
+ .profileEyebrow{font-size:7px!important}
+ .profileSparkle{font-size:12px!important;letter-spacing:1px!important}
+ .leftTop{padding:6px!important;gap:3px!important}
+ .leftTop .title,.leftTop .status{font-size:7px!important;white-space:normal!important}
+ .leftTop .btn{font-size:7px!important;padding:6px!important}
+ .playerPhoto{width:min(95%,clamp(95px,19vh,160px))!important;height:auto!important;aspect-ratio:1!important}
+ .playerName{font-size:clamp(11px,2.5vw,17px)!important}
+ .profileSubtitle{font-size:7px!important}
+ .histWrap{margin:0 3px 5px!important;width:calc(100% - 6px)!important}
+ .histHd{padding:5px 3px!important;font-size:8px!important;flex-wrap:wrap!important}
+ .histHd span:last-child{display:none!important}
+ .histBd{padding:2px!important}
+ .semTable th,.semTable td{font-size:7px!important;padding:4px 0!important}
+ .semTable th.left{width:38px!important}
+ .semDot{width:9px!important;height:9px!important;border-width:1px!important}
+ body>.wrap>.grid>.rightCard{padding:6px!important;gap:5px!important}
+ .feedHeader h2{font-size:14px!important}
+ .feedHeader p,.feedEyebrow,.feedIcon{display:none!important}
+ .blocksTop{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px!important}
+ .blocksTop>.block{padding:5px!important}
+ .blocksTop>.block:first-child{grid-column:1/-1!important}
+ .blocksTop>.block:nth-child(2){grid-column:1!important}
+ .blocksTop>.block:nth-child(3){grid-column:2!important}
+ .sectionTitle{font-size:8px!important;margin-bottom:4px!important}
+ .blocksTop>.block:first-child .row{display:grid!important;grid-template-columns:1fr auto!important;gap:3px!important;padding:4px!important}
+ .blocksTop>.block:first-child .row>div:first-child{font-size:8px!important}
+ .blocksTop>.block:first-child .row>.textBox{grid-column:1/-1!important;grid-row:2!important}
+ .blocksTop>.block:first-child .row>.badge{grid-column:2!important;grid-row:1!important}
+ .blocksTop .textBox{font-size:8px!important;max-height:30px!important;padding:4px!important}
+ .blocksTop .badge{font-size:7px!important;padding:4px!important}
+ .metricsGrid,.metricsGrid.mci2{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:3px!important}
+ .metricsGrid .kpi{min-height:37px!important;padding:4px!important}
+ .metricsGrid .kpi .label{font-size:8px!important}
+ .metricsGrid .kpi .value{font-size:11px!important}
+ .chartsBottom{grid-template-columns:1fr!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;gap:5px!important}
+ .chartCard{height:100%!important;min-height:0!important}
+ .chartHd{max-height:32px!important;font-size:8px!important;padding:4px!important}
+ .chartBd{padding:3px!important}
+}
+
 </style>
 </head>
 
