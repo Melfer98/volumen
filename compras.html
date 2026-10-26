@@ -912,6 +912,31 @@ body>.comprasProfile{height:100%!important;width:100%!important;max-width:1800px
 @media(max-height:750px){.comprasProfile .playerPhoto{width:clamp(110px,18vh,160px)!important;height:clamp(110px,18vh,160px)!important}.comprasProfile .act-title{height:34px!important;min-height:34px!important}.comprasProfile .act-row{height:25px!important;min-height:25px!important}.comprasProfile .kpiTable td{padding:5px!important}.comprasProfile .feedHeader p{display:none!important}}
 @media(max-width:760px){.comprasProfile>.grid{grid-template-columns:minmax(0,36%) minmax(0,64%)!important;gap:5px!important}.comprasProfile .leftTop{padding:5px!important;flex-wrap:wrap!important}.comprasProfile .title{font-size:8px!important}.comprasProfile .status{font-size:8px!important}.comprasProfile .playerPhoto{width:min(95%,120px)!important;height:auto!important;aspect-ratio:1!important}.purchaseAvatar{font-size:40px}.comprasProfile .playerName{font-size:15px!important}.comprasProfile .profileSubtitle{font-size:7px!important}.comprasProfile .histWrap{margin:0 3px 4px!important;width:calc(100% - 6px)!important}.comprasProfile .histHd{font-size:8px!important;padding:4px!important;min-height:32px!important}.comprasProfile .histHd span:last-child{display:none!important}.comprasProfile .semTable th{font-size:6px!important}.comprasProfile .semTable td{font-size:7px!important;padding:1px!important}.comprasProfile .semDot{width:8px!important;height:8px!important}.comprasProfile .rightCard{padding:5px!important;gap:5px!important}.comprasProfile .feedHeader h2{font-size:13px!important}.comprasProfile .feedEyebrow,.comprasProfile .feedHeader p,.comprasProfile .feedIcon{display:none!important}.comprasProfile .blocksTop{grid-template-columns:1fr!important;gap:4px!important}.comprasProfile .metricBlock{grid-column:1!important}.comprasProfile .block{padding:4px!important}.comprasProfile .kpiTable tbody{gap:2px!important}.comprasProfile .kpiTable td{padding:2px!important}.comprasProfile .kpiTable .kpiName{font-size:7px!important;min-height:25px!important}.comprasProfile .kpiTable .kpiVal{font-size:10px!important}.comprasProfile .kpiUnit{display:none!important}.comprasProfile .act-title{font-size:8px!important;height:24px!important;min-height:24px!important}.comprasProfile .act-row{height:19px!important;min-height:19px!important}.comprasProfile .act-text{font-size:7px!important}.comprasProfile .chartsBottom{grid-template-columns:1fr!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;gap:4px!important}.comprasProfile .chartHd{min-height:22px!important;font-size:8px!important;padding:3px!important}.comprasProfile .chartBd{padding:3px!important}}
 
+
+/* Restore all eight purchase commitments and scale 12-week history */
+.comprasProfile .actionBlock{display:flex!important;min-height:0!important}
+.comprasProfile .actionBlock>.act-block{display:flex!important;flex-direction:column!important;flex:1 1 auto!important;min-height:0!important}
+.comprasProfile .actionBlock .act-list{display:grid!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;flex:1 1 auto!important;min-height:0!important;height:auto!important}
+.comprasProfile .actionBlock .act-row{height:auto!important;min-height:0!important;max-height:none!important;display:flex!important;align-items:center!important}
+.comprasProfile .actionBlock .act-text{max-height:100%!important;overflow:auto!important}
+.comprasProfile .histWrap{display:flex!important;flex-direction:column!important;min-height:0!important}
+.comprasProfile .histBd{flex:1 1 auto!important;display:flex!important;min-height:0!important;overflow:hidden!important}
+.comprasProfile .semTable{height:100%!important;table-layout:fixed!important}
+.comprasProfile .semTable tbody{height:calc(100% - 29px)!important}
+.comprasProfile .semTable tbody tr{height:8.333%!important}
+.comprasProfile .semTable td,.comprasProfile .semTable th{vertical-align:middle!important;padding:1px!important}
+.comprasProfile .histHd{min-height:36px!important}
+@media(max-height:750px){
+ .comprasProfile .actionBlock .act-title{height:clamp(30px,5vh,42px)!important;min-height:clamp(30px,5vh,42px)!important}
+ .comprasProfile .actionBlock .act-text{font-size:9px!important;line-height:1.15!important}
+}
+@media(max-width:760px){
+ .comprasProfile .actionBlock .act-list{grid-template-rows:repeat(4,minmax(0,1fr))!important}
+ .comprasProfile .actionBlock .act-row{height:auto!important;min-height:0!important}
+ .comprasProfile .actionBlock .act-text{font-size:7px!important}
+ .comprasProfile .semTable tbody tr{height:8.333%!important}
+}
+
 </style>
 </head>
 
@@ -991,24 +1016,8 @@ body>.comprasProfile{height:100%!important;width:100%!important;max-width:1800px
                 </tr>
               </tbody>
             </table></div></section>
-        <section class="block actionBlock"><div class="act-block">
-                  <div class="act-title">MCI I: Incrementar Cobertura de organización de producto de 76% a 84% durante el 2026.</div>
-                  <div class="act-list">
-
-                    <div class="act-row" id="row_cmpA1">
-                      <div class="act-code">MdP1</div>
-                      <div class="act-text">Ajustar la compra de SKUs con cobertura inferior al 70%, de acuerdo con el análisis de demanda.</div>
-                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpA1"></span></div>
-                    </div></section>
-        <section class="block actionBlock"><div class="act-block">
-                  <div class="act-title">MCI II: Mantener los inventarios &gt; 90 días en un porcentaje ≤ 7% del inventario en plaza (OH) en la organización de producto Volumen, para el 31/12/2026.</div>
-                  <div class="act-list">
-
-                    <div class="act-row" id="row_cmpB1">
-                      <div class="act-code">MdP1</div>
-                      <div class="act-text">Dar seguimiento semanal a los backorders, asegurando su cierre dentro de los 3 días posteriores a la recepción del 100% del producto.</div>
-                      <div class="act-dotWrap"><span class="act-dot" id="dot_cmpB1"></span></div>
-                    </div></section>
+        <section class="block actionBlock"><div class="act-block"><div class="act-title">MCI I: Incrementar Cobertura de organización de producto de 76% a 84% durante el 2026.</div><div class="act-list"><div class="act-row" id="row_cmpA1"><div class="act-code">MdP1</div><div class="act-text">Ajustar la compra de SKUs con cobertura inferior al 70%, de acuerdo con el análisis de demanda.</div><div class="act-dotWrap"><span class="act-dot" id="dot_cmpA1"></span></div></div><div class="act-row" id="row_cmpA2"><div class="act-code">MdP2</div><div class="act-text">Sostener reunión semanal con tres gerentes de marca para el análisis de PSI y la definición de planes de acción.</div><div class="act-dotWrap"><span class="act-dot" id="dot_cmpA2"></span></div></div><div class="act-row" id="row_cmpA3"><div class="act-code">MdP3</div><div class="act-text">Ejecutar compras de forma semanal.</div><div class="act-dotWrap"><span class="act-dot" id="dot_cmpA3"></span></div></div><div class="act-row" id="row_cmpA4"><div class="act-code">MdP4</div><div class="act-text">Seguimiento a colocación de órdenes a Fabricante</div><div class="act-dotWrap"><span class="act-dot" id="dot_cmpA4"></span></div></div></div></div></section>
+<section class="block actionBlock"><div class="act-block"><div class="act-title">MCI II: Mantener los inventarios &gt; 90 días en un porcentaje ≤ 7% del inventario en plaza (OH) en la organización de producto Volumen, para el 31/12/2026.</div><div class="act-list"><div class="act-row" id="row_cmpB1"><div class="act-code">MdP1</div><div class="act-text">Dar seguimiento semanal a los backorders, asegurando su cierre dentro de los 3 días posteriores a la recepción del 100% del producto.</div><div class="act-dotWrap"><span class="act-dot" id="dot_cmpB1"></span></div></div><div class="act-row" id="row_cmpB2"><div class="act-code">MdP2</div><div class="act-text">Generar y revisar el reporte de capas de inventarios para identificar fluctuaciones y definir acciones correctivas en precio, importaciones, inventario comprometido (IC) entre otros.</div><div class="act-dotWrap"><span class="act-dot" id="dot_cmpB2"></span></div></div><div class="act-row" id="row_cmpB3"><div class="act-code">MdP3</div><div class="act-text">Monitoreo semanalmente el estatus de backorders y ETAs, garantizando visibilidad y control de abastecimiento.</div><div class="act-dotWrap"><span class="act-dot" id="dot_cmpB3"></span></div></div><div class="act-row" id="row_cmpB4"><div class="act-code">MdP4</div><div class="act-text">Dar seguimiento semanal al cumplimiento del forecast de clientes y marcas, identificando desviaciones y acciones de ajuste oportuno</div><div class="act-dotWrap"><span class="act-dot" id="dot_cmpB4"></span></div></div></div></div></section>
       </div>
       <div class="chartsBottom"><div class="chartCard">
                 <div class="chartHd">Cobertura Total (%)</div>
