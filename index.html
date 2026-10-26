@@ -1671,14 +1671,14 @@ wirePlayerClicks();
       [493.88,13.8,.019],[440,14.4,.018],[392,15.0,.021],
       [440,15.8,.019],[392,16.45,.020],[329.63,17.2,.022]
     ];
-    notes.forEach(([f,offset,v])=>chime(f,t+offset,v,2.5));
+    notes.forEach(([f,offset,v])=>chime(f,t+offset*.83,v,2.5));
   }
   async function start(){
     if(started)return;
     try{
       setup();await ctx.resume();
       if(ctx.state!=='running')return;
-      started=true;play();setInterval(play,26500);
+      started=true;play();setInterval(play,23000);
       document.removeEventListener('pointerdown',start);
       document.removeEventListener('keydown',start);
     }catch(e){console.warn('Audio ambiental no disponible',e)}
