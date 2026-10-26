@@ -1027,6 +1027,16 @@ th,.semTable th{background:#a42f49!important}
 .kpi.kpi-ok .value{color:#167342!important;-webkit-text-fill-color:#167342!important;font-weight:900!important}
 .kpi.kpi-ok .bar span{background:#248b54!important}
 
+
+/* Slightly wider Laura portrait in upper dashboard, preserving full-screen layout */
+@media(min-width:1050px){
+ body>.wrap>.grid>.panel.left{grid-template-columns:minmax(0,1fr) clamp(145px,15vw,235px)!important}
+ body>.wrap>.grid>.panel.left>.left-media .media-box.lau img{object-fit:cover!important;object-position:center 25%!important}
+}
+@media(min-width:701px) and (max-width:1049px){
+ body>.wrap>.grid>.panel.left{grid-template-columns:minmax(0,1fr) 155px!important}
+}
+
 </style>
 </head>
 
