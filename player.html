@@ -1525,7 +1525,7 @@ function renderAll(player, payload){
 
   const img = document.getElementById("playerImg");
   const def = document.getElementById("playerDefault");
-  const isDefaultPlayer = player === "ANDREA" || player === "KAREN";
+  const isDefaultPlayer = !PLAYER_IMG[player];
   if(img) {
     if(isDefaultPlayer) {
       img.removeAttribute("src");
