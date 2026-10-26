@@ -699,6 +699,10 @@ body .players-grid .player-card .semaforo .luz{
  .left-media .lau img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
  .mci-block .goal{font-size:13px!important;line-height:1.45!important}
 }
+
+/* Keep only Laura visible in the upper-right portrait slot */
+body .panel.left .left-media>.media-box:not(.lau){display:none!important}
+body .panel.left .left-media>.media-box.lau{flex:1 1 auto!important;min-height:0!important}
 </style>
 </head>
 
