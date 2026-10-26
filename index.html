@@ -1631,45 +1631,54 @@ wirePlayerClicks();
 
 
 <script>
-/* Cascabeles festivos: motivo instrumental inspirado en Jingle Bells, sin audio externo. */
+/* Ambiente navideño elegante: campanillas de cristal y acordes suaves. */
 (function(){
-  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
-  let ctx=null,active=false;
-  const melody=[
-    [659.25,0],[659.25,.3],[659.25,.6],[659.25,1.2],[659.25,1.5],[659.25,1.8],
-    [659.25,2.1],[783.99,2.4],[523.25,2.7],[587.33,3.0],[659.25,3.3],
-    [698.46,4.0],[698.46,4.3],[698.46,4.6],[698.46,4.9],
-    [698.46,5.2],[659.25,5.5],[659.25,5.8],[659.25,6.1],
-    [659.25,6.4],[587.33,6.7],[587.33,7.0],[659.25,7.3],[587.33,7.6],[783.99,8.0]
-  ];
-  function bell(freq,time,volume){
-    [1,2.13,2.87,4.1,5.4].forEach((h,i)=>{
-      const osc=ctx.createOscillator(),gain=ctx.createGain();
-      osc.type='sine';osc.frequency.setValueAtTime(freq*h,time);
-      osc.frequency.exponentialRampToValueAtTime(freq*h*.995,time+.35);
-      gain.gain.setValueAtTime(.0001,time);
-      gain.gain.exponentialRampToValueAtTime(volume*[1,.6,.3,.14,.06][i],time+.006);
-      gain.gain.exponentialRampToValueAtTime(.0001,time+(.48+i*.11));
-      osc.connect(gain);gain.connect(ctx.destination);
-      osc.start(time);osc.stop(time+1);
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC)return;
+  let ctx=null,started=false,master=null,delay=null,feedback=null;
+  function setup(){
+    ctx=ctx||new AC();
+    if(master)return;
+    master=ctx.createGain();master.gain.value=.48;
+    const low=ctx.createBiquadFilter();low.type='lowpass';low.frequency.value=3500;
+    delay=ctx.createDelay(1.5);delay.delayTime.value=.34;
+    feedback=ctx.createGain();feedback.gain.value=.17;
+    const wet=ctx.createGain();wet.gain.value=.15;
+    master.connect(low);low.connect(ctx.destination);
+    master.connect(delay);delay.connect(wet);wet.connect(low);
+    delay.connect(feedback);feedback.connect(delay);
+  }
+  function chime(f,t,vol,decay){
+    [1,2.003,3.92].forEach((partial,i)=>{
+      const osc=ctx.createOscillator(),env=ctx.createGain();
+      osc.type='sine';osc.frequency.setValueAtTime(f*partial,t);
+      env.gain.setValueAtTime(.00001,t);
+      env.gain.exponentialRampToValueAtTime(vol*[1,.18,.035][i],t+.025);
+      env.gain.exponentialRampToValueAtTime(.00001,t+decay*[1,.68,.46][i]);
+      osc.connect(env);env.connect(master);osc.start(t);osc.stop(t+decay+.05);
     });
   }
   function play(){
-    if(!active||document.hidden||ctx.state!=='running')return;
-    const t=ctx.currentTime+.1;
-    melody.forEach(([f,beat],i)=>{
-      bell(f,t+beat*.7,.023);
-      if(i%3===0)bell(f*2,t+beat*.7+.065,.006);
-    });
+    if(!started||document.hidden||ctx.state!=='running')return;
+    const t=ctx.currentTime+.15;
+    /* Motivo original, delicado y espaciado, sin notas estridentes. */
+    const notes=[
+      [523.25,0,.022],[659.25,.7,.019],[783.99,1.45,.020],
+      [987.77,2.5,.015],[783.99,3.65,.017],[659.25,4.5,.016],
+      [587.33,6.2,.018],[698.46,7.1,.017],[880,8.05,.019],
+      [783.99,9.35,.015],[659.25,10.35,.016],[523.25,11.55,.017]
+    ];
+    notes.forEach(([f,offset,v])=>chime(f,t+offset,v,2.5));
   }
   async function start(){
-    if(active)return;
+    if(started)return;
     try{
-      ctx=ctx||new AC();await ctx.resume();if(ctx.state!=='running')return;
-      active=true;play();setInterval(play,14500);
+      setup();await ctx.resume();
+      if(ctx.state!=='running')return;
+      started=true;play();setInterval(play,29000);
       document.removeEventListener('pointerdown',start);
       document.removeEventListener('keydown',start);
-    }catch(e){console.warn('Audio navideño no disponible',e)}
+    }catch(e){console.warn('Audio ambiental no disponible',e)}
   }
   document.addEventListener('pointerdown',start);
   document.addEventListener('keydown',start);
