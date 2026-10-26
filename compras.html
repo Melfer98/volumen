@@ -1172,6 +1172,28 @@ function applyKpis(d){
   document.getElementById("kpiA90").textContent  = fmtPct(d.aging90);
   document.getElementById("kpiA180").textContent = fmtPct(d.aging180);
   document.getElementById("kpiSuf").textContent  = fmtPct(d.sufijos);
+  const setState=(id,ok)=>{
+    const tr=document.getElementById(id)?.closest("tr");
+    if(!tr)return;
+    tr.classList.remove("kpi-good","kpi-bad");
+    if(ok===true)tr.classList.add("kpi-good");
+    if(ok===false)tr.classList.add("kpi-bad");
+  };
+  const metric=(name)=>{
+    const raw=d?.[name];
+    if(raw===null||raw===undefined||raw==="")return NaN;
+    const n=Number(String(raw).replace("%","").replace(/,/g,""));
+    return Number.isFinite(n)?n:NaN;
+  };
+  const rules=[
+    ["kpiCob","cobertura_total",v=>v>=84],
+    ["kpiA60","aging60",v=>v<=10],
+    ["kpiA90","aging90",v=>v<=6],
+    ["kpiA180","aging180",v=>v===0]
+  ];
+  rules.forEach(([id,name,check])=>{const v=metric(name);setState(id,Number.isFinite(v)?check(v):null)});
+  setState("kpiSuf",null);
+
 }
 function applyMdP(d){
   setMdPState("cmpA1", d.cmpA1);
@@ -1240,6 +1262,7 @@ let chartA90 = null;
 
 function buildLineChart(canvasId, labels, values){
   const ctx = document.getElementById(canvasId).getContext("2d");
+  const isCob = canvasId === "chartCob";
   return new Chart(ctx, {
     type: "line",
     data: {
@@ -1258,8 +1281,8 @@ function buildLineChart(canvasId, labels, values){
       maintainAspectRatio: false,
       plugins: { legend: { display:false }, tooltip: { enabled:true } },
       scales: {
-        x: { ticks: { maxRotation:0, autoSkip:true } },
-        y: { ticks: { callback: (v)=> Number(v).toFixed(0) + "%" } }
+        x: { ticks: { maxRotation:0, autoSkip:true, color:"#604550" }, grid:{color:"rgba(100,70,80,.10)"} },
+        y: { ticks: { color:"#604550", callback: (v)=> Number(v).toFixed(0) + "%" }, grid:{color:"rgba(100,70,80,.14)"} }
       }
     }
   });
