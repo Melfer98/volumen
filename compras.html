@@ -968,6 +968,32 @@ body>.comprasProfile{height:100%!important;width:100%!important;max-width:1800px
 .comprasProfile .chartBd{background:#fffaf1!important}
 @media(max-width:760px){.comprasProfile .semDot{width:9px!important;height:9px!important;border-width:1px!important}.comprasProfile .histHd span:last-child{font-size:7px!important}}
 
+
+/* KPI cards: one uninterrupted background; no separate fill behind values */
+.comprasProfile .kpiTable tbody tr,
+.comprasProfile .kpiTable tbody tr td,
+.comprasProfile .kpiTable tbody tr td.kpiVal,
+.comprasProfile .kpiTable tbody tr td.kpiName,
+.comprasProfile .kpiTable tbody tr td.kpiVal span,
+.comprasProfile .kpiTable tbody tr td.kpiVal .kpiUnit{
+ background-image:none!important;
+ box-shadow:none!important;
+}
+.comprasProfile .kpiTable tbody tr td,
+.comprasProfile .kpiTable tbody tr td.kpiVal,
+.comprasProfile .kpiTable tbody tr td.kpiName,
+.comprasProfile .kpiTable tbody tr td.kpiVal span,
+.comprasProfile .kpiTable tbody tr td.kpiVal .kpiUnit{
+ background-color:transparent!important;
+ background:transparent!important;
+ border:0!important;
+ outline:0!important;
+ border-radius:0!important;
+}
+.comprasProfile .kpiTable tbody tr.kpi-good{background:#e4f7eb!important}
+.comprasProfile .kpiTable tbody tr.kpi-bad{background:#ffe7eb!important}
+.comprasProfile .kpiTable tbody tr:not(.kpi-good):not(.kpi-bad){background:#fffaf1!important}
+
 </style>
 </head>
 
